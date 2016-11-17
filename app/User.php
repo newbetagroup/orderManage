@@ -28,7 +28,7 @@ class User extends Model implements AuthenticatableContract,
      *
      * @var array
      */
-    protected $fillable = ['name', 'email', 'password'];
+    protected $fillable = ['name', 'email', 'password', 'domicile', 'graduated_school', 'address', 'sex', 'phone', 'qq', 'remark'];
 
     /**
      * The attributes excluded from the model's JSON form.
@@ -36,4 +36,34 @@ class User extends Model implements AuthenticatableContract,
      * @var array
      */
     protected $hidden = ['password', 'remember_token'];
+
+    /**
+     * 用户所属分组，可以有多个？
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'group_user', 'group_id', 'user_id');
+    }
+
+
+    public function hasGroup($group)
+    {
+        //用户是否在某个组
+    }
+
+    public function hasPermission($permission) {
+        //是否有某个权限
+    }
+
+    public function assignGroup($group)
+    {
+        //将用户注册到某个分组
+        return $this->groups()->save($group);
+    }
+
+
+    
+    
 }

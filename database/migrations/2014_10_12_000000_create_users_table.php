@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->char('sex')->nullable()->comment("性别");
             $table->string('phone')->nullable()->comment("手机");
             $table->string('qq')->nullable()->comment("qq");
+            $table->string('identity')->nullable()->comment('身份，职位');
             //$table->string('entry_date')->nullable()->comment('入职日期');
             $table->text('remark')->nullable()->comment("备注");
 
