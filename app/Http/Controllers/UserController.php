@@ -2,13 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use App\User;
 use Illuminate\Http\Request;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 
-class ProfileController extends Controller
+class UserController extends Controller
 {
+    protected $fields = [
+        'name' => '',
+        'email' => '',
+        'roles' => []
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -17,6 +24,7 @@ class ProfileController extends Controller
     public function index(Request $request)
     {
         //
+
     }
 
     /**
@@ -26,7 +34,12 @@ class ProfileController extends Controller
      */
     public function create()
     {
-        //
+        $data = [];
+        foreach ($this->fields as $field => $default) {
+            $data[$field] = old($field, $default);
+        }
+        $data['groupsAll'] = Role::all()->toArray();
+        return ['status' => 1, 'data' => $data];
     }
 
     /**
@@ -37,7 +50,22 @@ class ProfileController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $user = new User();
+        foreach (array_keys($this->fields) as $field) {
+            $user->$field = $request->get($field);
+        }
+        unset($user->groups);
+        $user->save();
+
+        //用户分组
+        if (is_array($request->get('groups'))) {
+            $user->giveGroupTo($request->get('groups'));
+        }
+
+        //监听？
+        //event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 1, '添加了用户' . $user->name));
+        //return redirect('/admin/user')->withSuccess('添加成功！');//怎么将withSuccess或withError弄成接口？
+        return ['status' => '1', 'msg' => '添加成功'];
     }
 
     /**
@@ -85,4 +113,17 @@ class ProfileController extends Controller
         //
     }
 
+    /**
+     * Auth user information
+     */
+    public function authUser()
+    {
+        if (Auth::check()) {
+            //已登录，记住我
+            return ['status' => 1, 'data' => Auth::user()];
+        } else {
+            return ['status' => 0, 'msg' => 'login required'];
+        }
+
+    }
 }

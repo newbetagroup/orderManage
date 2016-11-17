@@ -63,6 +63,16 @@ class User extends Model implements AuthenticatableContract,
         return $this->groups()->save($group);
     }
 
+    //用户分组批量添加与修改
+    public function giveGroupTo(array $RoleId){
+        $this->groups()->detach();
+        $roles=Group::whereIn('id',$RoleId)->get();
+        foreach ($roles as $v){
+            $this->assignGroup($v);
+        }
+        return true;
+    }
+
 
     
     
