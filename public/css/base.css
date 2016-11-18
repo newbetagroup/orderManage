@@ -1,0 +1,14 @@
+/*login*/
+@media screen and (min-width: 767px) {
+    .login-bg {
+        background: url("../images/loginbg.png") no-repeat;
+    }
+    .login-logo a {
+        color: #3c8dbc;
+    }
+}
+@media screen and (max-width: 767px) {
+    .login-bg {
+        background: url("../images/loginphone.jpeg") no-repeat;
+    }
+}

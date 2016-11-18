@@ -11,13 +11,6 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('home', function () {
-    return view('welcome');
-});
-
 // 认证路由...
 Route::get('auth/login', 'Auth\AuthController@getLogin');
 Route::post('auth/login', 'Auth\AuthController@postLogin');
@@ -29,5 +22,16 @@ Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::any('user/authuser', 'UserController@authUser');
 
-//User 路由
-Route::resource('user','UserController');
+
+//强制登录
+Route::group(['middleware' => ['auth']], function() {
+    Route::get('/', function () {
+        return view('index');
+    });
+    Route::get('home', function () {
+        return view('index');
+    });
+
+    //User 路由
+    Route::resource('user','UserController');
+});
