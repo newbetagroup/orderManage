@@ -28,3 +28,6 @@ Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
 Route::any('user/authuser', 'UserController@authUser');
+
+//User 路由
+Route::resource('user','UserController');
