@@ -185,7 +185,10 @@ class UserController extends Controller
     {
         if (Auth::check()) {
             //已登录、记住我
-            return ['status' => 1, 'data' => Auth::user()];
+            $user = Auth::user();
+            $user->groups;
+            $data['groupsAll'] = Group::all()->toArray();
+            return ['status' => 1, 'data' => $user];
         } else {
             return ['status' => 0, 'msg' => 'login required'];
         }

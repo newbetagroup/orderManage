@@ -39,6 +39,26 @@ scratch. This page gets rid of all links and provides the needed markup only.
     {{--loding--}}
     <link href="/dist/css/load/load.css" rel="stylesheet">
     @yield('css')
+
+            <!-- REQUIRED JS SCRIPTS -->
+
+    {{-- scripts --}}
+    <script src="/node_modules/jquery/dist/jQuery-2.2.0.min.js"></script>
+    <script src="/bootstrap/js/bootstrap.js"></script>
+    <!-- AdminLTE App -->
+    <script src="/dist/js/app.min.js"></script>
+    <!-- dataTables -->
+    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+    <script src="/plugins/datatables/dataTables.bootstrap.js"></script>
+    <script src="/plugins/tokenfield/dist/bootstrap-tokenfield.min.js"></script>
+    <script src="/dist/js/common.js"></script>
+    {{--angular--}}
+    <script src="/node_modules/angular/angular.js"></script>
+    <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
+    {{--base--}}
+    <script src="js/base.js"></script>
+
+    @yield('js')
 </head>
 <!--
 BODY TAG OPTIONS:
@@ -81,24 +101,19 @@ desired effect
 
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <section class="content-header">
-            {{--<h1>
+        {{--<section class="content-header">
+            <h1>
               @yield('pageHeader')
               <small>@yield('pageDesc')</small>
             </h1>
             <ol class="breadcrumb">
               <li><a href="/admin"><i class="fa fa-dashboard"></i> 控制面板</a></li>
               <li class="active">Here</li>
-            </ol>--}}
+            </ol>
             <h6>
-              {{--  @if(Request::is('admin/log-viewer*'))
-                    仪表盘
-                @else
-                    {!! Breadcrumbs::render(Route::currentRouteName()) !!}
-                @endif--}}
 
             </h6>
-        </section>
+        </section>--}}
 
         <!-- Main content -->
         <section class="content">
@@ -190,30 +205,12 @@ desired effect
 <!-- ./wrapper -->
 
 
-<!-- REQUIRED JS SCRIPTS -->
-
-{{-- scripts --}}
-<script src="/node_modules/jquery/dist/jQuery-2.2.0.min.js"></script>
-<script src="/bootstrap/js/bootstrap.js"></script>
-<script src="/node_modules/angular/angular.js"></script>
-<script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
-
-<!-- AdminLTE App -->
-<script src="/dist/js/app.min.js"></script>
-
-<!-- dataTables -->
-<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-<script src="/plugins/datatables/dataTables.bootstrap.js"></script>
-<script src="/plugins/tokenfield/dist/bootstrap-tokenfield.min.js"></script>
-<script src="/dist/js/common.js"></script>
-
-<script src="/js/base.js"></script>
 
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
      Both of these plugins are recommended to enhance the
      user experience. Slimscroll is required when using the
      fixed layout. -->
-@yield('js')
+
         <!-- Main Footer -->
 @include('layouts.mainFooter')
 </body>

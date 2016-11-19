@@ -1,5 +1,4 @@
   <header class="main-header">
-
     <!-- Logo -->
     <a href="/" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
@@ -7,13 +6,14 @@
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>OrderManage</b></span>
     </a>
-
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
       <!-- Sidebar toggle button-->
-      <a href="#" class="sidebar-toggle" data-toggle="offcanvas" role="button">
+      <a class="sidebar-toggle" data-toggle="offcanvas" role="button">
         <span class="sr-only">Toggle navigation</span>
       </a>
+      {{--navbar diy--}}
+
       <!-- Navbar Right Menu -->
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
@@ -54,7 +54,7 @@
           <!-- /.messages-menu -->
 
           <!-- Notifications Menu -->
-         {{-- <li class="dropdown notifications-menu">
+         <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
@@ -75,9 +75,9 @@
               </li>
               <li class="footer"><a href="#">View all</a></li>
             </ul>
-          </li>--}}
+          </li>
           <!-- Tasks Menu -->
-        {{--  <li class="dropdown tasks-menu">
+       {{--<li class="dropdown tasks-menu">
             <!-- Menu Toggle Button -->
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>

@@ -34,4 +34,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     //User 路由
     Route::resource('user','UserController');
+    Route::any('user/getProfile', [
+        'uses' => 'UserController@checkLogin'
+    ]);
 });
+
+//angular view
+Route::get('tpl/page/home', function() { return view('tpl.page.home'); });
+Route::get('tpl/page/user', function() { return view('tpl.user.index'); });
