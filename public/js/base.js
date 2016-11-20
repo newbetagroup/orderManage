@@ -24,7 +24,11 @@
                 })
                 .state('user', {
                     url: '/user',
-                    templateUrl:'tpl/page/user'
+                    templateUrl:'tpl/user/index'
+                })
+                .state('profileUpdate', {
+                    url:'/profileUpdate',
+                    templateUrl:'tpl/user/profileUpdate'
                 })
         })
 })();

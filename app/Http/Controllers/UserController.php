@@ -178,6 +178,7 @@ class UserController extends Controller
 
     /**
      * 登陆用户login状态检查
+     * 如果已经登录，返回用户信息
      *
      * @return array
      */
@@ -186,12 +187,50 @@ class UserController extends Controller
         if (Auth::check()) {
             //已登录、记住我
             $user = Auth::user();
-            $user->groups;
+            foreach($user->groups as $group) {
+                //部门对应主管信息
+                $supervisor = User::find($group['supervisor_id']);
+                $group->supervisor = $supervisor;
+            }
+            $data['user'] = $user;
+
+            //所有分组
             $data['groupsAll'] = Group::all()->toArray();
-            return ['status' => 1, 'data' => $user];
+
+            return ['status' => 1, 'data' => $data];
         } else {
             return ['status' => 0, 'msg' => 'login required'];
         }
+
+    }
+
+
+    /**
+     * 修改个人资料
+     * @param Request $request
+     * @return array
+     */
+    public function selfUpdate(Request $request) {
+        $user = User::find((int)$request->get('id'));
+        if(!$user) {
+            return ['status' => 0, 'msg' => 'user not exist'];
+        }
+
+        if(!Auth::check() || $request->get('id') != Auth::user()->id) {
+            return ['status' => 0, 'msg' => 'Permission denied'];
+        }
+
+        if($request->get('email')) $user->email = $request->get('email');
+        if($request->get('password')) $user->password = bcrypt($request->get('password'));
+        if($request->get('qq')) $user->qq = $request->get('qq');
+        if($request->get('phone')) $user->phone = $request->get('phone');
+
+        if($user->save()) {
+            Auth::login($user);
+            return ['status' => 1, 'msg' => 'success'];
+        }
+
+        return ['status' => 0, 'msg' => 'failed'];
 
     }
 }

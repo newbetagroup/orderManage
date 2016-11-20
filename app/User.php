@@ -47,6 +47,11 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsToMany(Group::class, 'group_user', 'group_id', 'user_id');
     }
 
+    public function charge()
+    {
+        return $this->hasOne('App\Group', 'id', 'supervisor_id');
+    }
+
 
     public function hasGroup($group)
     {

@@ -20,7 +20,7 @@ Route::get('auth/logout', 'Auth\AuthController@getLogout');
 Route::get('auth/register', 'Auth\AuthController@getRegister');
 Route::post('auth/register', 'Auth\AuthController@postRegister');
 
-Route::any('user/authuser', 'UserController@authUser');
+Route::any('user/authuser', 'UserController@checkLogin');
 
 
 //强制登录
@@ -34,11 +34,11 @@ Route::group(['middleware' => ['auth']], function() {
 
     //User 路由
     Route::resource('user','UserController');
-    Route::any('user/getProfile', [
-        'uses' => 'UserController@checkLogin'
-    ]);
+    Route::any('user/getProfile', ['uses' => 'UserController@checkLogin']);
+    Route::any('user/profileUpdate', ['uses' => 'UserController@selfUpdate']);
 });
 
 //angular view
 Route::get('tpl/page/home', function() { return view('tpl.page.home'); });
-Route::get('tpl/page/user', function() { return view('tpl.user.index'); });
+Route::get('tpl/user/index', function() { return view('tpl.user.index'); });
+Route::get('tpl/user/profileUpdate', function() { return view('tpl.user.profileUpdate'); });

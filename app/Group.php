@@ -15,6 +15,15 @@ class Group extends Model
 	}
 
 	/**
+	 * 主管
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+	 */
+	public function supervisor()
+	{
+		return $this->belongsTo('App\User', 'supervisor_id', 'id');
+	}
+
+	/**
 	 *group 多对多 permission
 	 *
 	 * @return mixed

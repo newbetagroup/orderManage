@@ -12,3 +12,10 @@
         background: url("../images/loginphone.jpeg") no-repeat;
     }
 }
+
+
+.input-info {
+    margin-bottom: 0;
+    padding:3px;
+    margin-top:5px;
+}
