@@ -30,5 +30,9 @@
                     url:'/profileUpdate',
                     templateUrl:'tpl/user/profileUpdate'
                 })
+                .state('askForLeave', {
+                    url:'/askForLeave',
+                    templateUrl:'tpl/user/askForLeave'
+                })
         })
 })();

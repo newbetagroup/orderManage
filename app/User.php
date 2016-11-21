@@ -46,10 +46,23 @@ class User extends Model implements AuthenticatableContract,
     {
         return $this->belongsToMany(Group::class, 'group_user', 'group_id', 'user_id');
     }
-
+    
+    /**
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function charge()
     {
         return $this->hasOne('App\Group', 'id', 'supervisor_id');
+    }
+
+    /**
+     * 一个用户有N张请假条
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function leaves()
+    {
+        return $this->belongsTo('App\Leave', 'id', 'user_id');
     }
 
 

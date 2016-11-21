@@ -12,7 +12,8 @@
             '$state',
             function ($http, $state) {
                 var me = this;
-                me.profileData = {};
+                me.profileData = {};//用户信息
+                me.askLeaveInfo = {};//一次请假
                 me.getProfile = function () {
                     $http.post('user/getProfile', {})
                         .then(function (r) {
@@ -26,7 +27,6 @@
                         })
                 };
                 me.profileUpdate = function () {
-                    console.log('update');
                     $http.post('user/profileUpdate', me.profileData)
                         .then(function (r) {
                             if(r.data.status == 1) {
@@ -34,6 +34,18 @@
                             }
                         }, function (e) {
                             //error
+                        })
+                }
+                me.askforLeave = function () {
+                    $http.post('leave', me.askLeave)
+                        .then(function (r) {
+                            if(r.data.status == 1) {
+                                //申请请假成功
+                                me.askLeaveInfo.status = true;
+                                // me.askLeave = {};
+                            }
+                        },function (e) {
+                            // error
                         })
                 }
             }
@@ -53,6 +65,17 @@
 
         //update profile
         .controller('ProfileUpdate', [
+            '$scope',
+            'UserService',
+            function ($scope, UserService) {
+                $scope.User = UserService;
+                if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
+                    UserService.getProfile();
+                }
+            }
+        ])
+
+        .controller('AskforLeave', [
             '$scope',
             'UserService',
             function ($scope, UserService) {

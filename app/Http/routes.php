@@ -36,9 +36,13 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('user','UserController');
     Route::any('user/getProfile', ['uses' => 'UserController@checkLogin']);
     Route::any('user/profileUpdate', ['uses' => 'UserController@selfUpdate']);
+
+    //leave 请假
+    Route::resource('leave', 'LeaveController');
 });
 
 //angular view
 Route::get('tpl/page/home', function() { return view('tpl.page.home'); });
 Route::get('tpl/user/index', function() { return view('tpl.user.index'); });
 Route::get('tpl/user/profileUpdate', function() { return view('tpl.user.profileUpdate'); });
+Route::get('tpl/user/askForLeave', function() { return view('tpl.user.askForLeave'); });

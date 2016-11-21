@@ -15,4 +15,13 @@ class Permission extends Model
 	{
 		return $this->belongsToMany(Group::class,'group_permission','permission_id','group_id');
 	}
+
+	/**
+	 * 用户与权限
+	 * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+	 */
+	public function users()
+	{
+		return $this->belongsToMany(User::class, 'permission_user', 'permission_id', 'user_id');
+	}
 }

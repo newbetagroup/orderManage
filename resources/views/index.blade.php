@@ -9,6 +9,10 @@
 ?>
 @extends('layouts.base')
 
+@section('css')
+    <link rel="stylesheet" href="/css/user.css">
+@endsection
+
 @section('js')
     <script src="js/user.js"></script>
 @endsection

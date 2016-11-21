@@ -1,12 +1,12 @@
 <header>
     <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation" class="active"><a href="#">个人信息</a></li>
+        <li role="presentation" class="active"><a ui-sref="user">个人信息</a></li>
         <li role="presentation"><a href="#">绩效目标</a></li>
-        <li role="presentation"><a href="#">请假管理</a></li>
+        <li role="presentation"><a ui-sref="askForLeave">请假管理</a></li>
     </ul>
 </header>
 <hr>
-<section ng-controller="ProfileUpdate">
+<section class="clearfix" ng-controller="ProfileUpdate">
     <form name="userProfileUpdate" ng-submit="User.profileUpdate()" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="userId" class="col-sm-2 control-label">Id</label>
@@ -74,6 +74,36 @@
             </div>
         </div>
         <div class="form-group">
+            <label for="domicile" class="col-sm-2 control-label">户籍</label>
+            <div class="col-sm-10">
+                <input name="domicile" type="text" class="form-control" id="domicile" ng-model="User.profileData.domicile">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="graduated_school" class="col-sm-2 control-label">毕业院校</label>
+            <div class="col-sm-10">
+                <input name="graduated_school" type="text" class="form-control" id="graduated_school" ng-model="User.profileData.graduated_school">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="address" class="col-sm-2 control-label">居住地址</label>
+            <div class="col-sm-10">
+                <input name="address" type="text" class="form-control" id="address" ng-model="User.profileData.address">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="sex" class="col-sm-2 control-label">性别</label>
+            <div class="col-sm-10">
+                <input name="sex" type="text" class="form-control" id="sex" ng-model="User.profileData.sex">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="remark" class="col-sm-2 control-label">remark</label>
+            <div class="col-sm-10">
+                <textarea name="remark" id="remark" ng-model="User.profileData.remark" class="form-control" rows="3"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
             <label for="created_at" class="col-sm-2 control-label">入职时间</label>
             <div class="col-sm-10">
                 <input name="created_at" type="text" class="form-control" id="phone" ng-model="User.profileData.created_at" disabled>
@@ -86,4 +116,8 @@
             </div>
         </div>
     </form>
+    <div ng-show="User.profileData.updateStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>修改成功!</strong>
+    </div>
 </section>

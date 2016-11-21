@@ -115,9 +115,9 @@
           <!-- User Account Menu -->
           <li class="dropdown user user-menu">
             <!-- Menu Toggle Button -->
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              {{--<img src="/imgs/avatar/u1.jpg" class="user-image" alt="User Image">--}}
+              <img src="/123.png" class="user-image" alt="User Image">
              <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">{{auth()->user()->name}}</span>
             </a>
@@ -126,32 +126,32 @@
               <li class="user-header">
                 <img src="/123.png" class="img-circle" alt="User Image">
                 <p>
-                  {{auth()->user()->username}} - 系统管理员
+                  {{auth()->user()->username}} - {{auth()->user()->identity}}
                   <small>最后登录:{{date('Y-m-d H:i',strtotime(auth()->user()->updated_at))}}</small>
                 </p>
               </li>
               <!-- Menu Body -->
-              <!-- <li class="user-body">
+               <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a href="#">Followers</a>
+                    <a ui-sref="">绩效</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a href="#">Sales</a>
+                    <a ui-sref="">请假</a>
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="#">Friends</a>
                   </div>
-                </div> -->
+                </div>
                 <!-- /.row -->
               </li>
               <!-- Menu Footer-->
               <li class="user-footer">
-                {{--<div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">编辑详情</a>
-                </div>--}}
+                <div class="pull-left">
+                  <a ui-sref="profileUpdate" class="btn btn-default btn-flat">个人信息</a>
+                </div>
                 <div class="pull-right">
-                  <a href="/admin/logout" class="btn btn-default btn-flat">登出</a>
+                  <a href="auth/logout" class="btn btn-default btn-flat">登出</a>
                 </div>
               </li>
             </ul>

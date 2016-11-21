@@ -15,6 +15,15 @@ class UserController extends Controller
     protected $fields = [
         'name' => '',
         'email' => '',
+        'avatar_url' => '',
+        'address' => '',
+        'domicile' => '',
+        'graduated_school' => '',
+        'sex' => '',
+        'phone' => '',
+        'qq' => '',
+        'remark' => '',
+        'identity' => '',
         'groups' => []
     ];
 
@@ -23,7 +32,7 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
         //
 
@@ -224,9 +233,17 @@ class UserController extends Controller
         if($request->get('password')) $user->password = bcrypt($request->get('password'));
         if($request->get('qq')) $user->qq = $request->get('qq');
         if($request->get('phone')) $user->phone = $request->get('phone');
+        if($request->get('domicile')) $user->domicile = $request->get('domicile');
+        if($request->get('graduated_school')) $user->graduated_school = $request->get('graduated_school');
+        if($request->get('address')) $user->address = $request->get('address');
+        if($request->get('sex')) $user->sex = $request->get('sex');
+        if($request->get('remark')) $user->remark = $request->get('remark');
 
         if($user->save()) {
-            Auth::login($user);
+            if($request->get('email') || $request->get('password'))
+            {
+                Auth::login($user);
+            }
             return ['status' => 1, 'msg' => 'success'];
         }
 

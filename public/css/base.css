@@ -13,6 +13,9 @@
     }
 }
 
+[ui-sref] {
+    cursor: pointer;
+}
 
 .input-info {
     margin-bottom: 0;

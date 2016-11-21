@@ -2,7 +2,7 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a ui-sref="user">个人信息</a></li>
         <li role="presentation"><a href="#">绩效目标</a></li>
-        <li role="presentation"><a href="#">请假管理</a></li>
+        <li role="presentation"><a ui-sref="askForLeave">请假管理</a></li>
     </ul>
 </header>
 <hr>
