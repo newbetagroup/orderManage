@@ -11,10 +11,13 @@
 
 @section('css')
     <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/plugins/jquerydatetime/jquery.datetimepicker.css">
 @endsection
 
 @section('js')
-    <script src="js/user.js"></script>
+    <script src="/plugins/jquerydatetime/jquery.datetimepicker.js"></script>
+    <script src="/js/user.js"></script>
+    <script src="/js/angular.datetime.js"></script>
 @endsection
 
 @section('content')

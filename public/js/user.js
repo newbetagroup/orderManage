@@ -48,6 +48,9 @@
                             // error
                         })
                 }
+                me.timeCompute = function () {
+
+                }
             }
         ])
 
@@ -78,11 +81,49 @@
         .controller('AskforLeave', [
             '$scope',
             'UserService',
-            function ($scope, UserService) {
+            '$filter',
+            function ($scope, UserService,$filter) {
                 $scope.User = UserService;
                 if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
                     UserService.getProfile();
                 }
+                var dateFilter = $filter('date');
+                UserService.askLeaveInfo.begin = dateFilter(new Date(),'yyyy/MM/dd hh:mm');
+                UserService.askLeaveInfo.end = dateFilter(new Date(),'yyyy/MM/dd hh:mm');
+                UserService.askLeaveInfo.total_time = 0;
+
+                //计算请假时间
+                $scope.$watch(function () {
+                    return {
+                        from: UserService.askLeaveInfo.begin,
+                        to: UserService.askLeaveInfo.end
+                    };
+                }, function (newData, oldData) {
+                    var total_time = 0;
+                    var from = new Date(newData.from);
+                    var to = new Date(newData.to);
+                    var fromDay = from.getDate();
+                    var toDay = to.getDate();
+                    var fromhh = from.getHours();
+                    fromhh = fromhh >9 ? fromhh : 9;
+                    var tohh = to.getHours();
+                    tohh = tohh > 18? 18:tohh;
+                    var ftime = 0;
+                    var ttime = 0;
+                    if(toDay - fromDay == 0) {
+                        total_time = tohh - fromhh > 0 ? tohh - fromhh:0;
+                    } else if(toDay - fromDay > 0){
+                        total_time = (toDay - fromDay - 1)*8;
+                        ftime = (18 - fromhh) > 0 ? 18 - fromhh : 0;
+                        ttime = (tohh - 9) > 0? tohh - 9 : 0;
+                        total_time += ftime + ttime;
+                    }
+                    UserService.askLeaveInfo.total_time = total_time;
+                    //9个小时为一天
+                    UserService.askLeaveInfo.total_day = parseInt(total_time/9);
+                    UserService.askLeaveInfo.total_hour = total_time%9;
+                },true)
             }
         ])
+
 })();

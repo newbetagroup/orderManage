@@ -8,7 +8,8 @@
     //绑定module
     angular.module('zwb', [
         'ui.router',
-        'user'
+        'user',
+        'directives'
     ])
         .config(function ($interpolateProvider, $stateProvider, $urlRouterProvider) {
             //定界符

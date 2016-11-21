@@ -15,7 +15,7 @@
     <div class="ask-for-leave">
         <h2>请假条</h2>
     </div>
-    <form name="userProfileUpdate" ng-submit="User.askforLeave()" class="form-horizontal" role="form">
+    <form id="leaveForm" name="userProfileUpdate" ng-submit="User.askforLeave()" class="form-horizontal" role="form">
         <input type="hidden" ng-model="User.profileData.user_id">
         <div class="form-group">
             <label for="type" class="col-sm-2 control-label">请假类型</label>
@@ -45,13 +45,15 @@
         </div>
         <div class="form-group">
             <label class="col-sm-2 control-label">请假时间</label>
-            <div class="col-sm-4">
-                <input name="begin" type="date" class="form-control" id="begin" ng-model="User.askLeaveInfo.begin">
+            <div class="col-sm-3">
+                <datetimepicker dateID="begin" format="Y/m/d H:i" class="form-control" ng-model="User.askLeaveInfo.begin"></datetimepicker>
+                {{--<input name="begin" type="date" class="form-control" id="begin" ng-model="User.askLeaveInfo.begin">--}}
             </div>
             <div class="col-sm-1"><span class="form-control">到</span></div>
-            <div class="col-sm-4">
-                <input name="end" type="date" class="form-control" id="end" ng-model="User.askLeaveInfo.end">
+            <div class="col-sm-3">
+                <datetimepicker dateID="end" format="Y/m/d H:i" class="form-control" ng-model="User.askLeaveInfo.end"></datetimepicker>
             </div>
+            <div class="col-sm-3"><span class="form-control">共&nbsp;[: User.askLeaveInfo.total_day :]&nbsp;天&nbsp;[: User.askLeaveInfo.total_hour :]&nbsp;小时</span></div>
         </div>
         <div class="form-group">
             <label for="inputPassword" class="col-sm-2 control-label">密码</label>
