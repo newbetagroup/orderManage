@@ -9,6 +9,7 @@
     var app = angular.module('zwb', [
         'ui.router',
         'ngTable',
+        //'ngResource',
         'user',
         'directives'
     ])
@@ -42,4 +43,16 @@
                 })
         });
     app.constant('userInfo',{});
+})();
+
+(function() {
+    "use strict";
+
+    angular.module("zwb").run(configureDefaults);
+    configureDefaults.$inject = ["ngTableDefaults"];
+
+    function configureDefaults(ngTableDefaults) {
+        ngTableDefaults.params.count = 5;
+        ngTableDefaults.settings.counts = [];
+    }
 })();

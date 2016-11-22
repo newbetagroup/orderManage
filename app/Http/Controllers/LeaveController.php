@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class LeaveController extends Controller
 {
@@ -28,7 +29,7 @@ class LeaveController extends Controller
      * 先个人，即默认只能查询自身
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function indexold(Request $request)
     {
         $data = [];
         $start = $request->get('start');
@@ -66,6 +67,22 @@ class LeaveController extends Controller
 
         return ['status' => 1, 'data' => $data];
     }
+
+    public function index()
+    {
+        $data = [];
+
+        $data['data'] = Leave::where('user_id', '=', Auth::User()->id)
+            ->with('supervisor')
+            ->orderBy('created_at', 'desc')
+            ->get();
+                // ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+
+        //$data = response()->json($data);
+
+        return ['status' => 1, 'data' => $data];
+    }
+
 
     /**
      * Show the form for creating a new resource.

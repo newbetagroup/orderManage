@@ -26,18 +26,20 @@
                 //获取用户自身信息
                 me.getProfile = function () {
                     var data = {};
-                    $http.post('user/getProfile', {})
+                    data = $http.post('user/getProfile', {})
                         .then(function (r) {
                             if(r.data.status == 1) {
                                 data = r.data.data['user']; //无效赋值？
                                 me.profileData = r.data.data['user'];
                                 me.profileData.password = '';
+                                console.log(me.profileData);
+                                return me.profileData;
                                 //console.log(me.profileData);//有值??????
                             }
                         }, function (e) {
                             console.log(e);
                         })
-                    //console.log(me.profileData);//空?????????
+                   console.log(data);
                     return data; //return???
                 };
 
@@ -55,21 +57,41 @@
 
                 //请假申请
                 me.askforLeave = function () {
+                    if(me.pending) return;//防止重复请求
+                    me.pending =true;
+
                     $http.post('leave', me.askLeaveInfo)
                         .then(function (r) {
                             if(r.data.status == 1) {
                                 //申请请假成功
                                 me.askLeaveInfo.status = true;
-                                // me.askLeave = {};
+                                setTimeout(function () {
+                                    me.askLeaveInfo = {};
+                                    $state.go('allLeaves');
+                                },3000);
+                                // me.askLeaveInfo = {};
                             }
                         },function (e) {
                             // error
+                        })
+                        .finally(function () {
+                            me.pending = false;
                         })
                 }
 
                 //获取个人的limit条请假记录
                 me.getLeaves = function () {
-                    
+                    $http.post('user/getProfile', {})
+                        .then(function (r) {
+                            if(r.data.status == 1) {
+                               // data = r.data.data['user']; //无效赋值？
+                                me.profileData = r.data.data['user'];
+                                me.profileData.password = '';
+                                //console.log(me.profileData);//有值??????
+                            }
+                        }, function (e) {
+                            console.log(e);
+                        })
                 }
             }
         ])
@@ -115,8 +137,8 @@
                // UserService.askLeaveInfo.user_id = UserService.profileData.id;
                //UserService.askLeaveInfo.supervisor_id = UserService.profileData.groups[0].supervisor_id ?UserService.profileData.groups[0].supervisor_id:1;
                 var dateFilter = $filter('date');
-                UserService.askLeaveInfo.begin = dateFilter(new Date(),'yyyy/MM/dd hh:mm');
-                UserService.askLeaveInfo.end = dateFilter(new Date(),'yyyy/MM/dd hh:mm');
+                UserService.askLeaveInfo.begin = dateFilter(new Date(),'yyyy/MM/dd HH:mm');
+                UserService.askLeaveInfo.end = dateFilter(new Date(),'yyyy/MM/dd HH:mm');
 
                 //计算请假时间
                 $scope.$watch(function () {
@@ -171,21 +193,54 @@
             'UserService',
             '$filter',
             'NgTableParams',
-            function ($scope, UserService, $filter, NgTableParams) {
+            '$http',
+            function ($scope, UserService, $filter, NgTableParams,$http) {
                 var self = this;
+                self.$injet = ["NgTableParams", "ngTableSimpleList"];
                 var data = [
-                    {"age":25,"name":"Calderon Morgan","ip":"192.178.0.1","children2":["hao2","fan2","sss2"]},
-                    {"age":22,"name":"Sullivan Cruz","ip":"182.190.1.1","children2":["hao2","fan2","sss2"]}
+                    {name: "Moroni", age: 16, money: 88.1},
+                    {name: "Enos", age: 99, money: 22.3},
+                    {name: "Tracy", age: 2, money: 22.4},
+                    {name: "Oracle", age: 31, money: 33.3},
+                    {name: "Java", age: 13, money: 53.3},
+                    {name: "Php", age: 46, money: 67.3}
                 ];
-                self.tableParams = new NgTableParams({
-                    page: 1,    // show first page
-                    count: 10    // count per page
-                }, {
-                    total: data.length,    // length of data
-                    getData: function($defer, params) {
-                        $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                    }
-                });
+               // self.defaultConfigTableParams = new NgTableParams({}, { dataset: data});
+                self.tableParams = createUsingFullOptions();
+                self.cols = [
+                    { field: "created_at", title: "申请时间", sortable: "created_at", show: true },
+                    { field: "leave_reson", title: "请假原因", show: true },
+                    { field: "grant", title: "审批结果", show: true },
+                    { field: "begin", title: "开始请假时间", sortable: "begin", show: true},
+                    { field: "end", title: "结束请假时间", sortable: "end", show: true},
+                    { field: "total_time", title: "合计请假时数", sortable: "total_time", show: true}
+                ];
+
+                function createUsingFullOptions() {
+                    var initialParams = {
+                        page: 1,
+                        //count: 5, // initial page size
+                        sorting: { name: "asc" }
+                    };
+                    var initialSettings = {
+                        // page size buttons (right set of buttons in demo)
+                        counts: [],
+                        // determines the pager buttons (left set of buttons in demo)
+                        filterDelay: 0,
+                        paginationMaxBlocks: 13,
+                        paginationMinBlocks: 2,
+                        //dataset: data
+                        getData: function () {
+                            return $http.get('/leave').then(function (r) {
+                                if(r.data.status) {
+                                    return r.data.data.data;
+                                }
+                            });
+                        }
+                    };
+                    return new NgTableParams(initialParams, initialSettings);
+                }
+
             }
         ])
 

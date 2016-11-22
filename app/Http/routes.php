@@ -33,9 +33,9 @@ Route::group(['middleware' => ['auth']], function() {
     });
 
     //User 路由
-    Route::resource('user','UserController');
     Route::any('user/getProfile', ['uses' => 'UserController@checkLogin']);
     Route::any('user/profileUpdate', ['uses' => 'UserController@selfUpdate']);
+    Route::resource('user','UserController');
 
     //leave 请假
     Route::resource('leave', 'LeaveController');

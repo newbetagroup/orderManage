@@ -76,6 +76,10 @@
             </div>
         </div>
     </form>
+    <div ng-show="User.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong>正在提交!</strong>
+    </div>
     <div ng-if="User.askLeaveInfo.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <strong>申请成功!</strong>

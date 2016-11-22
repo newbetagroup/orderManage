@@ -14,15 +14,11 @@
     </ul>
 </header>
 <hr>
-<section id="userAction" class="clearfix leave-desc">
-    <div ng-controller="GetLeaves as vm">
-
-        <table ng-table="vm.tableParams" class="table" show-filter="false">
-            <tr ng-repeat="user in $data">
-                <td title="'Name'" filter="{ name: 'text'}" sortable="'name'">
-                    [: user.name :]</td>
-                <td title="'Age'" filter="{ age: 'number'}" sortable="'age'">
-                    [: user.age :]</td>
+<section id="userAction" class="clearfix">
+    <div ng-controller="GetLeaves as leave">
+        <table ng-table-dynamic="leave.tableParams with leave.cols" class="table table-condensed table-bordered table-striped">
+            <tr ng-repeat="row in $data">
+                <td ng-repeat="col in $columns">[: row[col.field] :]</td>
             </tr>
         </table>
     </div>
