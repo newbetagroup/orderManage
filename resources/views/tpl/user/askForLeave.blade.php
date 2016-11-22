@@ -7,16 +7,23 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation"><a ui-sref="user">个人信息</a></li>
         <li role="presentation"><a href="#">绩效目标</a></li>
-        <li role="presentation" class="active"><a ui-sref="askForLeave">请假管理</a></li>
+        <li role="presentation" class="dropdown active">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                请假管理 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ui-sref="askForLeave">请假</a></li>
+                <li><a ui-sref="allLeaves">请假记录</a></li>
+            </ul>
+        </li>
     </ul>
 </header>
 <hr>
-<section id="userAction" class="clearfix" ng-controller="AskforLeave">
+<section id="userAction" class="clearfix leave-desc" ng-controller="AskforLeave">
     <div class="ask-for-leave">
         <h2>请假条</h2>
     </div>
-    <form id="leaveForm" name="userProfileUpdate" ng-submit="User.askforLeave()" class="form-horizontal" role="form">
-        <input type="hidden" ng-model="User.profileData.user_id">
+    <form id="leaveForm" name="useraskforLeave" ng-submit="User.askforLeave()" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="type" class="col-sm-2 control-label">请假类型</label>
             <div class="col-sm-10">
@@ -53,95 +60,24 @@
             <div class="col-sm-3">
                 <datetimepicker dateID="end" format="Y/m/d H:i" class="form-control" ng-model="User.askLeaveInfo.end"></datetimepicker>
             </div>
-            <div class="col-sm-3"><span class="form-control">共&nbsp;[: User.askLeaveInfo.total_day :]&nbsp;天&nbsp;[: User.askLeaveInfo.total_hour :]&nbsp;小时</span></div>
-        </div>
-        <div class="form-group">
-            <label for="inputPassword" class="col-sm-2 control-label">密码</label>
-            <div class="col-sm-10">
-                <input name="confirmpassword" type="password" class="form-control" id="inputPassword" ng-model="User.askLeaveInfo.password">
-            </div>
-            <div class="col-sm-10 col-sm-offset-2">
-                <div class="alert alert-info input-info" role="alert">
-                    <strong>提示：</strong>如果为空，则为旧密码，不进行修改
+            <div class="col-sm-3"><span class="form-control">共&nbsp;<span ng-bind="User.askLeaveInfo.total_day">0</span>&nbsp;天&nbsp;<span ng-bind="User.askLeaveInfo.total_hour"></span>&nbsp;小时</span></div>
+            <div ng-if="User.askLeaveInfo.total_time > 9" class="col-sm-10 col-sm-offset-2">
+                <div class="alert alert-warning input-info" role="alert">
+                    <strong>温馨提示：</strong>超过1天,本页面提交申请后请及时和老板口头申请
                 </div>
             </div>
         </div>
-        <div class="form-group" ng-if="User.askLeaveInfo.password">
-            <label for="inputPassword2" class="col-sm-2 control-label">你的新密码</label>
-            <div class="col-sm-10">
-                <input name="password" type="text" class="form-control" id="inputPassword2" ng-model="User.askLeaveInfo.password" disabled>
-            </div>
+        <div class="form-group">
+            <label for="name" class="col-sm-offset-7 col-sm-5 control-label">申请人：<span ng-bind="User.profileData.name"></span></label>
         </div>
         <div class="form-group">
-            <label for="groups" class="col-sm-2 control-label">部门</label>
-            <div class="col-sm-10">
-                <input name="groups[]" type="text" class="form-control" id="groups" ng-model="User.askLeaveInfo.groups[0].name" disabled>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="supervisor" class="col-sm-2 control-label">主管</label>
-            <div class="col-sm-10">
-                <input name="supervisor" type="text" class="form-control" id="supervisor" ng-model="User.askLeaveInfo.groups[0].supervisor['name']" disabled>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="identity" class="col-sm-2 control-label">职称</label>
-            <div class="col-sm-10">
-                <input name="identity" type="text" class="form-control" id="identity" ng-model="User.askLeaveInfo.identity" disabled>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="qq" class="col-sm-2 control-label">qq</label>
-            <div class="col-sm-10">
-                <input name="qq" type="text" class="form-control" id="qq" ng-model="User.askLeaveInfo.qq">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="phone" class="col-sm-2 control-label">手机</label>
-            <div class="col-sm-10">
-                <input name="phone" type="text" class="form-control" id="phone" ng-model="User.askLeaveInfo.phone">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="domicile" class="col-sm-2 control-label">户籍</label>
-            <div class="col-sm-10">
-                <input name="domicile" type="text" class="form-control" id="domicile" ng-model="User.askLeaveInfo.domicile">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="graduated_school" class="col-sm-2 control-label">毕业院校</label>
-            <div class="col-sm-10">
-                <input name="graduated_school" type="text" class="form-control" id="graduated_school" ng-model="User.askLeaveInfo.graduated_school">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="address" class="col-sm-2 control-label">居住地址</label>
-            <div class="col-sm-10">
-                <input name="address" type="text" class="form-control" id="address" ng-model="User.askLeaveInfo.address">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="sex" class="col-sm-2 control-label">性别</label>
-            <div class="col-sm-10">
-                <input name="sex" type="text" class="form-control" id="sex" ng-model="User.askLeaveInfo.sex">
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="created_at" class="col-sm-2 control-label">入职时间</label>
-            <div class="col-sm-10">
-                <input name="created_at" type="text" class="form-control" id="phone" ng-model="User.askLeaveInfo.created_at" disabled>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="col-sm-offset-2 col-sm-10">
-                <button type="submit" class="btn btn-default" ng-disabled="userProfileUpdate.$invalid">提交修改</button>
-                <a ui-sref="user" class="btn btn-default" role="button">返回</a>
+            <div class="col-sm-offset-5 col-sm-4">
+                <button type="submit" class="btn btn-default" ng-disabled="useraskforLeave.$invalid">提交申请</button>
             </div>
         </div>
     </form>
-    <div ng-show="User.askLeaveInfo.updateStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+    <div ng-if="User.askLeaveInfo.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <strong>修改成功!</strong>
+        <strong>申请成功!</strong>
     </div>
 </section>

@@ -6,8 +6,9 @@
     'use strict';
 
     //绑定module
-    angular.module('zwb', [
+    var app = angular.module('zwb', [
         'ui.router',
+        'ngTable',
         'user',
         'directives'
     ])
@@ -35,5 +36,10 @@
                     url:'/askForLeave',
                     templateUrl:'tpl/user/askForLeave'
                 })
-        })
+                .state('allLeaves', {
+                    url: '/allLeaves',
+                    templateUrl: 'tpl/user/allLeaves'
+                })
+        });
+    app.constant('userInfo',{});
 })();

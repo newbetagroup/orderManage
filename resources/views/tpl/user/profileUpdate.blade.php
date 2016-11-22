@@ -2,7 +2,15 @@
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" class="active"><a ui-sref="user">个人信息</a></li>
         <li role="presentation"><a href="#">绩效目标</a></li>
-        <li role="presentation"><a ui-sref="askForLeave">请假管理</a></li>
+        <li role="presentation" class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
+                请假管理 <span class="caret"></span>
+            </a>
+            <ul class="dropdown-menu" role="menu">
+                <li><a ui-sref="askForLeave">请假</a></li>
+                <li><a ui-sref="allLeaves">请假记录</a></li>
+            </ul>
+        </li>
     </ul>
 </header>
 <hr>
@@ -94,7 +102,15 @@
         <div class="form-group">
             <label for="sex" class="col-sm-2 control-label">性别</label>
             <div class="col-sm-10">
-                <input name="sex" type="text" class="form-control" id="sex" ng-model="User.profileData.sex">
+                <label class="radio-inline">
+                    <input type="radio" name="sex" value="男" id="inlineRadio1" ng-model="User.profileData.sex"> 男
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="sex" value="女" id="inlineRadio2" ng-model="User.profileData.sex"> 女
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="sex" value="保密" id="inlineRadio3" ng-model="User.profileData.sex"> 保密
+                </label>
             </div>
         </div>
         <div class="form-group">
@@ -116,7 +132,7 @@
             </div>
         </div>
     </form>
-    <div ng-show="User.profileData.updateStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+    <div ng-if="User.profileData.updateStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <strong>修改成功!</strong>
     </div>

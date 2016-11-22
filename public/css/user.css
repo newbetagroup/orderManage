@@ -9,3 +9,10 @@
     border:none;
     padding: 6px 17px;
 }
+
+.leave-desc {
+    max-width:800px;
+    margin:0 auto;
+    border:1px dotted #ccc;
+    padding:5px 25px;
+}

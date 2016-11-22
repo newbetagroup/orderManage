@@ -134,10 +134,10 @@
                <li class="user-body">
                 <div class="row">
                   <div class="col-xs-4 text-center">
-                    <a ui-sref="">绩效</a>
+                    <a>绩效</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a ui-sref="">请假</a>
+                    <a ui-sref="askForLeave">请假</a>
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="#">Friends</a>

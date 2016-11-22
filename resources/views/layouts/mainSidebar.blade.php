@@ -35,14 +35,14 @@
             <li><a href="/admin"><i class="fa fa-dashboard"></i> <span>控制面板</span></a></li>
 
                 <li class="treeview active">
-                    <a href="#"><i class="fa"></i> <span>信息管理</span> <i
+                    <a href="#"><i class="fa"></i> <span>公司管理</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
                         <li class="active">
-                            <a ui-sref="user">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
+                            <a ui-sref="user">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>个人信息</a>
                         </li>
                         <li>
-                            <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
+                            <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
                         </li>
                         <li>
                             <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
