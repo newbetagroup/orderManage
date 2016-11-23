@@ -27,7 +27,7 @@
                 <td>[: User.profileData.phone :]</td>
                 <td>[: User.profileData.created_at :]</td>
                 <td>
-                    <a ui-sref="profileUpdate">修改</a>
+                    <a ui-sref="user.profileUpdate">修改</a>
                 </td>
             </tr>
             </tbody>

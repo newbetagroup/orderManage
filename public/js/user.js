@@ -34,7 +34,6 @@
                               //  gData.supervisor_id = me.profileData.groups[0].supervisor_id;
                                // gData.group_id = me.profileData.groups[0].id;
                                 //console.log(gData);
-                                console.log(me.profileData);
                                 return me.profileData;
                             }
                         }, function (e) {
@@ -100,13 +99,57 @@
             }
         ])
 
+        .service("LeaveService", function($http, $filter,$q){
+
+            function filterData(data, filter){
+                return $filter('filter')(data, filter);
+            }
+
+            function orderData(data, params){
+                return params.sorting() ? $filter('orderBy')(data, params.orderBy()) : filteredData;
+            }
+
+            function sliceData(data, params){
+                return data.slice((params.page() - 1) * params.count(), params.page() * params.count())
+            }
+
+            function transformData(data,filter,params){
+                return sliceData( orderData( filterData(data,filter), params ), params);
+            }
+
+            var service = {
+                cachedData:[],
+                getData:function(params, filter){
+                    if(service.cachedData.length>0) {
+                        console.log("using cached data");
+                        var filteredData = filterData(service.cachedData,filter);
+                        var transformedData = sliceData(orderData(filteredData,params),params);
+                        params.total(filteredData.length);
+                        $q.resolve(transformedData);
+                    } else {
+                        console.log("fetching data");
+                        $http.get("/leave").success(function(resp)
+                        {
+                            console.log(resp.data.data);
+                            console.log(service.cachedData);
+                            angular.copy(resp.data.data,service.cachedData);
+                            params.total(resp.data.data.length);
+                            var filteredData = $filter('filter')(resp.data.data, filter);
+                            var transformedData = transformData(resp.data.data,filter,params);
+                            $q.resolve(transformedData);
+                        });
+                    }
+
+                }
+            };
+            return service;
+        })
+
         //show user info
         .controller('UserInfoController', [
             '$scope',
             'UserService',
-            'gData',
-            function ($scope, UserService, gData) {
-                console.log('gdata', gData);
+            function ($scope, UserService) {
                 $scope.User = UserService;
                 if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
                     UserService.getProfile();
@@ -133,7 +176,6 @@
             '$filter',
             function ($scope, UserService,$filter) {
                 $scope.User = UserService;
-                console.log($scope.gUserInfo);
                 /*if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
                      UserService.getProfile(); //从服务器得到UserService.profileData，并不能马上用怎么办？？？？？？
                 }*/
@@ -141,9 +183,9 @@
                 //初始值
                 //遗留问题，当UserService.profileData 尚未加载时？？？？ 当前：监控profileData的值。 promise解决？全局变量？
                // UserService.askLeaveInfo.user_id = UserService.profileData.id;
-                UserService.askLeaveInfo.user_id = $scope.gUserInfo.id;
+                UserService.askLeaveInfo.user_id = $scope.gUserInfo.userId;
                //UserService.askLeaveInfo.supervisor_id = UserService.profileData.groups[0].supervisor_id ?UserService.profileData.groups[0].supervisor_id:1;
-               UserService.askLeaveInfo.supervisor_id = $scope.gUserInfo.groups[0].supervisor_id;
+               UserService.askLeaveInfo.supervisor_id = $scope.gUserInfo.supervisor_id;
                 var dateFilter = $filter('date');
                 UserService.askLeaveInfo.begin = dateFilter(new Date(),'yyyy/MM/dd HH:mm');
                 UserService.askLeaveInfo.end = dateFilter(new Date(),'yyyy/MM/dd HH:mm');
@@ -198,18 +240,17 @@
         //请假记录
         .controller('GetLeavesController', [
             '$scope',
-            'UserService',
+            'LeaveService',
             '$filter',
             'NgTableParams',
-            '$http',
-            function ($scope, UserService, $filter, NgTableParams,$http) {
+            function ($scope, LeaveService, $filter, NgTableParams) {
                 var self = this;
                 self.$injet = ["NgTableParams", "ngTableSimpleList"];
                // self.defaultConfigTableParams = new NgTableParams({}, { dataset: data});
                 self.tableParams = createUsingFullOptions();
                 self.cols = [
                     { field: "created_at", title: "申请时间", sortable: "created_at", show: true },
-                    { field: "leave_reson", title: "请假原因", show: true },
+                    { field: "type", title: "请假原因", show: true },
                     { field: "grant", title: "审批结果", show: true },
                     { field: "begin", title: "开始请假时间", sortable: "begin", show: true},
                     { field: "end", title: "结束请假时间", sortable: "end", show: true},
@@ -219,29 +260,57 @@
                 function createUsingFullOptions() {
                     var initialParams = {
                         page: 1,
-                        //count: 5, // initial page size
+                        count: 5, // initial page size
                         sorting: { created_at: "asc" }
                     };
                     var initialSettings = {
                         // page size buttons (right set of buttons in demo)
                         counts: [],
+                        total: 0,
                         // determines the pager buttons (left set of buttons in demo)
                         filterDelay: 0,
                         paginationMaxBlocks: 13,
                         paginationMinBlocks: 2,
                         //dataset: data
-                        getData: function () {
-                            return $http.get('/leave').then(function (r) {
-                                if(r.data.status) {
-                                    return r.data.data.data;
-                                }
-                            });
+                        getData: function(params) {
+                            console.log(params);
+                            LeaveService.getData(params,$scope.filter);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
                 }
 
+                $scope.$watch("filter.$", function () {
+                    $scope.tableParams.reload();
+                });
+
             }
         ])
+
+        .controller('DemoCtrl', function($scope, ngTableParams, NameService) {
+
+            var data = NameService.data;
+
+            $scope.tableParams = new ngTableParams(
+                {
+                    page: 1,            // show first page
+                    count: 5,           // count per page
+                    sorting: {created_at:'asc'}
+                },
+                {
+                    total: 0, // length of data
+                    getData: function($defer, params) {
+                        console.log(params);
+                        NameService.getData($defer,params,$scope.filter);
+                    }
+                });
+
+            $scope.$watch("filter.$", function () {
+                $scope.tableParams.reload();
+            });
+
+        });
+
+
 
 })();

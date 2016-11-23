@@ -35,7 +35,15 @@
                         }
                     },
                     controller: function ($rootScope, promise) {
-                        $rootScope.gUserInfo = promise.data.data.user;
+                        var userInfo = {};
+                        console.log(promise);
+                        userInfo = {
+                            userId:promise.data.data.user.groups['0'].id,
+                            name:promise.data.data.user.name,
+                            group_id:promise.data.data.user.groups['0'].id,
+                            supervisor_id:promise.data.data.user.groups['0'].supervisor_id
+                        };
+                        $rootScope.gUserInfo = userInfo;
                         //$rootScope.gUserInfo.groupId = promise.data.data.groups['0'].id;
                         //$rootScope.gUserInfo.supervisorId = promise.data.data.groups['0'].supervisor_id;
                     }
@@ -55,27 +63,23 @@
                 .state('user.allLeaves', {
                     url: '/allLeaves',
                     templateUrl: 'tpl/user/allLeaves'
+                })
+                .state('user.test', {
+                    url: '/testng',
+                    templateUrl: 'tpl/user/test'
                 });
 
                 $urlRouterProvider.when('', '/user/info');
         })
         .run(function($rootScope, $state, $stateParams) {
             $rootScope.$on('$locationChangeSuccess', function(evt) {
-                'ngInject';
                 $rootScope.$state = $state;
                 $rootScope.$stateParams = $stateParams;
             });
+        })
+        .run(function (ngTableDefaults) {
+            ngTableDefaults.$inject = ["ngTableDefaults"];
+            ngTableDefaults.params.count = 5;
+            ngTableDefaults.settings.counts = [];
         });
-})();
-
-(function() {
-    "use strict";
-
-    angular.module("zwb").run(configureDefaults);
-    configureDefaults.$inject = ["ngTableDefaults"];
-
-    function configureDefaults(ngTableDefaults) {
-        ngTableDefaults.params.count = 5;
-        ngTableDefaults.settings.counts = [];
-    }
 })();

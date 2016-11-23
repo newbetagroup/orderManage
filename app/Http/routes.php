@@ -38,6 +38,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('user','UserController');
 
     //leave 请假
+    Route::any('test', ['uses' => 'LeaveController@test']);
     Route::resource('leave', 'LeaveController');
 });
 
@@ -48,3 +49,4 @@ Route::get('tpl/user/index', function() { return view('tpl.user.index'); });
 Route::get('tpl/user/profileUpdate', function() { return view('tpl.user.profileUpdate'); });
 Route::get('tpl/user/askForLeave', function() { return view('tpl.user.askForLeave'); });
 Route::get('tpl/user/allLeaves', function() { return view('tpl.user.allLeaves'); });
+Route::get('tpl/user/test', function() { return view('tpl.user.test'); });

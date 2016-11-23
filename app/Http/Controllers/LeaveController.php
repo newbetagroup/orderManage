@@ -70,8 +70,6 @@ class LeaveController extends Controller
 
     public function index()
     {
-        $data = [];
-
         $data['data'] = Leave::where('user_id', '=', Auth::User()->id)
             ->with('supervisor')
             ->orderBy('created_at', 'desc')
@@ -79,6 +77,7 @@ class LeaveController extends Controller
                 // ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
 
         //$data = response()->json($data);
+        $data['recordsTotal'] = Leave::where('user_id', '=', Auth::User()->id)->count();
 
         return ['status' => 1, 'data' => $data];
     }
@@ -217,5 +216,19 @@ class LeaveController extends Controller
         }
 
         return ['status' => 1, 'msg' => '删除成功'];
+    }
+
+    public function test()
+    {
+        $data['data'] = Leave::where('user_id', '=', Auth::User()->id)
+            ->with('supervisor')
+            ->orderBy('created_at', 'desc')
+            ->get();
+        // ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
+
+        //$data = response()->json($data);
+        $data['recordsTotal'] = Leave::where('user_id', '=', Auth::User()->id)->count();
+
+        return ['status' => 1, 'data' => $data];
     }
 }
