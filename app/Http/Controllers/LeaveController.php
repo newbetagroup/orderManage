@@ -102,6 +102,9 @@ class LeaveController extends Controller
      */
     public function store(Request $request)
     {
+       // $hasLeave = Leave::where('end', '>', $request->get('end'))->where('begin', '<', $request->get('begin'));
+        //if($hasLeave) return ['status' => 0, 'msg' => '重复请假'];
+
         $leave = new Leave();
         foreach(array_keys($this->fields) as $field) {
             if(!$request->get($field)) {

@@ -1,25 +1,4 @@
-@section('css')
-    {{--无效？--}}
-    <link rel="stylesheet" href="/css/user.css">
-@endsection
-
-<header>
-    <ul class="nav nav-tabs" role="tablist">
-        <li role="presentation"><a ui-sref="user">个人信息</a></li>
-        <li role="presentation"><a href="#">绩效目标</a></li>
-        <li role="presentation" class="dropdown active">
-            <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
-                请假管理 <span class="caret"></span>
-            </a>
-            <ul class="dropdown-menu" role="menu">
-                <li><a ui-sref="askForLeave">请假</a></li>
-                <li><a ui-sref="allLeaves">请假记录</a></li>
-            </ul>
-        </li>
-    </ul>
-</header>
-<hr>
-<section id="userAction" class="clearfix leave-desc" ng-controller="AskforLeave">
+<section id="userAction" class="clearfix leave-desc" ng-controller="AskforLeaveController">
     <div class="ask-for-leave">
         <h2>请假条</h2>
     </div>
@@ -83,5 +62,9 @@
     <div ng-if="User.askLeaveInfo.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
         <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
         <strong>申请成功!</strong>
+    </div>
+    <div ng-if="User.askLeaveInfo.err" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+        <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <strong ng-bind="User.askLeaveInfo.err">重复请假!</strong>
     </div>
 </section>

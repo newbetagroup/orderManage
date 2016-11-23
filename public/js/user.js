@@ -6,7 +6,7 @@
 
     'use strict';
 
-    angular.module('user', [])
+    angular.module('userDashboard', [])
         .service('UserService', [
             '$http',
             '$state',
@@ -25,22 +25,21 @@
 
                 //获取用户自身信息
                 me.getProfile = function () {
-                    var data = {};
-                    data = $http.post('user/getProfile', {})
+                    return $http.post('user/getProfile', {})
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                data = r.data.data['user']; //无效赋值？
                                 me.profileData = r.data.data['user'];
                                 me.profileData.password = '';
+                               // gData.userId = me.profileData.id;
+                              //  gData.supervisor_id = me.profileData.groups[0].supervisor_id;
+                               // gData.group_id = me.profileData.groups[0].id;
+                                //console.log(gData);
                                 console.log(me.profileData);
                                 return me.profileData;
-                                //console.log(me.profileData);//有值??????
                             }
                         }, function (e) {
                             console.log(e);
                         })
-                   console.log(data);
-                    return data; //return???
                 };
 
                 //更新个人资料
@@ -59,7 +58,7 @@
                 me.askforLeave = function () {
                     if(me.pending) return;//防止重复请求
                     me.pending =true;
-
+                    console.log(me.askLeaveInfo);
                     $http.post('leave', me.askLeaveInfo)
                         .then(function (r) {
                             if(r.data.status == 1) {
@@ -67,9 +66,14 @@
                                 me.askLeaveInfo.status = true;
                                 setTimeout(function () {
                                     me.askLeaveInfo = {};
-                                    $state.go('allLeaves');
+                                   // $state.go('allLeaves');
                                 },3000);
                                 // me.askLeaveInfo = {};
+                            } else {
+                                me.askLeaveInfo.err = r.data.msg;
+                                setTimeout(function () {
+                                    me.askLeaveInfo.err = null;
+                                },2000);
                             }
                         },function (e) {
                             // error
@@ -97,10 +101,12 @@
         ])
 
         //show user info
-        .controller('UserInfo', [
+        .controller('UserInfoController', [
             '$scope',
             'UserService',
-            function ($scope, UserService) {
+            'gData',
+            function ($scope, UserService, gData) {
+                console.log('gdata', gData);
                 $scope.User = UserService;
                 if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
                     UserService.getProfile();
@@ -109,7 +115,7 @@
         ])
 
         //update profile
-        .controller('ProfileUpdate', [
+        .controller('ProfileUpdateController', [
             '$scope',
             'UserService',
             function ($scope, UserService) {
@@ -121,21 +127,23 @@
         ])
 
         //请假条
-        .controller('AskforLeave', [
+        .controller('AskforLeaveController', [
             '$scope',
             'UserService',
             '$filter',
-            'userInfo',
-            function ($scope, UserService,$filter,userInfo) {
+            function ($scope, UserService,$filter) {
                 $scope.User = UserService;
-                if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
+                console.log($scope.gUserInfo);
+                /*if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
                      UserService.getProfile(); //从服务器得到UserService.profileData，并不能马上用怎么办？？？？？？
-                }
+                }*/
 
                 //初始值
-                //遗留问题，当UserService.profileData 尚未加载时？？？？ 当前：监控profileData的值
+                //遗留问题，当UserService.profileData 尚未加载时？？？？ 当前：监控profileData的值。 promise解决？全局变量？
                // UserService.askLeaveInfo.user_id = UserService.profileData.id;
+                UserService.askLeaveInfo.user_id = $scope.gUserInfo.id;
                //UserService.askLeaveInfo.supervisor_id = UserService.profileData.groups[0].supervisor_id ?UserService.profileData.groups[0].supervisor_id:1;
+               UserService.askLeaveInfo.supervisor_id = $scope.gUserInfo.groups[0].supervisor_id;
                 var dateFilter = $filter('date');
                 UserService.askLeaveInfo.begin = dateFilter(new Date(),'yyyy/MM/dd HH:mm');
                 UserService.askLeaveInfo.end = dateFilter(new Date(),'yyyy/MM/dd HH:mm');
@@ -175,7 +183,7 @@
                     UserService.askLeaveInfo.total_hour = total_time%9;
                 },true)
 
-                $scope.$watch(function () {
+                /*$scope.$watch(function () {
                     return {
                         user_id: UserService.profileData.id,
                         supervisor_id: UserService.profileData.groups[0].supervisor_id
@@ -183,12 +191,12 @@
                 },function (newData, oldData) {
                     UserService.askLeaveInfo.user_id = newData.user_id;
                     UserService.askLeaveInfo.supervisor_id = newData.supervisor_id;
-                },true);
+                },true);*/
             }
         ])
     
         //请假记录
-        .controller('GetLeaves', [
+        .controller('GetLeavesController', [
             '$scope',
             'UserService',
             '$filter',
@@ -197,14 +205,6 @@
             function ($scope, UserService, $filter, NgTableParams,$http) {
                 var self = this;
                 self.$injet = ["NgTableParams", "ngTableSimpleList"];
-                var data = [
-                    {name: "Moroni", age: 16, money: 88.1},
-                    {name: "Enos", age: 99, money: 22.3},
-                    {name: "Tracy", age: 2, money: 22.4},
-                    {name: "Oracle", age: 31, money: 33.3},
-                    {name: "Java", age: 13, money: 53.3},
-                    {name: "Php", age: 46, money: 67.3}
-                ];
                // self.defaultConfigTableParams = new NgTableParams({}, { dataset: data});
                 self.tableParams = createUsingFullOptions();
                 self.cols = [
@@ -220,7 +220,7 @@
                     var initialParams = {
                         page: 1,
                         //count: 5, // initial page size
-                        sorting: { name: "asc" }
+                        sorting: { created_at: "asc" }
                     };
                     var initialSettings = {
                         // page size buttons (right set of buttons in demo)

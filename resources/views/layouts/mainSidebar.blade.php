@@ -38,7 +38,7 @@
                     <a href="#"><i class="fa"></i> <span>公司管理</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li class="active">
+                        <li ui-sref-active="active">
                             <a ui-sref="user">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>个人信息</a>
                         </li>
                         <li>

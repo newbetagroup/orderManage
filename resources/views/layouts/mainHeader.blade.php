@@ -137,7 +137,7 @@
                     <a>绩效</a>
                   </div>
                   <div class="col-xs-4 text-center">
-                    <a ui-sref="askForLeave">请假</a>
+                    <a ui-sref="user.askForLeave">请假</a>
                   </div>
                   <div class="col-xs-4 text-center">
                     <a href="#">Friends</a>
@@ -148,7 +148,7 @@
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a ui-sref="profileUpdate" class="btn btn-default btn-flat">个人信息</a>
+                  <a ui-sref="user.profileUpdate" class="btn btn-default btn-flat">个人信息</a>
                 </div>
                 <div class="pull-right">
                   <a href="auth/logout" class="btn btn-default btn-flat">登出</a>
