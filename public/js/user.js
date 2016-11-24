@@ -127,6 +127,8 @@
                     console.log(params.orderBy());
                     var deffered = $q.defer();
 
+
+                    //还要加上判断chcheData中的数据够不够显示
                     if(angular.isUndefined(cachedData)) {
                         $http.get("/leave").then(function (r) {
 
