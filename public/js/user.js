@@ -106,8 +106,25 @@
             function($http, $filter,$q){
                 var cachedData; //请假记录
 
-                var fnGetLeaves = function() {
+                function filterData(data, filter){
+                    return $filter('filter')(data, filter);
+                }
 
+                function orderData(data, params){
+                    return params.sorting() ? $filter('orderBy')(data, params.orderBy()) : filteredData;
+                }
+
+                function sliceData(data, params){
+                    return data.slice((params.page() - 1) * params.count(), params.page() * params.count())
+                }
+
+                function transformData(data,filter,params){
+                    return sliceData( orderData( filterData(data,filter), params ), params);
+                }
+
+                this.fnGetLeaves = function(params) {
+                    console.log(params.sorting());
+                    console.log(params.orderBy());
                     var deffered = $q.defer();
 
                     if(angular.isUndefined(cachedData)) {
@@ -117,21 +134,25 @@
                                 deffered.reject();
                                 return;
                             }
-
                             cachedData = r.data.data.data;
+                            params.total(cachedData.length);
                             console.log('cachedData', cachedData);
                             deffered.resolve(cachedData);
                         });
                         return deffered.promise;
                     } else {
-                        return $q.when(cachedData);
+                        //var filteredData = filterData(cachedData,filter);
+                        var transformedData = sliceData(orderData(cachedData,params),params);
+                        console.log('realcache',transformedData);
+                        params.total(500);
+                        return $q.when(transformedData);
                     }
                 };
 
 
-                return {
-                    getLeaves: fnGetLeaves
-                }
+                /*return {
+                    getLeaves: fnGetLeaves()
+                }*/
         }])
 
         //show user info
@@ -213,16 +234,6 @@
                     UserService.askLeaveInfo.total_day = parseInt(total_time/9);
                     UserService.askLeaveInfo.total_hour = total_time%9;
                 },true)
-
-                /*$scope.$watch(function () {
-                    return {
-                        user_id: UserService.profileData.id,
-                        supervisor_id: UserService.profileData.groups[0].supervisor_id
-                    };
-                },function (newData, oldData) {
-                    UserService.askLeaveInfo.user_id = newData.user_id;
-                    UserService.askLeaveInfo.supervisor_id = newData.supervisor_id;
-                },true);*/
             }
         ])
     
@@ -249,23 +260,14 @@
                 function createUsingFullOptions() {
                     var initialParams = {
                         page: 1,
-                        count: 5, // initial page size
                         sorting: { created_at: "asc" }
                     };
                     var initialSettings = {
-                        // page size buttons (right set of buttons in demo)
-                        counts: [],
-                        total: 0,
-                        // determines the pager buttons (left set of buttons in demo)
                         filterDelay: 0,
-                        paginationMaxBlocks: 13,
+                        paginationMaxBlocks: 3,
                         paginationMinBlocks: 2,
-                        //dataset: data
                         getData: function(params) {
-                            LeaveService.getLeaves(function (data) {
-                               console.log(data);
-                                //params.total();
-                           });
+                           return LeaveService.fnGetLeaves(params);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
@@ -273,31 +275,6 @@
 
             }
         ])
-
-        .controller('DemoCtrl', function($scope, ngTableParams, NameService) {
-
-            var data = NameService.data;
-
-            $scope.tableParams = new ngTableParams(
-                {
-                    page: 1,            // show first page
-                    count: 5,           // count per page
-                    sorting: {created_at:'asc'}
-                },
-                {
-                    total: 0, // length of data
-                    getData: function($defer, params) {
-                        console.log(params);
-                        NameService.getData($defer,params,$scope.filter);
-                    }
-                });
-
-            $scope.$watch("filter.$", function () {
-                $scope.tableParams.reload();
-            });
-
-        });
-
 
 
 })();
