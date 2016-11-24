@@ -99,51 +99,40 @@
             }
         ])
 
-        .service("LeaveService", function($http, $filter,$q){
+        .service("LeaveService", [
+            '$http',
+            '$filter',
+            '$q',
+            function($http, $filter,$q){
+                var cachedData; //请假记录
 
-            function filterData(data, filter){
-                return $filter('filter')(data, filter);
-            }
+                var fnGetLeaves = function() {
 
-            function orderData(data, params){
-                return params.sorting() ? $filter('orderBy')(data, params.orderBy()) : filteredData;
-            }
+                    var deffered = $q.defer();
 
-            function sliceData(data, params){
-                return data.slice((params.page() - 1) * params.count(), params.page() * params.count())
-            }
+                    if(angular.isUndefined(cachedData)) {
+                        $http.get("/leave").then(function (r) {
 
-            function transformData(data,filter,params){
-                return sliceData( orderData( filterData(data,filter), params ), params);
-            }
+                            if(r.status !== 200) {
+                                deffered.reject();
+                                return;
+                            }
 
-            var service = {
-                cachedData:[],
-                getData:function(params, filter){
-                    if(service.cachedData.length>0) {
-                        console.log("using cached data");
-                        var filteredData = filterData(service.cachedData,filter);
-                        var transformedData = sliceData(orderData(filteredData,params),params);
-                        params.total(filteredData.length);
-                        $q.resolve(transformedData);
-                    } else {
-                        console.log("fetching data");
-                        $http.get("/leave").success(function(resp)
-                        {
-                            console.log(resp.data.data);
-                            console.log(service.cachedData);
-                            angular.copy(resp.data.data,service.cachedData);
-                            params.total(resp.data.data.length);
-                            var filteredData = $filter('filter')(resp.data.data, filter);
-                            var transformedData = transformData(resp.data.data,filter,params);
-                            $q.resolve(transformedData);
+                            cachedData = r.data.data.data;
+                            console.log('cachedData', cachedData);
+                            deffered.resolve(cachedData);
                         });
+                        return deffered.promise;
+                    } else {
+                        return $q.when(cachedData);
                     }
+                };
 
+
+                return {
+                    getLeaves: fnGetLeaves
                 }
-            };
-            return service;
-        })
+        }])
 
         //show user info
         .controller('UserInfoController', [
@@ -273,16 +262,14 @@
                         paginationMinBlocks: 2,
                         //dataset: data
                         getData: function(params) {
-                            console.log(params);
-                            LeaveService.getData(params,$scope.filter);
+                            LeaveService.getLeaves(function (data) {
+                               console.log(data);
+                                //params.total();
+                           });
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
                 }
-
-                $scope.$watch("filter.$", function () {
-                    $scope.tableParams.reload();
-                });
 
             }
         ])

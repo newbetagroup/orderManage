@@ -35,18 +35,18 @@
                         }
                     },
                     controller: function ($rootScope, promise) {
-                        var userInfo = {};
-                        console.log(promise);
-                        userInfo = {
-                            userId:promise.data.data.user.groups['0'].id,
-                            name:promise.data.data.user.name,
-                            group_id:promise.data.data.user.groups['0'].id,
-                            supervisor_id:promise.data.data.user.groups['0'].supervisor_id
-                        };
-                        $rootScope.gUserInfo = userInfo;
-                        //$rootScope.gUserInfo.groupId = promise.data.data.groups['0'].id;
-                        //$rootScope.gUserInfo.supervisorId = promise.data.data.groups['0'].supervisor_id;
-                    }
+                        var userInfo = null;
+                        if(!$rootScope.gUserInfo) {
+                            userInfo = {
+                                userId:promise.data.data.user.groups['0'].id,
+                                name:promise.data.data.user.name,
+                                group_id:promise.data.data.user.groups['0'].id,
+                                supervisor_id:promise.data.data.user.groups['0'].supervisor_id
+                            };
+                            $rootScope.gUserInfo = userInfo;
+                            console.log($rootScope.gUserInfo);
+                        }
+                       }
                 })
                 .state('user.info', {
                     url:'/info',
