@@ -196,6 +196,8 @@ class UserController extends Controller
         if (Auth::check()) {
             //已登录、记住我
             $user = Auth::user();
+            //dd($user);
+            //dd($user->groups);
             foreach($user->groups as $group) {
                 //部门对应主管信息
                 $supervisor = User::find($group['supervisor_id']);

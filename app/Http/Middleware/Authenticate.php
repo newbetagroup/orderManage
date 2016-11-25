@@ -42,6 +42,10 @@ class Authenticate
             }
         }
 
+
+       // $actions = $request->route()->getAction();
+
+
         return $next($request);
     }
 }

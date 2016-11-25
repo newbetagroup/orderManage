@@ -44,7 +44,7 @@ class User extends Model implements AuthenticatableContract,
      */
     public function groups()
     {
-        return $this->belongsToMany(Group::class, 'group_user', 'group_id', 'user_id');
+        return $this->belongsToMany(Group::class, 'group_user', 'user_id', 'group_id');
     }
     
     /**
@@ -65,23 +65,61 @@ class User extends Model implements AuthenticatableContract,
         return $this->belongsTo('App\Leave', 'id', 'user_id');
     }
 
+    /**
+     * 用户的特权
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'permission_user', 'user_id', 'permission_id');
+    }
 
+    /**
+     * 用户是否在某个组
+     * @param $group
+     * @return bool
+     */
     public function hasGroup($group)
     {
-        //用户是否在某个组
+        if (is_string($group)) {
+            return $this->groups->contains('name', $group);
+        }
+
+        return !!$group->intersect($this->groups)->count();
     }
 
+    /**
+     * 是否有某个权限
+     * @param $permission
+     * @return bool
+     */
     public function hasPermission($permission) {
-        //是否有某个权限
+        //是否存在这个权限设置
+        if (is_string($permission)) {
+            $permission = Permission::where('name',$permission)->first();
+            if (!$permission) return false;
+        }
+
+        return $this->hasGroup($permission->groups);
+
+        //还要判断用户自身的特权
     }
 
+    /**
+     * 将用户注册到某个分组
+     * @param $group
+     * @return Model
+     */
     public function assignGroup($group)
     {
-        //将用户注册到某个分组
         return $this->groups()->save($group);
     }
 
-    //用户分组批量添加与修改
+    /**
+     * 用户分组批量添加与修改
+     * @param array $RoleId
+     * @return bool
+     */
     public function giveGroupTo(array $RoleId){
         $this->groups()->detach();
         $roles=Group::whereIn('id',$RoleId)->get();
@@ -90,6 +128,16 @@ class User extends Model implements AuthenticatableContract,
         }
         return true;
     }
+
+    /**
+     * 新增特权
+     * @param $permission
+     */
+    public function asignPermission($permission)
+    {
+        $this->permissions()->save($permission);
+    }
+
 
 
     

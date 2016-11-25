@@ -106,6 +106,8 @@
             function($http, $filter,$q){
                 var cachedData; //请假记录
 
+                var dataLength; //后台获取的总共条数
+
                 function filterData(data, filter){
                     return $filter('filter')(data, filter);
                 }
@@ -128,25 +130,28 @@
                     var deffered = $q.defer();
 
 
-                    //还要加上判断chcheData中的数据够不够显示
+                    //还要加上判断chcheData中的数据够不够显示,暂缓
                     if(angular.isUndefined(cachedData)) {
                         $http.get("/leave").then(function (r) {
 
-                            if(r.status !== 200) {
+                            if(r.status !== 200 || r.data.status !=1) {
                                 deffered.reject();
                                 return;
                             }
+
+                            dataLength = r.data.data.recordsTotal;
+                            params.total(dataLength);
                             cachedData = r.data.data.data;
-                            params.total(cachedData.length);
-                            console.log('cachedData', cachedData);
-                            deffered.resolve(cachedData);
+                            var transformedData = sliceData(orderData(cachedData,params),params);
+                            console.log('cachedData', transformedData);
+                            deffered.resolve(transformedData);
                         });
                         return deffered.promise;
                     } else {
                         //var filteredData = filterData(cachedData,filter);
                         var transformedData = sliceData(orderData(cachedData,params),params);
                         console.log('realcache',transformedData);
-                        params.total(500);
+                        params.total(dataLength);
                         return $q.when(transformedData);
                     }
                 };
@@ -193,7 +198,7 @@
                 }*/
 
                 //初始值
-                //遗留问题，当UserService.profileData 尚未加载时？？？？ 当前：监控profileData的值。 promise解决？全局变量？
+                //遗留问题，当UserService.profileData 尚未加载时？？？？ 监控profileData的值？ promise解决？全局变量？
                // UserService.askLeaveInfo.user_id = UserService.profileData.id;
                 UserService.askLeaveInfo.user_id = $scope.gUserInfo.userId;
                //UserService.askLeaveInfo.supervisor_id = UserService.profileData.groups[0].supervisor_id ?UserService.profileData.groups[0].supervisor_id:1;
