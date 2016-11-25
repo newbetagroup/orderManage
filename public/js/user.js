@@ -25,7 +25,7 @@
 
                 //获取用户自身信息
                 me.getProfile = function () {
-                    return $http.post('user/getProfile', {})
+                    return $http.get('user/getProfile')
                         .then(function (r) {
                             if(r.data.status == 1) {
                                 me.profileData = r.data.data['user'];

@@ -2,65 +2,65 @@
 
 namespace App\Http\Controllers;
 
-use App\Group;
+use App\Permission;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class GroupController extends Controller
+class PermissionController extends Controller
 {
     protected $fields = [
         'name' => '',
         'label' => '',
         'description' => '',
-        'permissions' => [],
+        'cid' => 0,
+        'icon' => '',
     ];
 
     /**
      * Display a listing of the resource.
-     * 查询全部分组信息
      *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        $searchFieldDefault = 'name'; //查询的默认字段
+        //$searchFieldDefault = 'name'; //查询的默认字段
         $data = array();
-        //$data['draw'] = $request->get('draw');
-       // $count = $request->get('count')?: 15; //每页几条记录
-        //$page = $request->get('page')?: 1; //当前页数
-        //$start = ($page - 1)*$count; //从第几条开始获取
         $start = $request->get('start'); //从第几条开始获取
         $length = $request->get('length'); //要获取接下去的几条
         $order = $request->get('order'); //排序，排序方式
         $column = $request->get('column'); //排序， 排序字段
-        $search['searchField'] = $request->get('searchField')?:$searchFieldDefault; //搜索 $filter 搜索字段。如果前端已经获取了全部记录，前端处理？
+        //$search['searchField'] = $request->get('searchField')?:$searchFieldDefault; //搜索 $filter 搜索字段。如果前端已经获取了全部记录，前端处理？
         $search['searchValue'] = $request->get('searchValue'); //搜索 $filter 搜索关键字。如果前端已经获取了全部记录，前端处理？
 
-        $data['recordsTotal'] = Group::count();
+        $cid = $request->get('cid', 0);
+        $data['recordsTotal'] = Permission::where('cid', $cid)->count();
         if (strlen($search['searchValue']) > 0) {
-            //搜索
-            $data['recordsFiltered'] = Role::where(function ($query) use ($search) {
-                $query->where($search['searchField'], 'LIKE', '%' . $search['searchValue'] . '%')
-                    ->orWhere('description', 'like', '%' . $search['searchValue'] . '%');
+            $data['recordsFiltered'] = Permission::where('cid', $cid)->where(function ($query) use ($search) {
+                $query
+                    ->where('name', 'LIKE', '%' . $search['searchValue'] . '%')
+                    ->orWhere('description', 'like', '%' . $search['searchValue'] . '%')
+                    ->orWhere('label', 'like', '%' . $search['searchValue'] . '%');
             })->count();
-            $data['data'] = Group::where(function ($query) use ($search) {
-                $query->where($search['searchField'], 'LIKE', '%' . $search['searchValue'] . '%')
-                    ->orWhere('description', 'like', '%' . $search['searchValue'] . '%');
+            $data['data'] = Permission::where('cid', $cid)->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', '%' . $search['searchValue'] . '%')
+                    ->orWhere('description', 'like', '%' . $search['searchValue'] . '%')
+                    ->orWhere('label', 'like', '%' . $search['searchValue'] . '%');
             })
-                ->skip($start)->take($length)
+                ->skip($start)
+                ->take($length)
                 ->orderBy($column, $order)
                 ->get();
         } else {
-            //结果集
-            $data['recordsFiltered'] = Group::count();
-            $data['data'] = Group::skip($start)
+            $data['recordsFiltered'] = Permission::where('cid', $cid)->count();
+            $data['data'] = Permission::where('cid', $cid)
+                ->skip($start)
                 ->take($length)
                 ->orderBy($column, $order)
                 ->get();
         }
-        //return response()->json($data);
+
         return ['status' => 1, 'data' => $data];
     }
 
@@ -82,21 +82,12 @@ class GroupController extends Controller
      */
     public function store(Request $request)
     {
-        $group = new Group();
+        $permission = new Permission();
         foreach (array_keys($this->fields) as $field) {
-            $group->$field = $request->get($field);
+            $permission->$field = $request->get($field,$this->fields[$field]);
         }
-        unset($group->permissions);
-        // dd($request->get('permission'));
-        $group->save();
-        if (is_array($request->get('permissions'))) {
-            $group->givePermissionsTo($request->get('permissions'));
-        }
-
-        //添加一个通知事件？
-
+        $permission->save();
         return ['status' => 1, 'msg' => 'add success'];
-
     }
 
     /**
@@ -130,15 +121,12 @@ class GroupController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $group = Group::find((int)$id);
+        $permission = Permission::find((int)$id);
         foreach (array_keys($this->fields) as $field) {
-            $group->$field = $request->get($field);
+            $permission->$field = $request->get($field,$this->fields[$field]);
         }
-        unset($group->permissions);
-
-        $group->save();
-
-        $group->givePermissionsTo($request->get('permissions',[]));
+        $permission->save();
+        return ['status' => 1, 'msg' => 'update success'];
     }
 
     /**
@@ -149,24 +137,24 @@ class GroupController extends Controller
      */
     public function destroy($id)
     {
-        $group = Group::find((int)$id);
-
-        //解绑group user
-        foreach ($group->users as $v){
-            $group->users()->detach($v);
+        $child = Permission::where('cid', $id)->first();
+        if ($child) {
+            return ['status' => 0, 'msg' => "请先将该权限的子权限删除后再做删除操作!"];
         }
 
-        //解绑 permission
-        foreach ($group->permissions as $v){
-            $group->permissions()->detach($v);
+        $tag = Permission::find((int)$id);
+        foreach ($tag->groups as $v){
+            $tag->groups()->detach($v->id);
+        }
+        foreach ($tag->users as $v){
+            $tag->users()->detach($v->id);
         }
 
-        if ($group) {
-            $group->delete();
+        if($tag) {
+            $tag->delete();
         } else {
-            return ['status' => 0, 'msg' => '删除失败'];
+            return ['status' => 0, 'msg' => 'delete failed'];
         }
-
         return ['status' => 1, 'msg' => 'delete success'];
     }
 }
