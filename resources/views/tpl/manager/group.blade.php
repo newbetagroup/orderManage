@@ -4,7 +4,7 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            <a ui-sref="manager.addGroup" class="btn btn-success btn-md">
+            <a ui-sref="manager.group.addGroup" class="btn btn-success btn-md">
                 <i class="fa fa-plus-circle"></i> 增加分组
             </a>
         </div>
@@ -19,7 +19,7 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th data-sortable="false" class="hidden-sm">id</th>
+                            <th class="hidden-sm">id</th>
                             <th class="hidden-md">分组名称</th>
                             <th class="hidden-sm">分组标签</th>
                             <th class="hidden-md">分组概述</th>
@@ -29,6 +29,21 @@
                         </tr>
                         </thead>
                         <tbody>
+                            <tr ng-repeat="group in Manager.groupsInfo.data">
+                                <td class="hidden-sm">[: group.id :]</td>
+                                <td class="hidden-md">[: group.name :]</td>
+                                <td class="hidden-sm">[: group.label :]</td>
+                                <td class="hidden-md">[: group.description :]</td>
+                                <td class="hidden-sm">[: group.created_at :]</td>
+                                <td class="hidden-sm">[: group.updated_at :]</td>
+                               <td>
+                                    <a style="margin:3px;" ui-sref="manager.group.editGroup({groupId:group.id})" class="X-Small btn-xs text-success ">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a style="margin:3px;" ui-sref="manager.group.editGroup({groupId:group.id})" class="delBtn X-Small btn-xs text-danger ">
+                                        <i class="fa fa-times-circle-o"></i> 删除</a>
+                                </td>
+                            </tr>
                         </tbody>
                     </table>
                 </div>

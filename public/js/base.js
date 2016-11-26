@@ -79,6 +79,7 @@
                         }
                     },
                     controller: function ($rootScope, promise, $state) {
+                        console.log('stateParams', $state.current.name);
                         var userInfo = null;
                         if(!$rootScope.gUserInfo) {
                             userInfo = {
@@ -90,33 +91,61 @@
                             $rootScope.gUserInfo = userInfo;
                             console.log($rootScope.gUserInfo);
                         }
-                        $state.go('manager.index');
+                        //$state.go('manager.index');
                     }
                 })
-                .state('manager.index', {
+                .state('manager.staff', {
+                    abstract: true,
+                    template:'<div ui-view></div>'
+                })
+                .state('manager.staff.index', {
                     url: '/index',
                     templateUrl: 'tpl/manager/index'
                 })
-                .state('manager.groupIndex', {
+                .state('manager.group', {
+                    abstract: true,
+                    template:'<div ui-view></div>'
+                })
+                .state('manager.group.index', {
                     url: '/groupIndex',
-                    templateUrl: 'tpl/manager/groupIndex'
+                    templateUrl: 'tpl/manager/groupIndex',
+                    controller: 'GroupInfoController'
                 })
-                .state('manager.addGroup', {
+                .state('manager.group.addGroup', {
                     url: '/addGroup',
-                    templateUrl: 'tpl/manager/addGroup'
+                    templateUrl: 'tpl/manager/addGroup',
+                    controller: 'AddGroupController'
                 })
-                .state('manager.editGroup', {
-                    url: '/editGroup',
-                    templateUrl: 'tpl/manager/editGroup'
+                .state('manager.group.editGroup', {
+                    url: '/editGroup/:groupId',
+                    templateUrl: 'tpl/manager/editGroup',
+                    controller: 'EditGroupController'
+                })
+                .state('manager.permission', {
+                    abstract: true,
+                    template:'<div ui-view></div>'
+                })
+                .state('manager.permission.index', {
+                    url: '/permissionIndex',
+                    templateUrl: 'tpl/manager/permissionIndex',
+                    controller: 'PermissionInfoController'
+                })
+                .state('manager.permission.addPermission', {
+                    url: '/addPermission',
+                    templateUrl: 'tpl/manager/addPermission',
+                    controller: 'AddPermissionController'
+                })
+                .state('manager.permission.editPermission', {
+                    url: '/editPermission/:permissionId',
+                    templateUrl: 'tpl/manager/editPermission',
+                    controller: 'EditPermissionController'
                 });
 
                 $urlRouterProvider.when('', '/user/info');
         })
         .run(function($rootScope, $state, $stateParams) {
-            $rootScope.$on('$locationChangeSuccess', function(evt) {
-                $rootScope.$state = $state;
-                $rootScope.$stateParams = $stateParams;
-            });
+            $rootScope.$state = $state;
+            $rootScope.$stateParams = $stateParams;
         })
         .run(function (ngTableDefaults) {
             ngTableDefaults.$inject = ["ngTableDefaults"];

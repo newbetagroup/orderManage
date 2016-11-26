@@ -36,9 +36,9 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('leave', 'LeaveController');
 
     //group 路由
-    Route::get('group/index', ['as' => 'group.index', 'uses' => 'RoleController@index']);
-    Route::post('group/index', ['as' => 'group.index', 'uses' => 'RoleController@index']);
-    Route::resource('group', 'RoleController', ['names' => ['update' => 'group.edit', 'store' => 'group.create']]);
+    Route::get('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
+    Route::post('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
+    Route::resource('group', 'GroupController', ['names' => ['update' => 'group.edit', 'store' => 'group.create']]);
 
     //permission
      Route::get('permission/manage', ['as' => 'permission.manage', 'uses' => 'PermissionController@index']);

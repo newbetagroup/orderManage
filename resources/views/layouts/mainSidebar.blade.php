@@ -38,11 +38,11 @@
                     <a href="#"><i class="fa"></i> <span>公司管理</span> <i
                                 class="fa fa-angle-left pull-right"></i></a>
                     <ul class="treeview-menu">
-                        <li ui-sref-active="active">
-                            <a ui-sref="user">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>个人信息</a>
+                        <li ng-class="{active: $state.includes('user')}">
+                            <a ui-sref="user.info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>个人信息</a>
                         </li>
-                        <li ui-sref-active="active">
-                            <a ui-sref="manager">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
+                        <li ng-class="{active: $state.includes('manager')}">
+                            <a ui-sref="manager.staff.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
                         </li>
                         <li>
                             <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
