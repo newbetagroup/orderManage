@@ -11,7 +11,8 @@
             '$http',
             '$state',
             '$filter',
-            function ($http, $state,$filter) {
+            '$q',
+            function ($http, $state,$filter,$q) {
                 var me = this;
                 me.profileData = {};//用户信息
 
@@ -25,20 +26,25 @@
 
                 //获取用户自身信息
                 me.getProfile = function () {
-                    return $http.get('user/getProfile')
-                        .then(function (r) {
-                            if(r.data.status == 1) {
+                        var deffered = $q.defer();
+                        if(angular.equals({}, me.profileData)) {
+                            $http.get("user/getProfile").then(function (r) {
+
+                                if(r.status !== 200 || r.data.status !=1) {
+                                    deffered.reject();
+                                    return;
+                                }
+
                                 me.profileData = r.data.data['user'];
                                 me.profileData.password = '';
-                               // gData.userId = me.profileData.id;
-                              //  gData.supervisor_id = me.profileData.groups[0].supervisor_id;
-                               // gData.group_id = me.profileData.groups[0].id;
-                                //console.log(gData);
-                                return me.profileData;
-                            }
-                        }, function (e) {
-                            console.log(e);
-                        })
+
+                                deffered.resolve(me.profileData);
+                            });
+                            return deffered.promise;
+                        } else {
+                            console.log('cacheprofile',me.profileData);
+                           // return $q.when(me.profileData);
+                        }
                 };
 
                 //更新个人资料
@@ -79,21 +85,6 @@
                         })
                         .finally(function () {
                             me.pending = false;
-                        })
-                }
-
-                //获取个人的limit条请假记录
-                me.getLeaves = function () {
-                    $http.post('user/getProfile', {})
-                        .then(function (r) {
-                            if(r.data.status == 1) {
-                               // data = r.data.data['user']; //无效赋值？
-                                me.profileData = r.data.data['user'];
-                                me.profileData.password = '';
-                                //console.log(me.profileData);//有值??????
-                            }
-                        }, function (e) {
-                            console.log(e);
                         })
                 }
             }
@@ -168,9 +159,7 @@
             'UserService',
             function ($scope, UserService) {
                 $scope.User = UserService;
-                if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
-                    UserService.getProfile();
-                }
+                UserService.getProfile();
             }
         ])
 
@@ -180,9 +169,7 @@
             'UserService',
             function ($scope, UserService) {
                 $scope.User = UserService;
-                if(UserService.profileData == null || angular.equals({}, UserService.profileData)) {
-                    UserService.getProfile();
-                }
+                UserService.getProfile();
             }
         ])
 

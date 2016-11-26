@@ -25,7 +25,7 @@ Route::any('user/authuser', 'UserController@checkLogin');
 
 
 //强制登录
-Route::group(['middleware' => ['auth', 'permission']], function() {
+Route::group(['middleware' => ['auth']], function() {
 
     //User 路由
     Route::get('user/getProfile', ['as' => 'user.getProfile', 'uses' => 'UserController@checkLogin']);
@@ -54,11 +54,20 @@ Route::get('/', ['middleware' => 'auth', function () {
 Route::get('home', function () {
     return view('index');
 });
+
+
 //angular view
 Route::get('tpl/page/home', function() { return view('tpl.page.home'); });
+
 Route::get('tpl/user/base', function() { return view('tpl.user.base'); });
 Route::get('tpl/user/index', function() { return view('tpl.user.index'); });
 Route::get('tpl/user/profileUpdate', function() { return view('tpl.user.profileUpdate'); });
 Route::get('tpl/user/askForLeave', function() { return view('tpl.user.askForLeave'); });
 Route::get('tpl/user/allLeaves', function() { return view('tpl.user.allLeaves'); });
 Route::get('tpl/user/test', function() { return view('tpl.user.test'); });
+
+Route::get('tpl/manager/base', function() { return view('tpl.manager.base'); });
+Route::get('tpl/manager/index', function() { return view('tpl.manager.index'); });
+Route::get('tpl/manager/groupIndex', function() { return view('tpl.manager.group'); });
+Route::get('tpl/manager/addGroup', function() { return view('tpl.manager.addGroup'); });
+Route::get('tpl/manager/editGroup', function() { return view('tpl.manager.editGroup'); });

@@ -23,7 +23,7 @@ class GroupController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function indexold(Request $request)
     {
         $searchFieldDefault = 'name'; //查询的默认字段
         $data = array();
@@ -61,6 +61,16 @@ class GroupController extends Controller
                 ->get();
         }
         //return response()->json($data);
+        return ['status' => 1, 'data' => $data];
+    }
+
+    /**
+     * 所有分组
+     * @return array
+     */
+    public function index () {
+        $data['recordsFiltered'] = Group::count();
+        $data['data'] = Group::all();
         return ['status' => 1, 'data' => $data];
     }
 

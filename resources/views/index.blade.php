@@ -20,6 +20,7 @@
     <script src="/plugins/jquerydatetime/jquery.datetimepicker.js"></script>
     <script src="/js/user.js"></script>
     <script src="/js/angular.datetime.js"></script>
+    <script src="/js/manager.js"></script>
 @endsection
 
 @section('content')

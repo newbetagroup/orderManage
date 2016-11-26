@@ -11,7 +11,8 @@
         'ngTable',
         //'ngResource',
         'userDashboard',
-        'directives'
+        'directives',
+        'managerDashboard'
     ])
         .config(function ($interpolateProvider, $stateProvider, $urlRouterProvider) {
             //定界符
@@ -34,7 +35,7 @@
                            return $http.get('user/getProfile');
                         }
                     },
-                    controller: function ($rootScope, promise) {
+                    controller: function ($rootScope, promise, $state) {
                         var userInfo = null;
                         if(!$rootScope.gUserInfo) {
                             userInfo = {
@@ -46,7 +47,8 @@
                             $rootScope.gUserInfo = userInfo;
                             console.log($rootScope.gUserInfo);
                         }
-                       }
+                        $state.go('user.info');
+                    }
                 })
                 .state('user.info', {
                     url:'/info',
@@ -67,6 +69,45 @@
                 .state('user.test', {
                     url: '/testng',
                     templateUrl: 'tpl/user/test'
+                })
+                .state('manager', {
+                    url: '/manager',
+                    templateUrl: 'tpl/manager/base',
+                    resolve: {
+                        promise: function ($http) {
+                            return $http.get('user/getProfile');
+                        }
+                    },
+                    controller: function ($rootScope, promise, $state) {
+                        var userInfo = null;
+                        if(!$rootScope.gUserInfo) {
+                            userInfo = {
+                                userId:promise.data.data.user.groups['0'].id,
+                                name:promise.data.data.user.name,
+                                group_id:promise.data.data.user.groups['0'].id,
+                                supervisor_id:promise.data.data.user.groups['0'].supervisor_id
+                            };
+                            $rootScope.gUserInfo = userInfo;
+                            console.log($rootScope.gUserInfo);
+                        }
+                        $state.go('manager.index');
+                    }
+                })
+                .state('manager.index', {
+                    url: '/index',
+                    templateUrl: 'tpl/manager/index'
+                })
+                .state('manager.groupIndex', {
+                    url: '/groupIndex',
+                    templateUrl: 'tpl/manager/groupIndex'
+                })
+                .state('manager.addGroup', {
+                    url: '/addGroup',
+                    templateUrl: 'tpl/manager/addGroup'
+                })
+                .state('manager.editGroup', {
+                    url: '/editGroup',
+                    templateUrl: 'tpl/manager/editGroup'
                 });
 
                 $urlRouterProvider.when('', '/user/info');
