@@ -25,41 +25,49 @@ class PermissionController extends Controller
      */
     public function index(Request $request)
     {
-        //$searchFieldDefault = 'name'; //查询的默认字段
-        $data = array();
-        $start = $request->get('start'); //从第几条开始获取
-        $length = $request->get('length'); //要获取接下去的几条
-        $order = $request->get('order'); //排序，排序方式
-        $column = $request->get('column'); //排序， 排序字段
-        //$search['searchField'] = $request->get('searchField')?:$searchFieldDefault; //搜索 $filter 搜索字段。如果前端已经获取了全部记录，前端处理？
-        $search['searchValue'] = $request->get('searchValue'); //搜索 $filter 搜索关键字。如果前端已经获取了全部记录，前端处理？
+        if($request->ajax()) {
+            //$searchFieldDefault = 'name'; //查询的默认字段
+            $data = array();
+            $start = $request->get('start'); //从第几条开始获取
+            $length = $request->get('length'); //要获取接下去的几条
+            $order = $request->get('order'); //排序，排序方式
+            $column = $request->get('column'); //排序， 排序字段
+            //$search['searchField'] = $request->get('searchField')?:$searchFieldDefault; //搜索 $filter 搜索字段。如果前端已经获取了全部记录，前端处理？
+            $search['searchValue'] = $request->get('searchValue'); //搜索 $filter 搜索关键字。如果前端已经获取了全部记录，前端处理？
 
-        $cid = $request->get('cid', 0);
-        $data['recordsTotal'] = Permission::where('cid', $cid)->count();
-        if (strlen($search['searchValue']) > 0) {
-            $data['recordsFiltered'] = Permission::where('cid', $cid)->where(function ($query) use ($search) {
-                $query
-                    ->where('name', 'LIKE', '%' . $search['searchValue'] . '%')
-                    ->orWhere('description', 'like', '%' . $search['searchValue'] . '%')
-                    ->orWhere('label', 'like', '%' . $search['searchValue'] . '%');
-            })->count();
-            $data['data'] = Permission::where('cid', $cid)->where(function ($query) use ($search) {
-                $query->where('name', 'LIKE', '%' . $search['searchValue'] . '%')
-                    ->orWhere('description', 'like', '%' . $search['searchValue'] . '%')
-                    ->orWhere('label', 'like', '%' . $search['searchValue'] . '%');
-            })
-                ->skip($start)
-                ->take($length)
-                ->orderBy($column, $order)
-                ->get();
-        } else {
-            $data['recordsFiltered'] = Permission::where('cid', $cid)->count();
-            $data['data'] = Permission::where('cid', $cid)
-                ->skip($start)
-                ->take($length)
-                ->orderBy($column, $order)
-                ->get();
+            $cid = $request->get('cid', 0);
+            $data['recordsTotal'] = Permission::where('cid', '=', $cid)->count();
+            if (strlen($search['searchValue']) > 0) {
+                $data['recordsFiltered'] = Permission::where('cid', $cid)->where(function ($query) use ($search) {
+                    $query
+                        ->where('name', 'LIKE', '%' . $search['searchValue'] . '%')
+                        ->orWhere('description', 'like', '%' . $search['searchValue'] . '%')
+                        ->orWhere('label', 'like', '%' . $search['searchValue'] . '%');
+                })->count();
+                $data['data'] = Permission::where('cid', $cid)->where(function ($query) use ($search) {
+                    $query->where('name', 'LIKE', '%' . $search['searchValue'] . '%')
+                        ->orWhere('description', 'like', '%' . $search['searchValue'] . '%')
+                        ->orWhere('label', 'like', '%' . $search['searchValue'] . '%');
+                })
+                    ->skip($start)
+                    ->take($length)
+                    ->orderBy($column, $order)
+                    ->get()->keyBy('id');
+            } else {
+                $data['recordsFiltered'] = Permission::where('cid', '=', $cid)->count();
+                $data['data'] = Permission::where('cid', '=', $cid)
+                    ->skip($start)
+                    ->take($length)
+                    ->orderBy($column, $order)
+                    ->get()->keyBy('id');
+            }
+            return ['status' => 1, 'data' => $data];
         }
+
+        //get method
+        $data['recordsFiltered'] = Permission::where('cid', '=', 0)->count();
+
+        $data['data'] = Permission::where('cid', '=', 0)->get()->keyBy('id');
 
         return ['status' => 1, 'data' => $data];
     }

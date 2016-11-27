@@ -4,7 +4,7 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            <a href="/admin/user/create" class="btn btn-success btn-md">
+            <a ui-sref="manager.permission.addPermission" class="btn btn-success btn-md">
                 <i class="fa fa-plus-circle"></i> 添加权限
             </a>
         </div>
@@ -35,15 +35,33 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th data-sortable="false" class="hidden-sm">id</th>
-                            <th class="hidden-md">用户名</th>
-                            <th class="hidden-sm">邮箱</th>
-                            <th class="hidden-md">角色创建日期</th>
-                            <th class="hidden-sm">角色修改日期</th>
+                            <th class="hidden-sm">id</th>
+                            <th class="hidden-md">权限名称</th>
+                            <th class="hidden-sm">权限标签</th>
+                            <th class="hidden-md">权限概述</th>
+                            <th class="hidden-md">权限级别</th>
+                            <th class="hidden-sm">权限创建日期</th>
+                            <th class="hidden-sm">权限修改日期</th>
                             <th data-sortable="false">操作</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <tr ng-repeat="permission in Manager.permissionsInfo.data">
+                            <td class="hidden-sm">[: permission.id :]</td>
+                            <td class="hidden-md">[: permission.name :]</td>
+                            <td class="hidden-sm">[: permission.label :]</td>
+                            <td class="hidden-md">[: permission.description :]</td>
+                            <td class="hidden-md">[: permission.cid :]</td>
+                            <td class="hidden-sm">[: permission.created_at :]</td>
+                            <td class="hidden-sm">[: permission.updated_at :]</td>
+                            <td>
+                                <a style="margin:3px;" ui-sref="manager.permission.editPermission({permissionId:permission.id})" class="X-Small btn-xs text-success ">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </a>
+                                <a style="margin:3px;" ui-sref="manager.permission.destoryPermission({permissionId:permission.id})" class="delBtn X-Small btn-xs text-danger ">
+                                    <i class="fa fa-times-circle-o"></i> 删除</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

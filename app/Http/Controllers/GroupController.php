@@ -70,7 +70,7 @@ class GroupController extends Controller
      */
     public function index () {
         $data['recordsFiltered'] = Group::count();
-        $data['data'] = Group::all();
+        $data['data'] = Group::all()->keyBy('id');
         return ['status' => 1, 'data' => $data];
     }
 

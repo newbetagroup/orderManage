@@ -54,13 +54,13 @@ class LeaveController extends Controller
                 ->where('user_id', '=', Auth::User()->id)
                 ->skip($start)->take($length)
                 //->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
-                ->get();
+                ->get()->keyBy('id');
         } else {
             $data['recordsFiltered'] = Leave::count();
             $data['data'] = Leave::skip($start)
                 ->take($length)
                // ->orderBy($columns[$order[0]['column']]['data'], $order[0]['dir'])
-                ->get();
+                ->get()->keyBy('id');
         }
 
         //$data = response()->json($data);

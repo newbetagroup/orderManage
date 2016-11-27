@@ -1,4 +1,4 @@
-{{--添加分组--}}
+{{--添加权限--}}
 <div class="main animsition">
     <div class="container-fluid">
 
@@ -6,7 +6,7 @@
             <div class="">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">编辑分组</h3>
+                        <h3 class="panel-title">编辑权限</h3>
                     </div>
                     <div class="panel-body">
 
@@ -14,22 +14,22 @@
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
                             <input type="hidden" name="cove_image"/>
                             <div class="form-group">
-                                <label for="name" class="col-md-3 control-label">分组名称</label>
+                                <label for="name" class="col-md-3 control-label">权限名称</label>
                                 <div class="col-md-5">
-                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="group.name">
+                                    <input type="text" class="form-control" name="name" id="name" autofocus>
                                 </div>
                             </div>
                             <div class="form-group">
-                                <label for="tag" class="col-md-3 control-label">分组标签</label>
+                                <label for="tag" class="col-md-3 control-label">权限名称</label>
                                 <div class="col-md-5">
-                                    <input type="text" class="form-control" name="label" id="tag" autofocus ng-model="group.label">
+                                    <input type="text" class="form-control" name="label" id="tag" autofocus>
                                 </div>
                             </div>
 
                             <div class="form-group">
-                                <label for="tag" class="col-md-3 control-label">分组概述</label>
+                                <label for="tag" class="col-md-3 control-label">权限概述</label>
                                 <div class="col-md-5">
-                                    <textarea name="description" class="form-control" rows="3" ng-model="group.description"></textarea>
+                                    <textarea name="description" class="form-control" rows="3"></textarea>
                                 </div>
                             </div>
                             <div class="form-group">

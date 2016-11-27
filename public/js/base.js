@@ -29,26 +29,7 @@
                 .state('user', {
                     //abstract: true,
                     url: '/user',
-                    templateUrl:'tpl/user/base',
-                    resolve: {
-                        promise: function ($http) {
-                           return $http.get('user/getProfile');
-                        }
-                    },
-                    controller: function ($rootScope, promise, $state) {
-                        var userInfo = null;
-                        if(!$rootScope.gUserInfo) {
-                            userInfo = {
-                                userId:promise.data.data.user.groups['0'].id,
-                                name:promise.data.data.user.name,
-                                group_id:promise.data.data.user.groups['0'].id,
-                                supervisor_id:promise.data.data.user.groups['0'].supervisor_id
-                            };
-                            $rootScope.gUserInfo = userInfo;
-                            console.log($rootScope.gUserInfo);
-                        }
-                        $state.go('user.info');
-                    }
+                    templateUrl:'tpl/user/base'
                 })
                 .state('user.info', {
                     url:'/info',
@@ -72,27 +53,7 @@
                 })
                 .state('manager', {
                     url: '/manager',
-                    templateUrl: 'tpl/manager/base',
-                    resolve: {
-                        promise: function ($http) {
-                            return $http.get('user/getProfile');
-                        }
-                    },
-                    controller: function ($rootScope, promise, $state) {
-                        console.log('stateParams', $state.current.name);
-                        var userInfo = null;
-                        if(!$rootScope.gUserInfo) {
-                            userInfo = {
-                                userId:promise.data.data.user.groups['0'].id,
-                                name:promise.data.data.user.name,
-                                group_id:promise.data.data.user.groups['0'].id,
-                                supervisor_id:promise.data.data.user.groups['0'].supervisor_id
-                            };
-                            $rootScope.gUserInfo = userInfo;
-                            console.log($rootScope.gUserInfo);
-                        }
-                        //$state.go('manager.index');
-                    }
+                    templateUrl: 'tpl/manager/base'
                 })
                 .state('manager.staff', {
                     abstract: true,
@@ -146,6 +107,18 @@
         .run(function($rootScope, $state, $stateParams) {
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
+        })
+        .run(function($rootScope,UserService) {
+            var userInfo = null;
+            UserService.getProfile().then(function (r) {
+                userInfo = {
+                    userId: r.id,
+                    name:r.name,
+                    group_id:r.groups['0'].id,
+                    supervisor_id:r.groups['0'].supervisor_id
+                };
+                $rootScope.gUserInfo = userInfo; //注册全局登陆user信息
+            });
         })
         .run(function (ngTableDefaults) {
             ngTableDefaults.$inject = ["ngTableDefaults"];

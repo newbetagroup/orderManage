@@ -41,7 +41,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('group', 'GroupController', ['names' => ['update' => 'group.edit', 'store' => 'group.create']]);
 
     //permission
-     Route::get('permission/manage', ['as' => 'permission.manage', 'uses' => 'PermissionController@index']);
+    // Route::get('permission/manage', ['as' => 'permission.manage', 'uses' => 'PermissionController@index']);
     //Route::get('permission/{cid?}', ['as' => 'permission.index', 'uses' => 'PermissionController@index']);
     Route::post('permission/index', ['as' => 'permission.index', 'uses' => 'PermissionController@index']); //查询
     Route::resource('permission', 'PermissionController', ['names' => ['update' => 'permission.edit', 'store' => 'permission.create']]);
@@ -68,6 +68,9 @@ Route::get('tpl/user/test', function() { return view('tpl.user.test'); });
 
 Route::get('tpl/manager/base', function() { return view('tpl.manager.base'); });
 Route::get('tpl/manager/index', function() { return view('tpl.manager.index'); });
-Route::get('tpl/manager/groupIndex', function() { return view('tpl.manager.group'); });
+Route::get('tpl/manager/groupIndex', function() { return view('tpl.manager.groupIndex'); });
 Route::get('tpl/manager/addGroup', function() { return view('tpl.manager.addGroup'); });
 Route::get('tpl/manager/editGroup', function() { return view('tpl.manager.editGroup'); });
+Route::get('tpl/manager/permissionIndex', function() { return view('tpl.manager.permissionIndex'); });
+Route::get('tpl/manager/addPermission', function() { return view('tpl.manager.addPermission'); });
+Route::get('tpl/manager/editPermission', function() { return view('tpl.manager.editPermission'); });
