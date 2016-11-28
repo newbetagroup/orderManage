@@ -5,7 +5,7 @@
         </div>
         <div class="col-md-6 text-right">
             <a ui-sref="manager.group.addGroup" class="btn btn-success btn-md">
-                <i class="fa fa-plus-circle"></i> 增加分组
+                <i class="fa fa-plus-circle"></i> 增加部门
             </a>
         </div>
     </div>
@@ -20,11 +20,11 @@
                         <thead>
                         <tr>
                             <th class="hidden-sm">id</th>
-                            <th class="hidden-md">分组名称</th>
-                            <th class="hidden-sm">分组标签</th>
-                            <th class="hidden-md">分组概述</th>
-                            <th class="hidden-sm">分组创建日期</th>
-                            <th class="hidden-sm">分组修改日期</th>
+                            <th class="hidden-md">部门名称</th>
+                            <th class="hidden-sm">部门标签</th>
+                            <th class="hidden-md">部门概述</th>
+                            <th class="hidden-sm">部门创建日期</th>
+                            <th class="hidden-sm">部门修改日期</th>
                             <th data-sortable="false">操作</th>
                         </tr>
                         </thead>

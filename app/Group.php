@@ -11,7 +11,7 @@ class Group extends Model
 
 	public function users()
 	{
-		return $this->belongsToMnay('App\User');
+		return $this->belongsToMany('App\User');
 	}
 
 	/**
@@ -30,7 +30,7 @@ class Group extends Model
 	 */
 	public function permissions()
 	{
-		return $this->belongsToMnay(Permission::class, 'group_permission', 'group_id', 'permission_id');
+		return $this->belongsToMany(Permission::class, 'group_permission', 'group_id', 'permission_id');
 	}
 
 	/**

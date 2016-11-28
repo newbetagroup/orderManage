@@ -61,7 +61,18 @@
                 })
                 .state('manager.staff.index', {
                     url: '/index',
-                    templateUrl: 'tpl/manager/index'
+                    templateUrl: 'tpl/manager/staffIndex',
+                    controller: 'StaffInfoController'
+                })
+                .state('manager.staff.addStaff', {
+                    url: '/addStaff',
+                    templateUrl: 'tpl/manager/addStaff',
+                    controller: 'AddStaffController'
+                })
+                .state('manager.staff.editStaff', {
+                    url: '/editStaff/:staffId',
+                    templateUrl: 'tpl/manager/editStaff',
+                    controller: 'EditGroupController'
                 })
                 .state('manager.group', {
                     abstract: true,

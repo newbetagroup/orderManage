@@ -38,7 +38,7 @@ class User extends Model implements AuthenticatableContract,
     protected $hidden = ['password', 'remember_token'];
 
     /**
-     * 用户所属分组，可以有多个？
+     * 用户所属部门，可以有多个？
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
@@ -106,7 +106,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     /**
-     * 将用户注册到某个分组
+     * 将用户注册到某个部门
      * @param $group
      * @return Model
      */
@@ -116,7 +116,7 @@ class User extends Model implements AuthenticatableContract,
     }
 
     /**
-     * 用户分组批量添加与修改
+     * 用户部门批量添加与修改
      * @param array $RoleId
      * @return bool
      */

@@ -4,7 +4,7 @@
         <div class="col-md-6">
         </div>
         <div class="col-md-6 text-right">
-            <a href="/admin/user/create" class="btn btn-success btn-md">
+            <a ui-sref="manager.staff.addStaff" class="btn btn-success btn-md">
                 <i class="fa fa-plus-circle"></i> 增加用户
             </a>
         </div>
@@ -35,15 +35,33 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th data-sortable="false" class="hidden-sm">id</th>
-                            <th class="hidden-md">用户名</th>
-                            <th class="hidden-sm">邮箱</th>
-                            <th class="hidden-md">角色创建日期</th>
-                            <th class="hidden-sm">角色修改日期</th>
-                            <th data-sortable="false">操作</th>
+                            <th class="hidden-sm">id</th>
+                            <th class="hidden-md">员工</th>
+                            <th class="hidden-md">岗位</th>
+                            <th class="hidden-sm">部门</th>
+                            <th class="hidden-sm">住宅地址</th>
+                            <th class="hidden-sm">手机</th>
+                            <th class="hidden-md">入职日期</th>
+                            <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
+                        <tr ng-repeat="staff in Manager.staffsInfo.data">
+                            <td class="hidden-sm">[: staff.id :]</td>
+                            <td class="hidden-md">[: staff.name :]</td>
+                            <td class="hidden-md">[: staff.identity :]</td>
+                            <td class="hidden-sm">[: staff.groups[0].name :]</td>
+                            <td class="hidden-sm">[: staff.address :]</td>
+                            <td class="hidden-sm">[: staff.phone :]</td>
+                            <td class="hidden-md">[: staff.created_at :]</td>
+                            <td>
+                                <a style="margin:3px;" ui-sref="manager.staff.editStaff({staffId:staff.id})" class="X-Small btn-xs text-success ">
+                                    <i class="fa fa-edit"></i> 编辑
+                                </a>
+                                <a style="margin:3px;" ui-sref="manager.staff.destoryStaff({staffId:staff.id})" class="delBtn X-Small btn-xs text-danger ">
+                                    <i class="fa fa-times-circle-o"></i> 删除</a>
+                            </td>
+                        </tr>
                         </tbody>
                     </table>
                 </div>

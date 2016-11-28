@@ -45,7 +45,7 @@
                         </div>
                         <div ng-if="permissionInfo.addStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <strong>添加权限成功!</strong>
+                            <strong>添加`[: permissionInfo.name :]`权限成功!</strong>
                         </div>
                     </div>
                 </div>

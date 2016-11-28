@@ -34,9 +34,9 @@ class UserController extends Controller
      */
     public function index()
     {
-        //
-
-
+        $data['recordsFiltered'] = User::count();
+        $data['data'] = User::with('groups')->get()->keyBy('id');
+        return ['status' => 1, 'data' => $data];
     }
 
     /**
@@ -51,7 +51,7 @@ class UserController extends Controller
         foreach ($this->fields as $field => $default) {
             $data[$field] = old($field, $default);
         }
-        $data['groupsAll'] = Role::all()->toArray();
+        $data['groupsAll'] = Group::all()->toArray();
         return ['status' => 1, 'data' => $data];
     }
 
@@ -71,10 +71,13 @@ class UserController extends Controller
         unset($user->groups);
         $user->save();
 
-        //用户分组
+        //用户部门，暂时弃用
         if (is_array($request->get('groups'))) {
             $user->giveGroupTo($request->get('groups'));
         }
+
+        //单个部门
+        $user->giveGroupTo($request->get('groupId'));
 
         //监听？
         //event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 1, '添加了用户' . $user->name));
@@ -157,7 +160,7 @@ class UserController extends Controller
             }
         }
 
-        //清空分组
+        //清空部门
         unset($user->groups);
 
         //
@@ -205,7 +208,7 @@ class UserController extends Controller
             }
             $data['user'] = $user;
 
-            //所有分组
+            //所有部门
             $data['groupsAll'] = Group::all()->toArray();
 
             return ['status' => 1, 'data' => $data];

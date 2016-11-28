@@ -36,6 +36,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('leave', 'LeaveController');
 
     //group 路由
+    Route::get('group/aGroupPermissions/{id}', ['as' => 'group.aGroupPermissions', 'uses' => 'GroupController@oneGroupPermission']);
     Route::get('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
     Route::post('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
     Route::resource('group', 'GroupController', ['names' => ['update' => 'group.edit', 'store' => 'group.create']]);
@@ -67,7 +68,9 @@ Route::get('tpl/user/allLeaves', function() { return view('tpl.user.allLeaves');
 Route::get('tpl/user/test', function() { return view('tpl.user.test'); });
 
 Route::get('tpl/manager/base', function() { return view('tpl.manager.base'); });
-Route::get('tpl/manager/index', function() { return view('tpl.manager.index'); });
+Route::get('tpl/manager/staffIndex', function() { return view('tpl.manager.staffIndex'); });
+Route::get('tpl/manager/addStaff', function() { return view('tpl.manager.addStaff'); });
+Route::get('tpl/manager/editStaff', function() { return view('tpl.manager.editStaff'); });
 Route::get('tpl/manager/groupIndex', function() { return view('tpl.manager.groupIndex'); });
 Route::get('tpl/manager/addGroup', function() { return view('tpl.manager.addGroup'); });
 Route::get('tpl/manager/editGroup', function() { return view('tpl.manager.editGroup'); });

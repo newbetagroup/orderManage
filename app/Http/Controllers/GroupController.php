@@ -19,7 +19,7 @@ class GroupController extends Controller
 
     /**
      * Display a listing of the resource.
-     * 查询全部分组信息
+     * 查询全部部门信息
      *
      * @return \Illuminate\Http\Response
      */
@@ -65,12 +65,12 @@ class GroupController extends Controller
     }
 
     /**
-     * 所有分组
+     * 所有部门
      * @return array
      */
     public function index () {
         $data['recordsFiltered'] = Group::count();
-        $data['data'] = Group::all()->keyBy('id');
+        $data['data'] = Group::with('permissions')->get()->keyBy('id');
         return ['status' => 1, 'data' => $data];
     }
 
@@ -149,6 +149,8 @@ class GroupController extends Controller
         $group->save();
 
         $group->givePermissionsTo($request->get('permissions',[]));
+
+        return ['status' => 1, 'msg' => 'update success'];
     }
 
     /**
@@ -178,5 +180,17 @@ class GroupController extends Controller
         }
 
         return ['status' => 1, 'msg' => 'delete success'];
+    }
+
+    /**
+     * 查询某一个部门的权限
+     * @param $id
+     * @return array
+     */
+    public function oneGroupPermission($id)
+    {
+        $data['data'] = Group::where('id', '=', $id)->first()->permissions;
+        $data['recordsTotal'] = count($data['data']);
+        return ['status' => 1, 'data' => $data];
     }
 }
