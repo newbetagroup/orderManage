@@ -119,7 +119,7 @@
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
         })
-        .run(function($rootScope,UserService) {
+        .run(function($rootScope,UserService,$http) {
             var userInfo = null;
             UserService.getProfile().then(function (r) {
                 userInfo = {
@@ -129,7 +129,12 @@
                     supervisor_id:r.groups['0'].supervisor_id
                 };
                 $rootScope.gUserInfo = userInfo; //注册全局登陆user信息
+            }).then(function (r) {
+                $http.post('user/allPermissionHad',{id:r.id, groupId:r.groups['0'].id}).then(function (r) {
+                    console.log(r.data);
+                })
             });
+
         })
         .run(function (ngTableDefaults) {
             ngTableDefaults.$inject = ["ngTableDefaults"];

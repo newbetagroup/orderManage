@@ -120,10 +120,10 @@ class User extends Model implements AuthenticatableContract,
      * @param array $RoleId
      * @return bool
      */
-    public function giveGroupTo(array $RoleId){
+    public function giveGroupTo(array $GroupId){
         $this->groups()->detach();
-        $roles=Group::whereIn('id',$RoleId)->get();
-        foreach ($roles as $v){
+        $groups=Group::whereIn('id',$GroupId)->get();
+        foreach ($groups as $v){
             $this->assignGroup($v);
         }
         return true;
@@ -138,8 +138,19 @@ class User extends Model implements AuthenticatableContract,
         $this->permissions()->save($permission);
     }
 
+    public function givePermissionTo(array $PermissionId){
+        $this->permissions()->detach();
+        $permissions=Permission::whereIn('id',$PermissionId)->get();
+        foreach ($permissions as $v){
+            $this->asignPermission($v);
+        }
+        return true;
+    }
 
 
-    
+    public function allPermissionshad($id)
+    {
+        
+    }
     
 }

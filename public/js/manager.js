@@ -149,6 +149,7 @@
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
+                console.log($scope.gUserInfo);
                 $scope.Manager = ManagerService;
                 ManagerService.fnGetStaffs();
             }
@@ -215,10 +216,56 @@
             function ($scope, ManagerService) {
                 var staffId = $scope.$stateParams.staffId;
                 if (angular.isDefined(ManagerService.staffsInfo.data)) {
-                    $scope.group = ManagerService.staffsInfo.data[staffId];
+                    $scope.staffInfo = ManagerService.staffsInfo.data[staffId];
                 } else {
                     $scope.$state.go('manager.staff.index');
                 }
+
+                //原有权限赋值
+
+
+                //所有权限
+                ManagerService.getPermissions().then(function (r) {
+                    $scope.allPermissions = r.data;
+                });
+
+                //所有部门
+                ManagerService.getGroups().then(function (r) {
+                    $scope.allGroups = r.data;
+                    console.log($scope.allGroups);
+                });
+
+                //是否选中
+                $scope.isChecked = function(id){
+                    return $scope.staffInfo.permissions.indexOf(id) >= 0 ;
+                };
+                //改变check状态
+                $scope.updateSelection = function($event,id){
+                    var checkbox = $event.target ;
+                    var checked = checkbox.checked ;
+                    if(checked){
+                        $scope.staffInfo.permissions.push(id) ;
+                    }else{
+                        var idx = $scope.staffInfo.permissions.indexOf(id) ;//第几个
+                        $scope.staffInfo.permissions.splice(idx,1) ;//选中中删除
+                    }
+                };
+
+                //当改变部门的时候改变permission选中状态
+                $scope.$watch(function () {
+                    return $scope.staffInfo.groupId;
+                },function (newId, oldId) {
+                    //清空原有的部门权限还是清空所有权限？ 清空所有
+                    //获得新部门的所有权限，重新赋值（清空所有）；更新的时候删除所有个人权限
+
+                    $scope.staffInfo.permissions = [];
+
+                    var groupSelected = $scope.allGroups[newId];
+                    angular.forEach(groupSelected.permissions, function (value, key) {
+                        $scope.staffInfo.permissions.push(value.id);//原有权限
+                    });
+                    console.log('$scope.staffInfo.permissions',$scope.staffInfo.permissions)
+                },true);
             }
         ])
         .controller('GroupInfoController', [
@@ -297,7 +344,6 @@
                 //所有用户
                 ManagerService.fnGetStaffs().then(function (r) {
                     $scope.allUsers = r.data;
-                    console.log($scope.allUsers);
                 });
 
                 //判断选中

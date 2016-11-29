@@ -16,7 +16,6 @@ class CreateTableGroupPermission extends Migration
             $table->increments('id');
             $table->unsignedInteger('group_id');
             $table->unsignedInteger('permission_id');
-            $table->timestamps();
 
             $table->foreign('group_id')->references('id')->on('groups');
             $table->foreign('permission_id')->references('id')->on('permissions');

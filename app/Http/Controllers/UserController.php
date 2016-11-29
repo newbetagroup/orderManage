@@ -64,24 +64,40 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        if(User::where('email', '=', $request->get('email'))->first()) {
+            return ['status' => 0, 'msg' => '邮箱已经存在'];
+        }
+
         $user = new User();
         foreach (array_keys($this->fields) as $field) {
             $user->$field = $request->get($field);
         }
+        $user->password = bcrypt($request->get('password'));
         unset($user->groups);
+
         $user->save();
 
         //用户部门，暂时弃用
-        if (is_array($request->get('groups'))) {
+        /*if (is_array($request->get('groups'))) {
             $user->giveGroupTo($request->get('groups'));
-        }
+        }*/
 
-        //单个部门
-        $user->giveGroupTo($request->get('groupId'));
+        $groupId = $request->get('groupId');
 
+        //注入单个部门
+        $group = Group::find($groupId);
+        $user->assignGroup($group);
+
+        $allPermissions = $request->get('permissions');
+
+        //个人权限
+        $permissions = $this->filterPermission($allPermissions, $groupId);
+
+       //注入个人权限
+        $user->givePermissionTo($permissions);
+        
         //监听？
         //event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 1, '添加了用户' . $user->name));
-        //return redirect('/admin/user')->withSuccess('添加成功！');//怎么将withSuccess或withError弄成接口？
         return ['status' => '1', 'msg' => '添加成功'];
     }
 
@@ -147,6 +163,9 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $user = User::find((int)$id);
+        if(!$user) {
+            return ['status' => 0, 'msg' => 'user not exist'];
+        }
         foreach (array_keys($this->fields) as $field) {
             $user->$field = $request->get($field);
         }
@@ -163,10 +182,21 @@ class UserController extends Controller
         //清空部门
         unset($user->groups);
 
-        //
-        $user->giveGroupTo($request->get('groups',[]));
+        $groupId = $request->get('groupId');
 
-        return ['status' => 1, 'masg' => '添加成功'];
+        //注入单个部门
+        $group = Group::find($groupId);
+        $user->assignGroup($group);
+
+        $allPermissions = $request->get('permissions');
+
+        //个人权限
+        $permissions = $this->filterPermission($allPermissions, $groupId);
+
+        //注入个人权限
+        $user->givePermissionTo($permissions);
+
+        return ['status' => 1, 'msg' => '添加成功'];
     }
 
     /**
@@ -253,6 +283,46 @@ class UserController extends Controller
         }
 
         return ['status' => 0, 'msg' => 'failed'];
+
+    }
+
+    /**
+     * 筛选出个人权限
+     * @param $allPermissions
+     * @param $groupId
+     * @return array
+     */
+    public function filterPermission($allPermissions, $groupId)
+    {
+        $permissions = [];
+        $groupPermissions = Group::find($groupId)->permissions->keyBy('id');
+        foreach($allPermissions as $p) {
+            //所有权限中有，组没有，加入个人权限
+            if(empty($groupPermissions[$p])) {
+                $permissions[] = $p;
+            }
+        }
+        foreach($groupPermissions as $key => $value) {
+            //组有，所有权限中没有，加入个人权限。++ = -
+            if(!in_array($key,$allPermissions)) {
+                $permissions[] = $key;
+            }
+        }
+
+        return $permissions;
+    }
+
+    public function allPermissionshad (Request $request)
+    {
+        $userId = $request->get('id')?:Auth::user()->id;
+        $groupId = $request->get('groupId');
+
+        if(!$userId || !$groupId) return ['status' => 0, 'msg' => 'id and groupId required'];
+
+        $groupPermissions = Group::where('id', '=', $groupId)->first()->permissions->keyBy('id');
+        $personPermissions = User::where('id', '=', $userId)->first()->permissions->keyBy('id');
+
+        return ['status' => 2, 'groupPermissions' => $groupPermissions, 'personPermissions' => $personPermissions];
 
     }
 }

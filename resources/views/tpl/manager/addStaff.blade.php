@@ -47,17 +47,15 @@
                                 </div>
                             </div>
                             <div class="form-group">
-                                <div class="form-group">
-                                    <label class="control-label col-md-3 all-check">
-                                        权限列表：
-                                    </label>
-                                    <div class="col-md-6">
-                                        <div ng-repeat="permission in allPermissions" class="col-md-4 col-sm-6">
-                                            <div class="checkbox icheck">
-                                                <label>
-                                                    <input type="checkbox" ng-checked="isChecked(permission.id)" ng-click="updateSelection($event,permission.id)">&nbsp;[: permission.name :]
-                                                </label>
-                                            </div>
+                                <label class="control-label col-md-3 all-check">
+                                    权限列表：
+                                </label>
+                                <div class="col-md-6">
+                                    <div ng-repeat="permission in allPermissions" class="col-md-4 col-sm-6">
+                                        <div class="checkbox icheck">
+                                            <label>
+                                                <input type="checkbox" ng-checked="isChecked(permission.id)" ng-click="updateSelection($event,permission.id)">&nbsp;[: permission.name :]
+                                            </label>
                                         </div>
                                     </div>
                                 </div>
