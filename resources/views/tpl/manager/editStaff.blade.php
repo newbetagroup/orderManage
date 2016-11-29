@@ -42,7 +42,7 @@
                             <div class="form-group">
                                 <label for="supervisor" class="col-md-3 control-label">部门</label>
                                 <div class="col-md-5">
-                                    <select  class="form-control" ng-model="staffInfo.groupId" ng-options="group.id as group.name for group in allGroups"></select>
+                                    <select  class="form-control" ng-change="fnChangeGroup(staffInfo.groupId)" ng-model="staffInfo.groupId" ng-options="group.id as group.name for group in allGroups"></select>
                                 </div>
                             </div>
                             <div class="form-group">
@@ -53,7 +53,7 @@
                                     <div ng-repeat="permission in allPermissions" class="col-md-4 col-sm-6">
                                         <div class="checkbox icheck">
                                             <label>
-                                                <input type="checkbox" ng-checked="isChecked(permission.id)" ng-click="updateSelection($event,permission.id)">&nbsp;[: permission.name :]
+                                                <input type="checkbox" ng-checked="isChecked(permission.id)" ng-click="updateSelection($event,permission.id)">&nbsp;[: permission.label :]
                                             </label>
                                         </div>
                                     </div>

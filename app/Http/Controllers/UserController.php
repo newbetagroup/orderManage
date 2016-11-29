@@ -312,6 +312,12 @@ class UserController extends Controller
         return $permissions;
     }
 
+
+    /**
+     * 某个员工拥有的所有权限
+     * @param Request $request
+     * @return array
+     */
     public function allPermissionshad (Request $request)
     {
         $userId = $request->get('id')?:Auth::user()->id;
@@ -322,7 +328,26 @@ class UserController extends Controller
         $groupPermissions = Group::where('id', '=', $groupId)->first()->permissions->keyBy('id');
         $personPermissions = User::where('id', '=', $userId)->first()->permissions->keyBy('id');
 
-        return ['status' => 2, 'groupPermissions' => $groupPermissions, 'personPermissions' => $personPermissions];
+        $allPermissionHad = [];
+        $allPermissionNameHad = [];
 
+        //++ = -  个人权限 + 部门权限
+        foreach($groupPermissions as $groupPermission) {
+            if(empty($personPermissions[$groupPermission->id])) {
+                $allPermissionHad[] = $groupPermission->id;
+                $allPermissionNameHad[] = $groupPermission->name;
+            }
+        }
+        foreach($personPermissions as $personPermission) {
+            if(empty($groupPermissions[$personPermission->id])) {
+                $allPermissionHad[] = $personPermission->id;
+                $allPermissionNameHad[] = $personPermission->name;
+            }
+        }
+
+        $data['allPermissionHad'] = $allPermissionHad;
+        $data['allPermissionNameHad'] = $allPermissionNameHad;
+
+        return ['status' => 1, 'data' => $data];
     }
 }

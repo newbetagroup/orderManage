@@ -30,6 +30,7 @@ Route::group(['middleware' => ['auth']], function() {
     //User 路由
     Route::get('user/getProfile', ['as' => 'user.getProfile', 'uses' => 'UserController@checkLogin']);
     Route::post('user/profileUpdate', ['as' => 'user.profileUpdate', 'uses' => 'UserController@selfUpdate']);
+    Route::post('user/allPermissionsHad', ['as' => 'user.allPermissionsHad', 'uses' => 'UserController@allPermissionshad']);
     Route::resource('user','UserController');
 
     //leave 请假

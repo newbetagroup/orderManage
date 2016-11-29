@@ -10,6 +10,7 @@
         'ui.router',
         'ngTable',
         //'ngResource',
+        'common',
         'userDashboard',
         'directives',
         'managerDashboard'
@@ -72,7 +73,7 @@
                 .state('manager.staff.editStaff', {
                     url: '/editStaff/:staffId',
                     templateUrl: 'tpl/manager/editStaff',
-                    controller: 'EditGroupController'
+                    controller: 'EditStaffController'
                 })
                 .state('manager.group', {
                     abstract: true,
@@ -119,9 +120,10 @@
             $rootScope.$state = $state;
             $rootScope.$stateParams = $stateParams;
         })
-        .run(function($rootScope,UserService,$http) {
+        .run(function($rootScope,UserService,CommonService) {
             var userInfo = null;
             UserService.getProfile().then(function (r) {
+                console.log(r);
                 userInfo = {
                     userId: r.id,
                     name:r.name,
@@ -129,9 +131,9 @@
                     supervisor_id:r.groups['0'].supervisor_id
                 };
                 $rootScope.gUserInfo = userInfo; //注册全局登陆user信息
-            }).then(function (r) {
-                $http.post('user/allPermissionHad',{id:r.id, groupId:r.groups['0'].id}).then(function (r) {
-                    console.log(r.data);
+
+                CommonService.fnGetPermissionsNameHad(r.id, r.groups['0'].id).then(function (data) {
+                    $rootScope.gPermissionNameHad = data; //登陆用户拥有的权限
                 })
             });
 
