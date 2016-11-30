@@ -204,30 +204,96 @@
                     var total_time = 0;
                     var from = new Date(newData.from);
                     var to = new Date(newData.to);
-                    var fromDay = from.getDate();
-                    var toDay = to.getDate();
-                    var fromhh = from.getHours();
-                    var tohh = to.getHours();
-                    if(from.getMinutes() > 30) fromhh = fromhh + 1; //分钟超过30，小时+1
-                    if(to.getMinutes() > 40) tohh = tohh + 1; //未小伙伴们谋个小福利吧
-                    fromhh = fromhh >9 ? fromhh : 9;
-                    tohh = tohh > 18? 18:tohh;
-
-                    var ftime = 0;
-                    var ttime = 0;
-                    if(toDay - fromDay == 0) {
-                        total_time = tohh - fromhh > 0 ? tohh - fromhh:0;
-                    } else if(toDay - fromDay > 0){
-                        total_time = (toDay - fromDay - 1)*8;
-                        ftime = (18 - fromhh) > 0 ? 18 - fromhh : 0;
-                        ttime = (tohh - 9) > 0? tohh - 9 : 0;
-                        total_time += ftime + ttime;
+                    if(from > to) {
+                        //结束时间需大于开始时间
+                        $scope.message = '结束时间需大于开始时间';
+                        return;
                     }
-                    UserService.askLeaveInfo.total_time = total_time;
-                    //9个小时为一天
-                    UserService.askLeaveInfo.total_day = parseInt(total_time/9);
-                    UserService.askLeaveInfo.total_hour = total_time%9;
-                },true)
+                    var result = getWorkDayCount(from, to);
+                    UserService.askLeaveInfo.total_day = result[0];
+                    UserService.askLeaveInfo.total_hour = result[1];
+                    UserService.askLeaveInfo.total_time = result[0]*9 + result[1];
+                },true);
+
+                function nearlyWeeks (weekcount, end) {
+                    //计算end时间，周的第一天
+                    var overTime = new Date(end);
+                    var days = 0 ;
+                    days = (overTime.getDay() == 0 ? 7 : overTime.getDay());//overTime.getDay()为0是星期天
+                    var ss = (days + weekcount * 7) * 24 * 60 * 60 * 1000;
+                    return new Date(end - ss);
+                }
+
+                /**
+                 * 计算请假时间的工作日
+                 * @param beginDay
+                 * @param endDay
+                 * @returns {*[天数, 小时数]}
+                 */
+                function getWorkDayCount (beginDay, endDay) {
+                    /*
+                    计算一段时间内工作的天数。不包括周末，周末为周六下午、周日一天半
+                    beginDay -时间段开始日期
+                    endDay -时间段结束日期
+                    */
+                    //每天的毫秒总数
+                    var daytime = 24 * 60 * 60 * 1000;
+                    //两个时间段相隔的总天数
+                    var days;
+                    days = (endDay - beginDay) / daytime;
+
+                    //减去不用上班的时间,即09-18之外的时间
+                    var beginDayHour = beginDay.getHours()<9 ? 9:beginDay.getHours();
+                    var endDayHour = endDay.getHours() > 18 ? 18 : endDay.getHours();
+                    var totalminutes = endDayHour*60+endDay.getMinutes() - beginDayHour*60-beginDay.getMinutes();
+
+                    //剩余的小时数
+                    var hours= totalminutes/60;
+
+                    //时间段起始时间所在周的第一天
+                    var beginWeekFirstDay=nearlyWeeks(0,beginDay.getTime()).getTime();
+                    //时间段结束时间所在周的最后一天
+                    var endWeekOverDay=nearlyWeeks(0,endDay.getTime()).getTime() + 6*daytime;
+                    //由beginWeekFirstDay和endWeekOverDay换算出，周末的天数
+                    var weekEndCount = ((endWeekOverDay - beginWeekFirstDay) / daytime + 1) / 7 * 1.5 - 1.5;
+                    
+                    //调整周末天数的值
+                    if(weekEndCount != 0){
+                        if(endDay.getDay()>0 && endDay.getDay<6)
+                            weekEndCount -=1.5;
+                        if (endDay.getDay() == 6)
+                            weekEndCount -= 0.5;
+                        if (beginDay.getDay() == 0) weekEndCount -= 0.5;
+                    }
+                    var weekInt = parseInt(weekEndCount);
+                    var weekfix = weekEndCount.toFixed(1) - parseInt(weekEndCount);
+                    if(weekfix >= 0.4 && weekfix <= 0.6) {
+                        weekfix = 0.5;
+                    } else {
+                        weekfix = 0;
+                    }
+
+                    //工作日 = 总天数 - 周末天数
+                    var dayInt = parseInt(days);
+                    var dayfix = days.toFixed(1) - parseInt(days);
+                    var day = dayInt - weekInt;
+                    if(dayfix >= 0.4 && dayfix <= 0.6) {
+                        dayfix = 0.5;
+                    } else if(dayfix < 0.4) {
+                        dayfix = 0;
+                    } else {
+                        day +=1;
+                        dayfix = 0;
+                    }
+                    hours += dayfix * 9;
+                    hours = hours - weekfix*9;
+
+                    day = hours < 0 ? (day -1) : day;
+                    hours = hours < 0 ? (hours + 9) : hours;
+                    hours = hours.toFixed(1);
+
+                    return [day, hours];
+                }
             }
         ])
     

@@ -35,24 +35,24 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th class="hidden-sm">id</th>
-                            <th class="hidden-md">员工</th>
-                            <th class="hidden-md">岗位</th>
+                            <th class="hidden-md">id</th>
+                            <th class="hidden-sm">员工</th>
+                            <th class="hidden-sm">岗位</th>
                             <th class="hidden-sm">部门</th>
-                            <th class="hidden-sm">住宅地址</th>
-                            <th class="hidden-sm">手机</th>
+                            <th class="hidden-md">住宅地址</th>
+                            <th class="hidden-md">手机</th>
                             <th class="hidden-md">入职日期</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="staff in Manager.staffsInfo.data">
-                            <td class="hidden-sm">[: staff.id :]</td>
-                            <td class="hidden-md">[: staff.name :]</td>
-                            <td class="hidden-md">[: staff.identity :]</td>
+                            <td class="hidden-md">[: staff.id :]</td>
+                            <td class="hidden-sm">[: staff.name :]</td>
+                            <td class="hidden-sm">[: staff.identity :]</td>
                             <td class="hidden-sm">[: staff.groups[0].name :]</td>
-                            <td class="hidden-sm">[: staff.address :]</td>
-                            <td class="hidden-sm">[: staff.phone :]</td>
+                            <td class="hidden-md">[: staff.address :]</td>
+                            <td class="hidden-md">[: staff.phone :]</td>
                             <td class="hidden-md">[: staff.created_at :]</td>
                             <td>
                                 <a style="margin:3px;" ui-sref="manager.staff.editStaff({staffId:staff.id})" class="X-Small btn-xs text-success ">

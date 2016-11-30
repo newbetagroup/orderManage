@@ -52,6 +52,24 @@
                             staffInfo.pending = false;
                         })
                 };
+                //提交编辑员工
+                me.fnEditStaff = function (staffInfo) {
+                    staffInfo.pending = true;
+                    $http.put('/user/'+staffInfo.id, staffInfo)
+                        .then(function (r) {
+                            if(r.data.status == 1) {
+                                staffInfo.editStatus = true;
+                            } else {
+                                staffInfo.editStatus = false;
+                            }
+                        }, function (e) {
+                            staffInfo.editStatus = false;
+                        })
+                        .finally(function () {
+                            staffInfo.pending = false;
+                        })
+                };
+
                 //groups
                 me.getGroups = function () {
                     var deffered = $q.defer();
@@ -72,6 +90,7 @@
                          return $q.when(me.groupsInfo);
                     }
                 };
+                //提交添加分组
                 me.fnAddGroup = function (groupInfo) {
                     groupInfo.pending = true;
                     $http.post('/group', groupInfo)
@@ -88,6 +107,7 @@
                             groupInfo.pending = false;
                         })
                 };
+                //提交编辑分组
                 me.fnEditGroup = function (groupInfo) {
                     groupInfo.pending = true;
                     $http.put('/group/'+groupInfo.id, groupInfo)
@@ -104,7 +124,7 @@
                             groupInfo.pending = false;
                         })
                 };
-                
+                //权限列表
                 me.getPermissions = function () {
                     var deffered = $q.defer();
                     if(angular.equals({}, me.permissionsInfo)) {
@@ -124,6 +144,7 @@
                         return $q.when(me.permissionsInfo);
                     }
                 };
+                //增加权限
                 me.fnAddPermission = function (permissionInfo) {
                     permissionInfo.pending = true;
                     $http.post('/permission', permissionInfo)
@@ -143,7 +164,7 @@
             }
 
         ])
-        //员工管理index
+        //员工管理
         .controller('StaffInfoController',[
             '$scope',
             'ManagerService',
@@ -262,8 +283,13 @@
                         $scope.staffInfo.permissions.push(value.id);//原有权限
                     });
                 };
+
+                $scope.fnEditStaff = function (staffInfo) {
+                    ManagerService.fnEditStaff(staffInfo);
+                }
             }
         ])
+        //部门管理
         .controller('GroupInfoController', [
             '$scope',
             'ManagerService',
@@ -366,6 +392,7 @@
 
             }
         ])
+        //权限管理
         .controller('PermissionInfoController', [
             '$scope',
             'ManagerService',

@@ -31,7 +31,8 @@ Route::group(['middleware' => ['auth']], function() {
     Route::get('user/getProfile', ['as' => 'user.getProfile', 'uses' => 'UserController@checkLogin']);
     Route::post('user/profileUpdate', ['as' => 'user.profileUpdate', 'uses' => 'UserController@selfUpdate']);
     Route::post('user/allPermissionsHad', ['as' => 'user.allPermissionsHad', 'uses' => 'UserController@allPermissionshad']);
-    Route::resource('user','UserController');
+    Route::resource('user', 'UserController', ['names' => ['update' => 'user.edit', 'store' => 'user.create']]);
+
 
     //leave 请假
     Route::resource('leave', 'LeaveController');

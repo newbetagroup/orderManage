@@ -15,14 +15,8 @@ class UserController extends Controller
     protected $fields = [
         'name' => '',
         'email' => '',
-        'avatar_url' => '',
-        'address' => '',
-        'domicile' => '',
-        'graduated_school' => '',
         'sex' => '',
         'phone' => '',
-        'qq' => '',
-        'remark' => '',
         'identity' => '',
         'groups' => []
     ];
@@ -47,12 +41,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        $data = [];
-        foreach ($this->fields as $field => $default) {
-            $data[$field] = old($field, $default);
-        }
-        $data['groupsAll'] = Group::all()->toArray();
-        return ['status' => 1, 'data' => $data];
+        //
     }
 
     /**
@@ -74,6 +63,7 @@ class UserController extends Controller
         }
         $user->password = bcrypt($request->get('password'));
         unset($user->groups);
+        unset($user->permissions);
 
         $user->save();
 
@@ -121,36 +111,7 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        $user = User::find((int)$id);
-
-        //用户不存在
-        if(!$user) {
-            return ['status' => 0, 'msg' => 'user not exist'];
-        }
-
-        $groups = [];
-
-        //取id
-        if($user->groups) {
-            foreach ($user->groups as $v) {
-                $groups[] = $v->id;
-            }
-        }
-
-        $user->groups = $groups;
-
-        foreach(array_keys($this->fields) as $field) {
-            $data[$field] = old($field, $user->field);
-        }
-
-        $data['groupsAll'] = Group::all()->toArray();
-        $data['id'] = (int)$id;
-
-        //event();
-
-        //返回修改数据
-        return ['status', 'data' => $data];
-
+        //
     }
 
     /**
@@ -170,18 +131,19 @@ class UserController extends Controller
             $user->$field = $request->get($field);
         }
 
-        //password required and repassword confirm
-        if ($request->get('password') != '' || $request->get('repassword') != '') {
-            if ($request->get('password') != '' && $request->get('repassword') != '' && $request->get('password') == $request->get('repassword')) {
-                $user->password = bcrypt($request->get('password'));
-            } else {
-                return ['status' => 0, 'msg' => 'password required and repassword'];
-            }
+        //password
+        if ($request->get('password') != '') {
+            $user->password = bcrypt($request->get('password'));
         }
+
 
         //清空部门
         unset($user->groups);
+        //清空权限
+        unset($user->permissions);
 
+        $user->save();
+        
         $groupId = $request->get('groupId');
 
         //注入单个部门
@@ -196,7 +158,7 @@ class UserController extends Controller
         //注入个人权限
         $user->givePermissionTo($permissions);
 
-        return ['status' => 1, 'msg' => '添加成功'];
+        return ['status' => 1, 'msg' => 'update success'];
     }
 
     /**
