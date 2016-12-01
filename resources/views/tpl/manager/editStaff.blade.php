@@ -27,9 +27,9 @@
                                 <div class="col-md-5">
                                     <input type="password" class="form-control" name="password" id="password" autofocus ng-model="staffInfo.password">
                                 </div>
-                                <div ng-if="staffInfo.password" class="col-sm-5 col-sm-offset-3">
+                                <div class="col-sm-5 col-sm-offset-3">
                                     <div class="alert alert-info input-info" role="alert">
-                                        <strong>提示：</strong> 为空则不修改。 <span ng-bind="staffInfo.password"></span>
+                                        <strong>提示：</strong> 为空则不修改密码。 <span ng-bind="staffInfo.password"></span>
                                     </div>
                                 </div>
                             </div>
@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div ng-show="staffInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+                        <div ng-if="staffInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <strong>正在提交...</strong>
                         </div>

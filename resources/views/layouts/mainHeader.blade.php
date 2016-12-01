@@ -52,7 +52,7 @@
             </ul>
           </li>--}}
           <!-- /.messages-menu -->
-
+            <li ng-repeat="link in CommonService.staffHeaderLink" class=""><a ng-click="$state.go('manager.staff.index')">[: link.title :]</a></li>
           <!-- Notifications Menu -->
          <li class="dropdown notifications-menu">
             <!-- Menu toggle button -->

@@ -1,5 +1,11 @@
-/*login*/
+html {
+    -ms-text-size-adjust: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+
 @media screen and (min-width: 767px) {
+    /*login*/
     .login-bg {
         background: url("../images/loginbg.png") no-repeat;
     }
@@ -8,8 +14,14 @@
     }
 }
 @media screen and (max-width: 767px) {
+    /*login*/
     .login-bg {
         background: url("../images/loginphone.jpeg") no-repeat;
+    }
+
+    /*mobile logo*/
+    .main-header .logo {
+        display: none;
     }
 }
 

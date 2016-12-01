@@ -16,7 +16,11 @@
                                 <div class="col-md-5">
                                     <input type="text" class="form-control" name="name" id="name" autofocus ng-model="permissionInfo.name">
                                 </div>
-                                div.col-md-4
+                                <div class="col-md-4">
+                                    <div class="alert alert-warning input-info" role="alert">
+                                        <strong>格式如：</strong>user.getProfile
+                                    </div>
+                                </div>
                             </div>
                             <div class="form-group">
                                 <label for="tag" class="col-md-3 control-label">权限标签</label>

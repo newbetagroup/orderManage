@@ -40,7 +40,7 @@
                                     <a style="margin:3px;" ui-sref="manager.group.editGroup({groupId:group.id})" class="X-Small btn-xs text-success ">
                                         <i class="fa fa-edit"></i> 编辑
                                     </a>
-                                    <a style="margin:3px;" ui-sref="manager.group.destoryGroup({groupId:group.id})" class="delBtn X-Small btn-xs text-danger ">
+                                    <a style="margin:3px;" ng-click="$parent.fnDestroyGroup(group.id)" class="delBtn X-Small btn-xs text-danger ">
                                         <i class="fa fa-times-circle-o"></i> 删除</a>
                                 </td>
                             </tr>

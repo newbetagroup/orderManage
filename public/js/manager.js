@@ -10,7 +10,7 @@
             '$q',
             function ($http, $q) {
                 var me = this;
-
+                me.errMessage = null;
                 me.staffsInfo = {};
                 me.groupsInfo = {};//{recordsFiltered,data}
                 me.permissionsInfo ={};
@@ -69,6 +69,16 @@
                             staffInfo.pending = false;
                         })
                 };
+                //删除用户
+                me.fnDestroyStaff = function (id) {
+                  $http.delete('/user/'+id).then(function (r) {
+                      if(r.data.status == 1) {
+                         delete me.staffsInfo.data[id];
+                      }
+                  },function (e) {
+                      console.log(e);
+                  })
+                };
 
                 //groups
                 me.getGroups = function () {
@@ -124,6 +134,16 @@
                             groupInfo.pending = false;
                         })
                 };
+                //删除部门
+                me.fnDestroyGroup = function (id) {
+                    $http.delete('/group/'+id).then(function (r) {
+                        if(r.data.status == 1) {
+                            delete me.groupsInfo.data[id];
+                        }
+                    },function (e) {
+                        console.log(e);
+                    })
+                };
                 //权限列表
                 me.getPermissions = function () {
                     var deffered = $q.defer();
@@ -161,6 +181,18 @@
                             permissionInfo.pending = false;
                         })
                 };
+                //删除权限
+                me.fnDestroyPermission = function (id) {
+                    $http.delete('/permission/'+id).then(function (r) {
+                        if(r.data.status == 1) {
+                            console.log(me.permissionsInfo);
+                            delete me.permissionsInfo.data[id];
+                        }
+                    },function (e) {
+                        console.log(e);
+                    })
+                };
+
             }
 
         ])
@@ -171,6 +203,9 @@
             function ($scope, ManagerService) {
                 $scope.Manager = ManagerService;
                 ManagerService.fnGetStaffs();
+                $scope.fnDestroyStaff = function (id) {
+                    ManagerService.fnDestroyStaff(id);
+                }
             }
         ])
         .controller('AddStaffController', [
@@ -236,7 +271,9 @@
                 var staffId = $scope.$stateParams.staffId; //员工id
                 if (angular.isDefined(ManagerService.staffsInfo.data)) {
                     $scope.staffInfo = ManagerService.staffsInfo.data[staffId];
-                    $scope.staffInfo.groupId = $scope.staffInfo.groups[0].id;
+                    if(angular.isDefined($scope.staffInfo.groups[0])) {
+                        $scope.staffInfo.groupId = $scope.staffInfo.groups[0].id;
+                    }
                     $scope.staffInfo.permissions = null;
                 } else {
                     $scope.$state.go('manager.staff.index');
@@ -296,6 +333,9 @@
             function ($scope, ManagerService) {
                 $scope.Manager = ManagerService;
                 ManagerService.getGroups();
+                $scope.fnDestroyGroup = function (id) {
+                    ManagerService.fnDestroyGroup(id);
+                }
             }
         ])
         .controller('AddGroupController', [
@@ -399,6 +439,9 @@
             function ($scope, ManagerService) {
                 $scope.Manager = ManagerService;
                 ManagerService.getPermissions();
+                $scope.fnDestroyPermission = function (id) {
+                    ManagerService.fnDestroyPermission(id);
+                }
             }
         ])
         .controller('AddPermissionController', [

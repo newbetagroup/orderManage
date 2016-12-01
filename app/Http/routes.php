@@ -25,12 +25,14 @@ Route::any('user/authuser', 'UserController@checkLogin');
 
 
 //强制登录
-Route::group(['middleware' => ['auth']], function() {
-
+Route::group(['middleware' => ['auth', 'permission']], function() {
+//Route::group(['middleware' => ['auth']], function() {
+//如果没有添加as(别名)，即没有添加权限规则，则默认能访问该路由
     //User 路由
     Route::get('user/getProfile', ['as' => 'user.getProfile', 'uses' => 'UserController@checkLogin']);
     Route::post('user/profileUpdate', ['as' => 'user.profileUpdate', 'uses' => 'UserController@selfUpdate']);
-    Route::post('user/allPermissionsHad', ['as' => 'user.allPermissionsHad', 'uses' => 'UserController@allPermissionshad']);
+    //某个用户拥有的的所有权限（部门+个人）
+    Route::post('user/allPermissionsHad', ['uses' => 'UserController@allPermissionshad']);
     Route::resource('user', 'UserController', ['names' => ['update' => 'user.edit', 'store' => 'user.create']]);
 
 
@@ -38,7 +40,7 @@ Route::group(['middleware' => ['auth']], function() {
     Route::resource('leave', 'LeaveController');
 
     //group 路由
-    Route::get('group/aGroupPermissions/{id}', ['as' => 'group.aGroupPermissions', 'uses' => 'GroupController@oneGroupPermission']);
+    Route::get('group/aGroupPermissions/{id}', ['uses' => 'GroupController@oneGroupPermission']);
     Route::get('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
     Route::post('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
     Route::resource('group', 'GroupController', ['names' => ['update' => 'group.edit', 'store' => 'group.create']]);

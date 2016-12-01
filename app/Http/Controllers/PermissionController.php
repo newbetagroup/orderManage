@@ -145,7 +145,7 @@ class PermissionController extends Controller
      */
     public function destroy($id)
     {
-        $child = Permission::where('cid', $id)->first();
+        $child = Permission::where('cid', '=', $id)->first();
         if ($child) {
             return ['status' => 0, 'msg' => "请先将该权限的子权限删除后再做删除操作!"];
         }

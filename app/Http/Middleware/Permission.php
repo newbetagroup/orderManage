@@ -22,17 +22,24 @@ class Permission
         $permit = $this->getPermission($request);
 
         if($permit == 'undefined') {
+            //没有定义该权限，跳过权限检查
             return $next($request);
         }
 
         if($permit == '*') {
+            //* 跳过权限检查
             return $next($request);
         }
 
         //当前账户
-        $admin = \Auth::user();
+        $user = \Auth::user();
 
-        if ($admin->hasPermission($permit)) {
+        if($user->id == 1 || $user->id == 2) {
+            //1 超级管理员 2 boss 跳过权限检查
+            return $next($request);
+        }
+
+        if ($user->hasPermission($permit)) {
             return $next($request);
         }
 

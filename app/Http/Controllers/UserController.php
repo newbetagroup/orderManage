@@ -75,19 +75,22 @@ class UserController extends Controller
         $groupId = $request->get('groupId');
 
         //注入单个部门
-        $group = Group::find($groupId);
-        $user->assignGroup($group);
+        if(is_numeric($request->get('groupId'))) {
+            $group = Group::find($groupId);
+            $user->assignGroup($group);
+        }
 
         $allPermissions = $request->get('permissions');
 
         //个人权限
-        $permissions = $this->filterPermission($allPermissions, $groupId);
-
-       //注入个人权限
-        $user->givePermissionTo($permissions);
+        if(is_array($allPermissions) && isset($allPermissions[0])) {
+            $permissions = $this->filterPermission($allPermissions, $groupId);
+            //注入个人权限
+            $user->givePermissionTo($permissions);
+        }
         
         //监听？
-        //event(new \App\Events\userActionEvent('\App\Models\User', $user->id, 1, '添加了用户' . $user->name));
+        //event();
         return ['status' => '1', 'msg' => '添加成功'];
     }
 
@@ -147,16 +150,19 @@ class UserController extends Controller
         $groupId = $request->get('groupId');
 
         //注入单个部门
-        $group = Group::find($groupId);
-        $user->assignGroup($group);
+        if(!empty($request->get('groupId'))) {
+            $user->giveGroupTo([$groupId]);
+        }
+
 
         $allPermissions = $request->get('permissions');
 
         //个人权限
-        $permissions = $this->filterPermission($allPermissions, $groupId);
-
-        //注入个人权限
-        $user->givePermissionTo($permissions);
+        if(is_array($allPermissions) && isset($allPermissions[0])) {
+            $permissions = $this->filterPermission($allPermissions, $groupId);
+            //注入个人权限
+            $user->givePermissionTo($permissions);
+        }
 
         return ['status' => 1, 'msg' => 'update success'];
     }
@@ -172,6 +178,17 @@ class UserController extends Controller
         $user = User::find((int)$id);
         if ($user && $user->id != 1) {
             //id 为1 设置成超级管理员
+
+            //解绑group user
+            foreach ($user->groups as $v){
+                $user->groups()->detach($v);
+            }
+
+            //解绑 permission
+            foreach ($user->permissions as $v){
+                $user->permissions()->detach($v);
+            }
+
             $user->delete();
         } else {
             return ['status' => 0, 'msg' => '删除失败'];
@@ -194,6 +211,7 @@ class UserController extends Controller
             //dd($user);
             //dd($user->groups);
             foreach($user->groups as $group) {
+
                 //部门对应主管信息
                 $supervisor = User::find($group['supervisor_id']);
                 $group->supervisor = $supervisor;
@@ -201,7 +219,7 @@ class UserController extends Controller
             $data['user'] = $user;
 
             //所有部门
-            $data['groupsAll'] = Group::all()->toArray();
+            //$data['groupsAll'] = Group::all()->toArray();
 
             return ['status' => 1, 'data' => $data];
         } else {

@@ -127,8 +127,8 @@
                 userInfo = {
                     userId: r.id,
                     name:r.name,
-                    group_id:r.groups['0'].id,
-                    supervisor_id:r.groups['0'].supervisor_id
+                    group_id:angular.isDefined(r.groups['0'])?r.groups['0'].id:'undefinded',
+                    supervisor_id:angular.isDefined(r.groups['0'])?r.groups['0'].supervisor_id:'2'
                 };
                 $rootScope.gUserInfo = userInfo; //注册全局登陆user信息
 

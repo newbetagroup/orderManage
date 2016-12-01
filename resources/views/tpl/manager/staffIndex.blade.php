@@ -35,30 +35,30 @@
                     <table class="table table-bordered table-hover">
                         <thead>
                         <tr>
-                            <th class="hidden-md">id</th>
-                            <th class="hidden-sm">员工</th>
-                            <th class="hidden-sm">岗位</th>
-                            <th class="hidden-sm">部门</th>
-                            <th class="hidden-md">住宅地址</th>
-                            <th class="hidden-md">手机</th>
-                            <th class="hidden-md">入职日期</th>
+                            <th class="hidden-xs">id</th>
+                            <th>员工</th>
+                            <th>岗位</th>
+                            <th>部门</th>
+                            <th class="hidden-xs">住宅地址</th>
+                            <th class="hidden-xs">手机</th>
+                            <th class="hidden-xs">入职日期</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="staff in Manager.staffsInfo.data">
-                            <td class="hidden-md">[: staff.id :]</td>
-                            <td class="hidden-sm">[: staff.name :]</td>
-                            <td class="hidden-sm">[: staff.identity :]</td>
-                            <td class="hidden-sm">[: staff.groups[0].name :]</td>
-                            <td class="hidden-md">[: staff.address :]</td>
-                            <td class="hidden-md">[: staff.phone :]</td>
-                            <td class="hidden-md">[: staff.created_at :]</td>
+                            <td class="hidden-xs">[: staff.id :]</td>
+                            <td>[: staff.name :]</td>
+                            <td>[: staff.identity :]</td>
+                            <td>[: staff.groups[0].name :]</td>
+                            <td class="hidden-xs">[: staff.address :]</td>
+                            <td class="hidden-xs">[: staff.phone :]</td>
+                            <td class="hidden-xs">[: staff.created_at :]</td>
                             <td>
                                 <a style="margin:3px;" ui-sref="manager.staff.editStaff({staffId:staff.id})" class="X-Small btn-xs text-success ">
                                     <i class="fa fa-edit"></i> 编辑
                                 </a>
-                                <a style="margin:3px;" ui-sref="manager.staff.destoryStaff({staffId:staff.id})" class="delBtn X-Small btn-xs text-danger ">
+                                <a style="margin:3px;" ng-click="$parent.fnDestroyStaff(staff.id)" class="delBtn X-Small btn-xs text-danger ">
                                     <i class="fa fa-times-circle-o"></i> 删除</a>
                             </td>
                         </tr>

@@ -88,21 +88,30 @@ class User extends Model implements AuthenticatableContract,
         return !!$group->intersect($this->groups)->count();
     }
 
+
     /**
      * 是否有某个权限
      * @param $permission
      * @return bool
      */
     public function hasPermission($permission) {
+        $hasPermission = false;
         //是否存在这个权限设置
         if (is_string($permission)) {
             $permission = Permission::where('name',$permission)->first();
             if (!$permission) return false;
         }
 
-        return $this->hasGroup($permission->groups);
+        //组权限
+        $hasPersonPermission = $this->permissions->contains('name', $permission);
 
-        //还要判断用户自身的特权
+        //个人权限
+        $hasGroupPermission = $this->hasGroup($permission->groups);
+
+        if($hasPersonPermission || $hasGroupPermission) $hasPermission = true;
+        if($hasGroupPermission && $hasPersonPermission) $hasPermission = false;//++ = -
+
+        return $hasPermission;
     }
 
     /**
@@ -138,19 +147,18 @@ class User extends Model implements AuthenticatableContract,
         $this->permissions()->save($permission);
     }
 
+    /**
+     * 批量注册个人权限
+     * @param array $PermissionId
+     * @return bool
+     */
     public function givePermissionTo(array $PermissionId){
-        $this->permissions()->detach();
+        $this->permissions()->detach();//key point
         $permissions=Permission::whereIn('id',$PermissionId)->get();
         foreach ($permissions as $v){
             $this->asignPermission($v);
         }
         return true;
-    }
-
-
-    public function allPermissionshad($id)
-    {
-        
     }
     
 }
