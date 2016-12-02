@@ -16,7 +16,14 @@
 @endsection
 
 @section('js')
+    {{--angular--}}
+    <script src="/node_modules/angular/angular.min.js"></script>
+    <script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>
+    <script src="/node_modules/oclazyload/dist/ocLazyLoad.min.js"></script>
     <script src="/app/base.js"></script>
+    <script src="/app/ocLazyload.config.js"></script>
+    <script src="/app/route.config.js"></script>
+
     <script src="/plugins/ng-table/ng-table.min.js"></script>
     <script src="/plugins/jquerydatetime/jquery.datetimepicker.js"></script>
     <script src="/app/common/directives/angular.datetime.js"></script>

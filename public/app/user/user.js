@@ -301,8 +301,9 @@
             '$scope',
             'LeaveService',
             '$filter',
+            '$location',
             'NgTableParams',
-            function ($scope, LeaveService, $filter, NgTableParams) {
+            function ($scope, LeaveService, $filter, $location, NgTableParams) {
                 var self = this;
                 self.$injet = ["NgTableParams", "ngTableSimpleList"];
                // self.defaultConfigTableParams = new NgTableParams({}, { dataset: data});
@@ -326,6 +327,7 @@
                         paginationMaxBlocks: 3,
                         paginationMinBlocks: 2,
                         getData: function(params) {
+                            $location.search(params.url()); // 将参数放到url上，实现刷新页面不会跳回第一页和默认配置
                            return LeaveService.fnGetLeaves(params);
                         }
                     };

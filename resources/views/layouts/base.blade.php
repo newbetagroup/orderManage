@@ -55,9 +55,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <script src="/plugins/datatables/dataTables.bootstrap.js"></script>
     <script src="/plugins/tokenfield/dist/bootstrap-tokenfield.min.js"></script>
     <script src="/dist/js/common.js"></script>
-    {{--angular--}}
-    <script src="/node_modules/angular/angular.js"></script>
-    <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
 
     @yield('js')
 </head>
