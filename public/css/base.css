@@ -28,6 +28,9 @@ html {
 [ui-sref] {
     cursor: pointer;
 }
+a {
+    cursor: pointer;
+}
 
 .input-info {
     margin-bottom: 0;

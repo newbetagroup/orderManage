@@ -2,7 +2,7 @@
  * Created by summer on 2016/11/21.
  */
 ;(function () {
-    angular.module("directives",[]).directive("datetimepicker",function(){
+    angular.module("commonDashboard",[]).directive("datetimepicker",function(){
         return {
             restrict: "EA",
             require : "ngModel",

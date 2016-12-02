@@ -197,7 +197,7 @@
 
         ])
         //员工管理
-        .controller('StaffInfoController',[
+        .controller('StaffInfoCtrl',[
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
@@ -208,7 +208,7 @@
                 }
             }
         ])
-        .controller('AddStaffController', [
+        .controller('AddStaffCtrl', [
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
@@ -263,7 +263,7 @@
                 }
             }
         ])
-        .controller('EditStaffController', [
+        .controller('EditStaffCtrl', [
             '$scope',
             'ManagerService',
             'CommonService',
@@ -327,7 +327,7 @@
             }
         ])
         //部门管理
-        .controller('GroupInfoController', [
+        .controller('GroupInfoCtrl', [
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
@@ -338,7 +338,7 @@
                 }
             }
         ])
-        .controller('AddGroupController', [
+        .controller('AddGroupCtrl', [
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
@@ -378,7 +378,7 @@
                 };
             }
         ])
-        .controller('EditGroupController', [
+        .controller('EditGroupCtrl', [
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
@@ -433,7 +433,7 @@
             }
         ])
         //权限管理
-        .controller('PermissionInfoController', [
+        .controller('PermissionInfoCtrl', [
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
@@ -444,7 +444,7 @@
                 }
             }
         ])
-        .controller('AddPermissionController', [
+        .controller('AddPermissionCtrl', [
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {
@@ -454,7 +454,7 @@
                 }
             }
         ])
-        .controller('EditPermissionController', [
+        .controller('EditPermissionCtrl', [
             '$scope',
             'ManagerService',
             function ($scope, ManagerService) {

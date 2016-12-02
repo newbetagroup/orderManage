@@ -10,9 +10,8 @@
         'ui.router',
         'ngTable',
         //'ngResource',
-        'common',
+        'commonDashboard',
         'userDashboard',
-        'directives',
         'managerDashboard'
     ])
         .config(function ($interpolateProvider, $stateProvider, $urlRouterProvider) {
@@ -63,17 +62,17 @@
                 .state('manager.staff.index', {
                     url: '/index',
                     templateUrl: 'tpl/manager/staffIndex',
-                    controller: 'StaffInfoController'
+                    controller: 'StaffInfoCtrl'
                 })
                 .state('manager.staff.addStaff', {
                     url: '/addStaff',
                     templateUrl: 'tpl/manager/addStaff',
-                    controller: 'AddStaffController'
+                    controller: 'AddStaffCtrl'
                 })
                 .state('manager.staff.editStaff', {
                     url: '/editStaff/:staffId',
                     templateUrl: 'tpl/manager/editStaff',
-                    controller: 'EditStaffController'
+                    controller: 'EditStaffCtrl'
                 })
                 .state('manager.group', {
                     abstract: true,
@@ -82,17 +81,17 @@
                 .state('manager.group.index', {
                     url: '/groupIndex',
                     templateUrl: 'tpl/manager/groupIndex',
-                    controller: 'GroupInfoController'
+                    controller: 'GroupInfoCtrl'
                 })
                 .state('manager.group.addGroup', {
                     url: '/addGroup',
                     templateUrl: 'tpl/manager/addGroup',
-                    controller: 'AddGroupController'
+                    controller: 'AddGroupCtrl'
                 })
                 .state('manager.group.editGroup', {
                     url: '/editGroup/:groupId',
                     templateUrl: 'tpl/manager/editGroup',
-                    controller: 'EditGroupController'
+                    controller: 'EditGroupCtrl'
                 })
                 .state('manager.permission', {
                     abstract: true,
@@ -101,17 +100,17 @@
                 .state('manager.permission.index', {
                     url: '/permissionIndex',
                     templateUrl: 'tpl/manager/permissionIndex',
-                    controller: 'PermissionInfoController'
+                    controller: 'PermissionInfoCtrl'
                 })
                 .state('manager.permission.addPermission', {
                     url: '/addPermission',
                     templateUrl: 'tpl/manager/addPermission',
-                    controller: 'AddPermissionController'
+                    controller: 'AddPermissionCtrl'
                 })
                 .state('manager.permission.editPermission', {
                     url: '/editPermission/:permissionId',
                     templateUrl: 'tpl/manager/editPermission',
-                    controller: 'EditPermissionController'
+                    controller: 'EditPermissionCtrl'
                 });
 
                 $urlRouterProvider.when('', '/user/info');

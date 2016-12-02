@@ -16,12 +16,13 @@
 @endsection
 
 @section('js')
+    <script src="/app/base.js"></script>
     <script src="/plugins/ng-table/ng-table.min.js"></script>
     <script src="/plugins/jquerydatetime/jquery.datetimepicker.js"></script>
-    <script src="/js/common.js"></script>
-    <script src="/js/user.js"></script>
-    <script src="/js/angular.datetime.js"></script>
-    <script src="/js/manager.js"></script>
+    <script src="/app/common/directives/angular.datetime.js"></script>
+    <script src="/app/common/service/common.js"></script>
+    <script src="/app/user/user.js"></script>
+    <script src="/app/manager/manager.js"></script>
 @endsection
 
 @section('content')

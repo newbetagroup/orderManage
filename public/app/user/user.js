@@ -42,8 +42,7 @@
                             });
                             return deffered.promise;
                         } else {
-                            console.log('cacheprofile',me.profileData);
-                           // return $q.when(me.profileData);
+                            return $q.when(me.profileData);
                         }
                 };
 
@@ -57,7 +56,7 @@
                         }, function (e) {
                             //error
                         })
-                }
+                };
 
                 //请假申请
                 me.askforLeave = function () {

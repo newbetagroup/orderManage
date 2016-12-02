@@ -58,8 +58,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
     {{--angular--}}
     <script src="/node_modules/angular/angular.js"></script>
     <script src="node_modules/angular-ui-router/release/angular-ui-router.js"></script>
-    {{--base--}}
-    <script src="js/base.js"></script>
 
     @yield('js')
 </head>

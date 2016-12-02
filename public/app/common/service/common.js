@@ -3,7 +3,7 @@
  */
 ;(function () {
     'use strict';
-        angular.module('common', [])
+        angular.module('commonDashboard', [])
             .service('CommonService',[
                 '$http',
                 '$rootScope',
