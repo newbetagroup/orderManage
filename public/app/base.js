@@ -11,8 +11,8 @@
         //'ngResource',
         'commonDashboard',
         //'common',
-        'userDashboard',
-        'managerDashboard'
+        'userDashboard'
+        //'managerDashboard'
     ]);
     myApp.config([
         '$interpolateProvider',
@@ -21,10 +21,6 @@
             $interpolateProvider.startSymbol('[:');
             $interpolateProvider.endSymbol(':]');
         }])
-        .run(function($rootScope, $state, $stateParams) {
-            $rootScope.$state = $state;
-            $rootScope.$stateParams = $stateParams;
-        })
         .run(function($rootScope,UserService,CommonService) {
             var userInfo = null;
             UserService.getProfile().then(function (r) {

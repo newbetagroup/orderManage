@@ -18,6 +18,20 @@ myApp.constant("Modules_Config",[
             files:[
                 "Scripts/angular-bootstrap/ui-bootstrap-tpls-0.14.3.min.js"
             ]
+        },
+        {
+            name:"userDashboard",
+            module:true,
+            files:[
+                "app/user/user.js"
+            ]
+        },
+        {
+            name:"managerDashboard",
+            module:true,
+            files:[
+                "app/manager/manager.js"
+            ]
         }
     ])
     .config([

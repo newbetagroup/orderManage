@@ -43,7 +43,12 @@ myApp.config([
             })
             .state('manager', {
                 url: '/manager',
-                templateUrl: 'tpl/manager/base'
+                templateUrl: 'tpl/manager/base',
+                resolve:{
+                    loadOut:["$ocLazyLoad", function ($ocLazyLoad) {
+                        return $ocLazyLoad.load("managerDashboard");
+                    }]
+                }
             })
             .state('manager.staff', {
                 abstract: true,
@@ -103,4 +108,8 @@ myApp.config([
                 controller: 'EditPermissionCtrl'
             });
     }
-    ]);
+    ])
+    .run(function($rootScope, $state, $stateParams) {
+        $rootScope.$state = $state;
+        $rootScope.$stateParams = $stateParams;
+    });

@@ -29,7 +29,7 @@
     <script src="/app/common/directives/angular.datetime.js"></script>
     <script src="/app/common/service/common.js"></script>
     <script src="/app/user/user.js"></script>
-    <script src="/app/manager/manager.js"></script>
+    {{--<script src="/app/manager/manager.js"></script>--}}
 @endsection
 
 @section('content')
