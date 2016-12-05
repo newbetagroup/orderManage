@@ -8,9 +8,9 @@
  */
 ?>
 @extends('layouts.base')
-
 @section('css')
     <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/css/textAngular.css">
     <link rel="stylesheet" href="/plugins/jquerydatetime/jquery.datetimepicker.css">
     <link rel="stylesheet" href="/plugins/ng-table/ng-table.min.css">
 @endsection
@@ -29,6 +29,11 @@
     <script src="/app/common/directives/angular.datetime.js"></script>
     <script src="/app/common/service/common.js"></script>
     <script src="/app/user/user.js"></script>
+
+    {{--延迟加载有问题？--}}
+    <script src="/app/post/textAngular-rangy.min.js"></script>
+    <script src="/app/post/textAngular-sanitize.min.js"></script>
+    <script src="/app/post/textAngular.min.js"></script>
     {{--<script src="/app/manager/manager.js"></script>--}}
 @endsection
 

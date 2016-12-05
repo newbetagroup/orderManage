@@ -32,6 +32,20 @@ myApp.constant("Modules_Config",[
             files:[
                 "app/manager/manager.js"
             ]
+        },
+        {
+            name:"postDashboard",
+            module:true,
+            files:[
+                "app/post/post.js"
+            ]
+        },
+        {
+            name:"textAngular",
+            module:true,
+            files:[
+                "/app/post/textAngular.min.js"
+            ]
         }
     ])
     .config([

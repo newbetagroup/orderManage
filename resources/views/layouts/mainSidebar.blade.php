@@ -32,7 +32,7 @@
             <li class="header">栏目导航</li>
             <!-- Optionally, you can add icons to the links -->
 
-            <li><a href="/admin"><i class="fa fa-dashboard"></i> <span>控制面板</span></a></li>
+            <li><a href="/"><i class="fa fa-dashboard"></i> <span>控制面板</span></a></li>
 
                 <li class="treeview active">
                     <a href="#"><i class="fa"></i> <span>公司管理</span> <i
@@ -44,8 +44,8 @@
                         <li ng-class="{active: $state.includes('manager')}">
                             <a ui-sref="manager.staff.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
                         </li>
-                        <li>
-                            <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
+                        <li ng-class="{active: $state.includes('post')}">
+                            <a ui-sref="post.postManageIndex">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>新闻公告</a>
                         </li>
                         <li>
                             <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>

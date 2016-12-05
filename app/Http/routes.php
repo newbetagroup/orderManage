@@ -51,6 +51,11 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('permission/index', ['as' => 'permission.index', 'uses' => 'PermissionController@index']); //查询
     Route::resource('permission', 'PermissionController', ['names' => ['update' => 'permission.edit', 'store' => 'permission.create']]);
 
+    //post
+    Route::post('post/index', ['as' => 'post.index', 'uses' => 'PostController@index']);//time line 形式？
+    Route::resource('post', 'PostController', ['names' => ['update' => 'post.edit', 'store' => 'post.create']]);
+
+
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -81,3 +86,11 @@ Route::get('tpl/manager/editGroup', function() { return view('tpl.manager.editGr
 Route::get('tpl/manager/permissionIndex', function() { return view('tpl.manager.permissionIndex'); });
 Route::get('tpl/manager/addPermission', function() { return view('tpl.manager.addPermission'); });
 Route::get('tpl/manager/editPermission', function() { return view('tpl.manager.editPermission'); });
+
+//post
+Route::get('tpl/post/base', function() { return view('tpl.post.base'); });
+Route::get('tpl/post/postIndex', function() { return view('tpl.post.postIndex'); });
+Route::get('tpl/post/postManageIndex', function() { return view('tpl.post.postManageIndex'); });
+Route::get('tpl/post/postManageAdd', function() { return view('tpl.post.postManageAdd'); });
+Route::get('tpl/post/postManageEdit', function() { return view('tpl.post.postManageEdit'); });
+Route::get('tpl/post/postManageDestroy', function() { return view('tpl.post.postManageDestroy'); });

@@ -11,7 +11,8 @@
         //'ngResource',
         'commonDashboard',
         //'common',
-        'userDashboard'
+        'userDashboard',
+        'textAngular' //待解决
         //'managerDashboard'
     ]);
     myApp.config([

@@ -54,18 +54,6 @@
                             return $q.when(me.PermissionsNameHad[userId]);
                         }
                     };
-
-                    //样式选择以及头顶的用户常用导航
-                    me.staffHeaderLink = [
-                        {
-                            href: '/home#/manager/groupIndex',
-                            title: '部门管理'
-                        },
-                        {
-                            href: '/home#/manager/index/',
-                            title: '员工管理'
-                        }
-                    ];
                 }
             ])
 })();

@@ -106,7 +106,58 @@ myApp.config([
                 url: '/editPermission/:permissionId',
                 templateUrl: 'tpl/manager/editPermission',
                 controller: 'EditPermissionCtrl'
-            });
+            })
+
+        //post
+            .state('post', {
+                url:'/post',
+                templateUrl: 'tpl/post/base',
+                resolve:{
+                    loadDashboard:["$ocLazyLoad", function ($ocLazyLoad) {
+                        return $ocLazyLoad.load("postDashboard");
+                    }]
+                },
+                controller: function ($state) {
+                   // $state.go('post.postIndex');
+                }
+            })
+            .state('post.postIndex', {
+                url: '/postIndex',
+                templateUrl: 'tpl/post/postIndex',
+                controller: 'PostIndexCtrl'
+            })
+            .state('post.postManageIndex', {
+                url: '/postManageIndex',
+                templateUrl: 'tpl/post/postManageIndex',
+                controller: 'PostManageIndexCtrl'
+            })
+            .state('post.postManageAdd', {
+                url: '/postManageAdd',
+                templateUrl: 'tpl/post/postManageAdd',
+                resolve: {
+                  /*loadkindeditor:["$ocLazyLoad", function ($ocLazyLoad) {
+                      return $ocLazyLoad.load([
+                          "/css/textAngular.css",
+                          '/app/post/textAngular-rangy.min.js',
+                          '/app/post/textAngular-sanitize.min.js'
+                      ]).then(function () {
+                          return $ocLazyLoad.load('textAngular');
+                      });
+                  }]*/
+                },
+                controller: 'PostManageAddCtrl'
+            })
+            .state('post.postManageEdit', {
+                url: '/postManageEdit',
+                templateUrl: 'tpl/post/postManageEdit',
+                controller: 'PostManageEditCtrl'
+            })
+            .state('post.postManageDestroy', {
+                url: '/postManageDestroy',
+                templateUrl: 'tpl/post/postManageDestroy',
+                controller: 'PostManageDestroyCtrl'
+            })
+        ;
     }
     ])
     .run(function($rootScope, $state, $stateParams) {

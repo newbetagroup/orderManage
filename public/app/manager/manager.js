@@ -37,6 +37,7 @@
                 };
                 //添加新员工
                 me.fnAddStaff = function (staffInfo) {
+                    if(staffInfo.pending) return;
                     staffInfo.pending = true;
                     $http.post('/user', staffInfo)
                         .then(function (r) {
@@ -102,6 +103,7 @@
                 };
                 //提交添加分组
                 me.fnAddGroup = function (groupInfo) {
+                    if(groupInfo.pending) return;
                     groupInfo.pending = true;
                     $http.post('/group', groupInfo)
                         .then(function (r) {
@@ -166,6 +168,7 @@
                 };
                 //增加权限
                 me.fnAddPermission = function (permissionInfo) {
+                    if(permissionInfo.pending) return;
                     permissionInfo.pending = true;
                     $http.post('/permission', permissionInfo)
                         .then(function (r) {

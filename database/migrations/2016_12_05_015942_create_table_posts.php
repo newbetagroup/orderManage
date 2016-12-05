@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTablePerformances extends Migration
+class CreateTablePosts extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,13 @@ class CreateTablePerformances extends Migration
      */
     public function up()
     {
-        Schema::create('performances', function (Blueprint $table) {
+        Schema::create('posts', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
-            //$table->
+            $table->string('title');
+            $table->longText('description');
+            $table->string('image');
+            $table->boolean('visible');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateTablePerformances extends Migration
      */
     public function down()
     {
-        Schema::drop('performances');
+        Schema::drop('posts');
     }
 }
