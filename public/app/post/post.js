@@ -125,12 +125,11 @@
                 'textAngularManager',
                 function ($scope, PostService, textAngularManager) {
                     $scope.postInfo = {};
-                    $scope.version = textAngularManager.getVersion();
-                    $scope.versionNumber = $scope.version.substring(1);
                      $scope.postInfo.description = '<p>内容</p>';
                     $scope.disabled = false;
                     $scope.fnAddPost = function (postInfo) {
-                        PostService.fnAddPost(postInfo);
+                        console.log(postInfo);
+                       // PostService.fnAddPost(postInfo);
                     }
                 }
             ]);
