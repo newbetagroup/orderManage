@@ -129,7 +129,8 @@ myApp.config([
             .state('post.postManageIndex', {
                 url: '/postManageIndex',
                 templateUrl: 'tpl/post/postManageIndex',
-                controller: 'PostManageIndexCtrl'
+                controller: 'PostManageIndexCtrl',
+                controllerAs: 'posts'
             })
             .state('post.postManageAdd', {
                 url: '/postManageAdd',
@@ -148,7 +149,7 @@ myApp.config([
                 controller: 'PostManageAddCtrl'
             })
             .state('post.postManageEdit', {
-                url: '/postManageEdit',
+                url: '/postManageEdit/:postId',
                 templateUrl: 'tpl/post/postManageEdit',
                 controller: 'PostManageEditCtrl'
             })

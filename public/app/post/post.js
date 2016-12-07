@@ -10,10 +10,11 @@
             .service('PostService',[
                 '$http',
                 '$q',
-                function ($http, $q) {
+                '$filter',
+                function ($http, $q, $filter) {
                     var me = this;
                     me.postsInfo = {};
-                    var cachePosts = null;
+                    var cachedData;//cache post
                     var dataLength;
 
                     function filterData(data, filter){
@@ -33,9 +34,10 @@
                     }
 
                     //all
-                    me.fnGetPosts = function () {
+                    me.fnGetPosts = function (params) {
                         var deffered = $q.defer();
                         if(angular.isUndefined(cachedData)) {
+                            console.log('aaa');
                             $http.get("/post/index").then(function (r) {
 
                                 if(r.status !== 200 || r.data.status !=1) {
@@ -65,22 +67,40 @@
                     };
 
                     //新增
-                    me.fnAddPost = function (post) {
-                        if(post.pending) return;
-                        post.pending =true;
-                        $http.post('/post', post)
+                    me.fnAddPost = function (postInfo) {
+                        if(postInfo.pending) return;
+                        postInfo.pending =true;
+                        $http.post('/post', postInfo)
                             .then(function (r) {
                                 if(r.data.status == 1) {
-                                    post.addStatus = true;
+                                    postInfo.addStatus = true;
                                 } else {
-                                    post.addStatus = false;
+                                    postInfo.addStatus = false;
                                 }
                             }, function (e) {
-                                post.addStatus = false;
+                                postInfo.addStatus = false;
                             })
                             .finally(function () {
-                                post.pending = false;
+                                postInfo.pending = false;
                             })
+                    };
+
+                    me.fnEditPost = function (postInfo) {
+                        if(postInfo.pending) return;
+                        postInfo.pending =true;
+                        $http.post('/post/'+postInfo.id, postInfo)
+                            .then(function (r) {
+                                if(r.data.status == 1) {
+                                    postInfo.addStatus = true;
+                                } else {
+                                    postInfo.addStatus = false;
+                                }
+                            }, function (e) {
+                                postInfo.addStatus = false;
+                            })
+                            .finally(function () {
+                                postInfo.pending = false;
+                            });
                     };
 
                     me.fnDestroyPost = function (id) {
@@ -92,14 +112,20 @@
                 '$scope',
                 '$timeout',
                 'PostService',
+                '$location',
                 'NgTableParams',
-                function ($scope, $timeout, PostService, NgTableParams) {
-
+                function ($scope, $timeout, PostService, $location, NgTableParams) {
                     var self = this;
                     self.$injet = ["NgTableParams", "ngTableSimpleList"];
                     this.posts = {};
 
                     self.tableParams = createUsingFullOptions();
+
+                    self.cols = [
+                        { field: "title", title: "标题", sortable: "title", show: true },
+                        { field: "created_at", title: "添加时间", sortable: "created_at", show: true },
+                        { field: "updated_at", title: "最后修改时间", show: true }
+                    ];
 
                     function createUsingFullOptions() {
                         var initialParams = {
@@ -129,7 +155,17 @@
                     $scope.disabled = false;
                     $scope.fnAddPost = function (postInfo) {
                         console.log(postInfo);
-                       // PostService.fnAddPost(postInfo);
+                        PostService.fnAddPost(postInfo);
+                    }
+                }
+            ])
+            .controller('PostManageEditCtrl', [
+                '$scope',
+                'PostService',
+                function ($scope, PostService) {
+                    $scope.postInfo = {};
+                    $scope.fnEditPost = function (postInfo) {
+                        PostService.fnEditPost(postInfo);
                     }
                 }
             ]);

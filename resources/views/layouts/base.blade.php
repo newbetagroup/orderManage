@@ -53,7 +53,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <!-- dataTables -->
     <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
     <script src="/plugins/datatables/dataTables.bootstrap.js"></script>
-    <script src="/plugins/tokenfield/dist/bootstrap-tokenfield.min.js"></script>
+
     <script src="/dist/js/common.js"></script>
 
     @yield('js')

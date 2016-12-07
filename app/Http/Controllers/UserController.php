@@ -176,8 +176,8 @@ class UserController extends Controller
     public function destroy($id)
     {
         $user = User::find((int)$id);
-        if ($user && $user->id != 1) {
-            //id 为1 设置成超级管理员
+        if ($user && $user->id != 1 && $user->id != 2) {
+            //id 为1 设置成超级管理员, 2 是 boss
 
             //解绑group user
             foreach ($user->groups as $v){

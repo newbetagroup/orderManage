@@ -37,6 +37,13 @@ class PostController extends Controller
         return ['status' => 1, 'data' => $data];
     }
 
+    public function allPost()
+    {
+        $data['recordsTotal'] =  Post::count();
+        $data['data'] = Post::orderBy('created_at', 'desc')->get();
+        return ['status' => 1, 'data' => $data];
+    }
+
     /**
      * Show the form for creating a new resource.
      *
@@ -57,7 +64,7 @@ class PostController extends Controller
     {
         $post = new Post();
 
-        foreach ($this->fields as $field) {
+        foreach (array_keys($this->fields) as $field) {
             $post->$field = $request->get($field);
         }
 

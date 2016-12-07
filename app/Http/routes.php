@@ -52,10 +52,8 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::resource('permission', 'PermissionController', ['names' => ['update' => 'permission.edit', 'store' => 'permission.create']]);
 
     //post
-    Route::post('post/index', ['as' => 'post.index', 'uses' => 'PostController@index']);//time line 形式？
+    Route::get('post/index', ['as' => 'post.index', 'uses' => 'PostController@allPost']);//
     Route::resource('post', 'PostController', ['names' => ['update' => 'post.edit', 'store' => 'post.create']]);
-
-
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
