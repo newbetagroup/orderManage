@@ -13,9 +13,7 @@
                 '$filter',
                 function ($http, $q, $filter) {
                     var me = this;
-                    me.postsInfo = {};
-                    var cachedData;//cache post
-                    var dataLength;
+                    me.postsInfo = {};//{recordTotal:*, data}
 
                     function filterData(data, filter){
                         return $filter('filter')(data, filter);
@@ -35,9 +33,9 @@
 
                     //all
                     me.fnGetPosts = function (params) {
+                        console.log(params.filter());
                         var deffered = $q.defer();
-                        if(angular.isUndefined(cachedData)) {
-                            console.log('aaa');
+                        if(angular.equals({}, me.postsInfo)) {
                             $http.get("/post/index").then(function (r) {
 
                                 if(r.status !== 200 || r.data.status !=1) {
@@ -45,19 +43,16 @@
                                     return;
                                 }
 
-                                dataLength = r.data.data.recordsTotal;
-                                params.total(dataLength);
-                                cachedData = r.data.data.data;
-                                var transformedData = sliceData(orderData(cachedData,params),params);
-                                console.log('cachedData', transformedData);
+                                me.postsInfo = r.data.data;
+                                params.total(r.data.data.recordsTotal);
+                                //var transformedData = sliceData(orderData(r.data.data.data,params),params);
+                                var transformedData = transformData(me.postsInfo.data, params.filter(), params);
                                 deffered.resolve(transformedData);
                             });
                             return deffered.promise;
                         } else {
-                            //var filteredData = filterData(cachedData,filter);
-                            var transformedData = sliceData(orderData(cachedData,params),params);
-                            console.log('realcache',transformedData);
-                            params.total(dataLength);
+                            var transformedData = transformData(me.postsInfo.data, params.filter(), params);
+                            params.total(me.postsInfo.recordsTotal);
                             return $q.when(transformedData);
                         }
                     };
@@ -88,15 +83,15 @@
                     me.fnEditPost = function (postInfo) {
                         if(postInfo.pending) return;
                         postInfo.pending =true;
-                        $http.post('/post/'+postInfo.id, postInfo)
+                        $http.put('/post/'+postInfo.id, postInfo)
                             .then(function (r) {
                                 if(r.data.status == 1) {
-                                    postInfo.addStatus = true;
+                                    postInfo.editStatus = true;
                                 } else {
-                                    postInfo.addStatus = false;
+                                    postInfo.editStatus = false;
                                 }
                             }, function (e) {
-                                postInfo.addStatus = false;
+                                postInfo.editStatus = false;
                             })
                             .finally(function () {
                                 postInfo.pending = false;
@@ -104,7 +99,9 @@
                     };
 
                     me.fnDestroyPost = function (id) {
-                        
+                        $http.delete('post/'+id).then(function (r) {
+                            console.log(r.data);
+                        })
                     }
                 }
             ])
@@ -122,15 +119,17 @@
                     self.tableParams = createUsingFullOptions();
 
                     self.cols = [
-                        { field: "title", title: "标题", sortable: "title", show: true },
+                        { field: "title", title: "标题", sortable: "title", filter: {title: "text"}, show: true },
                         { field: "created_at", title: "添加时间", sortable: "created_at", show: true },
-                        { field: "updated_at", title: "最后修改时间", show: true }
+                        { field: "updated_at", title: "最后修改时间", show: true },
+                        { title: "", show: true }
                     ];
 
                     function createUsingFullOptions() {
                         var initialParams = {
                             page: 1,
-                            sorting: { created_at: "asc" }
+                            sorting: { created_at: "asc" },
+                            filter: { title: "" }
                         };
                         var initialSettings = {
                             filterDelay: 0,
@@ -143,6 +142,11 @@
                         };
                         return new NgTableParams(initialParams, initialSettings);
                     }
+
+                    //删除
+                    self.fnDestroyPost = function (id) {
+                        PostService.fnDestroyPost(id);
+                    };
 
                 }])
             .controller('PostManageAddCtrl', [
@@ -162,8 +166,30 @@
             .controller('PostManageEditCtrl', [
                 '$scope',
                 'PostService',
-                function ($scope, PostService) {
+                '$filter',
+                function ($scope, PostService, $filter) {
                     $scope.postInfo = {};
+
+                    var postId = $scope.$stateParams.postId;
+                    if(angular.equals({}, PostService.postsInfo.data)) {
+                        $scope.$state.go('post.postManageIndex');
+                        return;
+                    }
+                    var postsInfo = $filter('filter')(PostService.postsInfo.data, {id: postId});
+                    angular.forEach(postsInfo, function (value, key) {
+                        //所有的posts中取出id为postId的一条数据
+                        if(value.id == postId) {
+                            $scope.postInfo = value;
+                            return false;
+                        }
+                    });
+                    //没有这个post
+                    if(angular.equals({}, $scope.postInfo)) {
+                        $scope.$state.go('post.postManageIndex');
+                        return;
+                    }
+
+                    //提交修改
                     $scope.fnEditPost = function (postInfo) {
                         PostService.fnEditPost(postInfo);
                     }

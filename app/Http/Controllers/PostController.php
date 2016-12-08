@@ -110,7 +110,7 @@ class PostController extends Controller
     {
         $post = Post::find((int)$id);
 
-        foreach ($this->fields as $field) {
+        foreach (array_keys($this->fields) as $field) {
             $post->$field = $request->get($field);
         }
 

@@ -9,7 +9,24 @@
             </a>
         </div>
     </div>
+
     <div class="row page-title-row" style="margin:5px;">
+        <div class="col-md-6">
+            <div class="dataTables_length" id="tags-table_length">
+                <label>显示
+                    <select name="tags-table_length" class="form-control input-sm">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                        <option value="100">100</option>
+                    </select> 项结果</label>
+            </div>
+        </div>
+        <div class="col-md-6 text-right">
+            <div id="tags-table_filter" class="dataTables_filter">
+                <label>搜索:<input ng-model="searchKey" type="search" class="form-control input-sm"></label>
+            </div>
+        </div>
     </div>
 
     <div class="row">
