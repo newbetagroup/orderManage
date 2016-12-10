@@ -25,14 +25,18 @@
     <script src="/app/route.config.js"></script>
 
     <script src="/plugins/ng-table/ng-table.min.js"></script>
+
+    {{--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.4.8/angular-sanitize.js"></script>--}}
+    <script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
+    <script src="/node_modules/angular-ui-bootstrap/dist/dialogs.min.js"></script>
+
     <script src="/plugins/jquerydatetime/jquery.datetimepicker.js"></script>
     <script src="/app/common/directives/angular.datetime.js"></script>
+
     <script src="/app/common/service/common.js"></script>
     <script src="/app/user/user.js"></script>
 
     {{--延迟加载有问题？--}}
-    <script src="/app/post/textAngular-rangy.min.js"></script>
-    <script src="/app/post/textAngular-sanitize.min.js"></script>
     <script src="/app/post/textAngular.min.js"></script>
     {{--<script src="/app/manager/manager.js"></script>--}}
 @endsection
@@ -40,3 +44,4 @@
 @section('content')
     <div ui-view></div>
 @endsection
+

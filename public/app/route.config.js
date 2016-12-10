@@ -114,7 +114,7 @@ myApp.config([
                 templateUrl: 'tpl/post/base',
                 resolve:{
                     loadDashboard:["$ocLazyLoad", function ($ocLazyLoad) {
-                        return $ocLazyLoad.load("postDashboard");
+                        return $ocLazyLoad.load(["postDashboard"]);
                     }]
                 },
                 controller: function ($state) {
@@ -135,17 +135,6 @@ myApp.config([
             .state('post.postManageAdd', {
                 url: '/postManageAdd',
                 templateUrl: 'tpl/post/postManageAdd',
-                resolve: {
-                  /*loadkindeditor:["$ocLazyLoad", function ($ocLazyLoad) {
-                      return $ocLazyLoad.load([
-                          "/css/textAngular.css",
-                          '/app/post/textAngular-rangy.min.js',
-                          '/app/post/textAngular-sanitize.min.js'
-                      ]).then(function () {
-                          return $ocLazyLoad.load('textAngular');
-                      });
-                  }]*/
-                },
                 controller: 'PostManageAddCtrl'
             })
             .state('post.postManageEdit', {

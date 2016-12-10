@@ -6,7 +6,6 @@
 myApp.constant("Modules_Config",[
         {
             name:"ngTable",
-            module:true,
             files:[
                 "/plugins/ng-table/ng-table.min.css",
                 "/plugins/ng-table/ng-table.min.js"
@@ -14,37 +13,38 @@ myApp.constant("Modules_Config",[
         },
         {
             name:"ui.bootstrap",
-            module:true,
             files:[
-                "Scripts/angular-bootstrap/ui-bootstrap-tpls-0.14.3.min.js"
+                "/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"
             ]
         },
         {
             name:"userDashboard",
-            module:true,
             files:[
                 "app/user/user.js"
             ]
         },
         {
             name:"managerDashboard",
-            module:true,
             files:[
                 "app/manager/manager.js"
             ]
         },
         {
             name:"postDashboard",
-            module:true,
             files:[
                 "app/post/post.js"
             ]
         },
         {
             name:"textAngular",
-            module:true,
             files:[
                 "/app/post/textAngular.min.js"
+            ]
+        },
+        {
+            name:"dialogs.main",
+            files:[
+                "/node_modules/angular-ui-bootstrap/dist/dialogs.min.js"
             ]
         }
     ])
@@ -53,8 +53,8 @@ myApp.constant("Modules_Config",[
         "Modules_Config",
         function ($ocLazyLoadProvider,Modules_Config){
         $ocLazyLoadProvider.config({
-            debug:false,
-            events:false,
+            debug:true,
+            events:true,
             modules:Modules_Config
         });
     }]);

@@ -46,7 +46,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
             <!-- REQUIRED JS SCRIPTS -->
 
     {{-- scripts --}}
-    <script src="/node_modules/jquery/dist/jQuery-2.2.0.min.js"></script>
+    <script src="/node_modules/jquery/dist/jQuery.min.js"></script>
     <script src="/bootstrap/js/bootstrap.js"></script>
     <!-- AdminLTE App -->
     <script src="/dist/js/app.min.js"></script>

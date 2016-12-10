@@ -7,6 +7,8 @@
     var myApp = angular.module('zwb', [
         'ui.router',
         'oc.lazyLoad',
+        'ui.bootstrap',
+        'dialogs.main',
         'ngTable',
         //'ngResource',
         'commonDashboard',
@@ -25,7 +27,6 @@
         .run(function($rootScope,UserService,CommonService) {
             var userInfo = null;
             UserService.getProfile().then(function (r) {
-                console.log(r);
                 userInfo = {
                     userId: r.id,
                     name:r.name,

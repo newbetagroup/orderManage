@@ -32,10 +32,10 @@
                     }
 
                     //all
-                    me.fnGetPosts = function (params) {
-                        console.log(params.filter());
+                    me.fnGetPosts = function (params, filterValue) {
                         var deffered = $q.defer();
                         if(angular.equals({}, me.postsInfo)) {
+                            console.log('http');
                             $http.get("/post/index").then(function (r) {
 
                                 if(r.status !== 200 || r.data.status !=1) {
@@ -46,16 +46,22 @@
                                 me.postsInfo = r.data.data;
                                 params.total(r.data.data.recordsTotal);
                                 //var transformedData = sliceData(orderData(r.data.data.data,params),params);
-                                var transformedData = transformData(me.postsInfo.data, params.filter(), params);
+                                var transformedData = transformData(me.postsInfo.data, filterValue, params);
                                 deffered.resolve(transformedData);
                             });
                             return deffered.promise;
                         } else {
-                            var transformedData = transformData(me.postsInfo.data, params.filter(), params);
-                            params.total(me.postsInfo.recordsTotal);
+                            console.log('cache');
+                            var filteredData = filterData(me.postsInfo.data,filterValue);
+                            params.total(filteredData.length);
+                            var transformedData = sliceData(orderData(filteredData,params),params);
                             return $q.when(transformedData);
                         }
                     };
+                    me.fnSearchPosts = function () {
+
+                    };
+
                     // by id
                     me.fnGetPost = function (id) {
 
@@ -105,50 +111,67 @@
                     }
                 }
             ])
+
             .controller('PostManageIndexCtrl', [
                 '$scope',
                 '$timeout',
                 'PostService',
-                '$location',
                 'NgTableParams',
-                function ($scope, $timeout, PostService, $location, NgTableParams) {
+                'dialogs',
+                function ($scope, $timeout, PostService, NgTableParams, dialogs) {
                     var self = this;
                     self.$injet = ["NgTableParams", "ngTableSimpleList"];
-                    this.posts = {};
 
                     self.tableParams = createUsingFullOptions();
 
-                    self.cols = [
-                        { field: "title", title: "标题", sortable: "title", filter: {title: "text"}, show: true },
+                    /*self.cols = [
+                        // { field: "title", title: "标题", sortable: "title", filter: {title: "text"}, show: true },
+                        { field: "title", title: "标题", sortable: "title", show: true },
                         { field: "created_at", title: "添加时间", sortable: "created_at", show: true },
                         { field: "updated_at", title: "最后修改时间", show: true },
-                        { title: "", show: true }
-                    ];
+                        {
+                            field: 'id',
+                            title: "操作",
+                            show: true
+                        }
+                    ];*/
 
+                    // init
                     function createUsingFullOptions() {
                         var initialParams = {
                             page: 1,
-                            sorting: { created_at: "asc" },
-                            filter: { title: "" }
+                            sorting: { created_at: "desc" },
+                            count:5
                         };
                         var initialSettings = {
-                            filterDelay: 0,
-                            paginationMaxBlocks: 3,
+                            counts: [5, 20, 50, 100],
+                            paginationMaxBlocks: 5,
                             paginationMinBlocks: 2,
                             getData: function(params) {
-                                $location.search(params.url()); // 将参数放到url上，实现刷新页面不会跳回第一页和默认配置
-                                return PostService.fnGetPosts(params);
+                                return PostService.fnGetPosts(params, $scope.filterValue);
                             }
                         };
                         return new NgTableParams(initialParams, initialSettings);
                     }
 
-                    //删除
-                    self.fnDestroyPost = function (id) {
-                        PostService.fnDestroyPost(id);
-                    };
+                    //筛选
+                    $scope.$watch("filterValue", function () {
+                        self.tableParams.reload();
+                    });
+
+                    var dlg = null;
+                    self.fnConfirmDestory = function (id) {
+                       dlg = dialogs.confirm('Confirm','确定要删除该post吗?');
+                        dlg.result.then(function(btn){
+                            //确认删除
+                            PostService.fnDestroyPost(id);
+                        },function(btn){
+                            console.log('取消');
+                        });
+                    }
 
                 }])
+
             .controller('PostManageAddCtrl', [
                 '$scope',
                 'PostService',
@@ -195,4 +218,5 @@
                     }
                 }
             ]);
+    
 })();
