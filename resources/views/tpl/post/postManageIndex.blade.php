@@ -19,10 +19,10 @@
                 <div class="box-body">
                     <table  ng-table="posts.tableParams" class="table table-condensed table-bordered table-striped">
                         <tr ng-repeat="row in $data">
-                            <td data-title-text="标题" sortable="'title'">[: row.title :]</td>
-                            <td data-title-text="创建时间">[: row.created_at :]</td>
-                            <td data-title-text="最后修改时间">[: row.updated_at :]</td>
-                            <td data-title-text="操作">
+                            <td data-title="'标题'" sortable="'title'">[: row.title :]</td>
+                            <td data-title="'创建时间'">[: row.created_at :]</td>
+                            <td data-title="'最后修改时间'">[: row.updated_at :]</td>
+                            <td data-title="'操作'">
                                 <a style="margin:3px;" ui-sref="post.postManageEdit({postId:row.id})" class="X-Small btn-xs text-success ">
                                     <i class="fa fa-edit"></i> 编辑
                                 </a>
