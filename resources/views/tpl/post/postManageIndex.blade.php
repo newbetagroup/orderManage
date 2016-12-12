@@ -20,8 +20,8 @@
                     <table  ng-table="posts.tableParams" class="table table-condensed table-bordered table-striped">
                         <tr ng-repeat="row in $data">
                             <td data-title="'标题'" sortable="'title'">[: row.title :]</td>
-                            <td data-title="'创建时间'">[: row.created_at :]</td>
-                            <td data-title="'最后修改时间'">[: row.updated_at :]</td>
+                            <td data-title="'创建时间'" sortable="'created_at'">[: row.created_at :]</td>
+                            <td data-title="'最后修改时间'" sortable="'updated_at'">[: row.updated_at :]</td>
                             <td data-title="'操作'">
                                 <a style="margin:3px;" ui-sref="post.postManageEdit({postId:row.id})" class="X-Small btn-xs text-success ">
                                     <i class="fa fa-edit"></i> 编辑
@@ -35,4 +35,17 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div ng-show="posts.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <strong>正在删除!</strong>
+        </div>
+        <div ng-if="posts.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            <strong>删除成功!</strong>
+        </div>
+    </div>
+
+
 </section>

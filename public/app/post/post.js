@@ -32,10 +32,10 @@
                     }
 
                     //all
-                    me.fnGetPosts = function (params, filterValue) {
+                    me.fnGetPosts = function (filterValue, params, type) {
+                        type = type || 'cache';//cache or remote
                         var deffered = $q.defer();
-                        if(angular.equals({}, me.postsInfo)) {
-                            console.log('http');
+                        if(angular.equals({}, me.postsInfo) || type == 'remote') {
                             $http.get("/post/index").then(function (r) {
 
                                 if(r.status !== 200 || r.data.status !=1) {
@@ -44,15 +44,28 @@
                                 }
 
                                 me.postsInfo = r.data.data;
+
+                                if(angular.isUndefined(params)) {
+                                    var filteredData = filterData(me.postsInfo.data,filterValue);
+                                    deffered.resolve(filteredData);
+                                    return;
+                                }
                                 params.total(r.data.data.recordsTotal);
                                 //var transformedData = sliceData(orderData(r.data.data.data,params),params);
                                 var transformedData = transformData(me.postsInfo.data, filterValue, params);
                                 deffered.resolve(transformedData);
                             });
+
                             return deffered.promise;
+
                         } else {
-                            console.log('cache');
+                            
                             var filteredData = filterData(me.postsInfo.data,filterValue);
+
+                            if(angular.isUndefined(params)) {
+                                return $q.when(filteredData);
+                            }
+
                             params.total(filteredData.length);
                             var transformedData = sliceData(orderData(filteredData,params),params);
                             return $q.when(transformedData);
@@ -75,6 +88,7 @@
                             .then(function (r) {
                                 if(r.data.status == 1) {
                                     postInfo.addStatus = true;
+                                    me.postsInfo = {};//reload
                                 } else {
                                     postInfo.addStatus = false;
                                 }
@@ -86,6 +100,7 @@
                             })
                     };
 
+                    //edit 修改
                     me.fnEditPost = function (postInfo) {
                         if(postInfo.pending) return;
                         postInfo.pending =true;
@@ -93,6 +108,7 @@
                             .then(function (r) {
                                 if(r.data.status == 1) {
                                     postInfo.editStatus = true;
+                                    me.postsInfo = {};//reload
                                 } else {
                                     postInfo.editStatus = false;
                                 }
@@ -104,22 +120,87 @@
                             });
                     };
 
-                    me.fnDestroyPost = function (id) {
+                    //删除
+                    me.fnDestroyPost = function (id, deleteAction) {
+                        if(deleteAction.pending) return; //正在删除
+                        deleteAction.pending =true;
                         $http.delete('post/'+id).then(function (r) {
-                            console.log(r.data);
+                            if(r.data.status == 1) {
+                                deleteAction.status = true; //成功
+
+                            } else {
+                                deleteAction.status = false;
+                            }
                         })
+                            .finally(function () {
+                                deleteAction.pending = false;
+                            });
                     }
+                }
+            ])
+
+            .controller('PostTimelineCtrl',[
+                '$scope',
+                'PostService',
+                function ($scope, PostService) {
+                    if(angular.equals({}, PostService.postsInfo)) {
+                        PostService.fnGetPosts().then(function (postsInfo) {
+                            $scope.posts = postsInfo;
+                        });
+                    } else {
+                        $scope.posts = PostService.postsInfo.data;
+                    }
+
+                    //筛选
+                    $scope.$watch("filterValue",function (newValue, oldValue) {
+                        PostService.fnGetPosts(newValue).then(function (postsInfo) {
+                            $scope.posts = postsInfo;
+                        });
+                    });
+                }
+            ])
+            
+            .controller('PostDescriptionCtrl', [
+                '$scope',
+                'PostService',
+                '$filter',
+                function ($scope, PostService, $filter) {
+                    var postId = $scope.$stateParams.postId;
+                    var posts = null;
+                    if(angular.equals({}, PostService.postsInfo)) {
+                        PostService.fnGetPosts().then(function (postsInfo) {
+                            posts = $filter('filter')(postsInfo, {id:postId});
+                            filterPosts(posts);
+                        });
+                    } else {
+                        posts = $filter('filter')(PostService.postsInfo.data, {id:postId});
+                        filterPosts(posts);
+                    }
+
+                    function filterPosts(posts) {
+                        angular.forEach(posts, function (value,key) {
+                            if(value.id == postId) {
+                                $scope.post = value;
+                            }
+                        });
+                    }
+
                 }
             ])
 
             .controller('PostManageIndexCtrl', [
                 '$scope',
-                '$timeout',
                 'PostService',
                 'NgTableParams',
                 'dialogs',
-                function ($scope, $timeout, PostService, NgTableParams, dialogs) {
+                function ($scope, PostService, NgTableParams, dialogs) {
+
+                    var getType = 'cache';// 每次去拉取posts的方式: cache or remote
+
                     var self = this;
+
+                    self.deleteAction = {};//删除的状态 pendding 和 status
+
                     self.$injet = ["NgTableParams", "ngTableSimpleList"];
 
                     self.tableParams = createUsingFullOptions();
@@ -134,7 +215,9 @@
                             title: "操作",
                             show: true
                         }
-                    ];*/
+                    ];
+                    // 使用这种方式需要使用ng-table-dynamic="posts.tableParams with posts.cols"方式，详情参考官网ng-table.com
+                    */
 
                     // init
                     function createUsingFullOptions() {
@@ -148,7 +231,7 @@
                             paginationMaxBlocks: 5,
                             paginationMinBlocks: 2,
                             getData: function(params) {
-                                return PostService.fnGetPosts(params, $scope.filterValue);
+                                return PostService.fnGetPosts($scope.filterValue, params, getType);
                             }
                         };
                         return new NgTableParams(initialParams, initialSettings);
@@ -159,14 +242,18 @@
                         self.tableParams.reload();
                     });
 
+                    //确认删除模态框
                     var dlg = null;
                     self.fnConfirmDestory = function (id) {
                        dlg = dialogs.confirm('Confirm','确定要删除该post吗?');
                         dlg.result.then(function(btn){
                             //确认删除
-                            PostService.fnDestroyPost(id);
+                            PostService.fnDestroyPost(id, self.deleteAction);
+                            getType = 'remote';
+                            self.tableParams.reload();//更新表格，重新拉取数据
+                            getType = 'cache';
                         },function(btn){
-                            console.log('取消');
+                            console.log('取消删除post');
                         });
                     }
 
@@ -186,6 +273,7 @@
                     }
                 }
             ])
+
             .controller('PostManageEditCtrl', [
                 '$scope',
                 'PostService',

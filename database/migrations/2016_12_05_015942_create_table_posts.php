@@ -16,6 +16,7 @@ class CreateTablePosts extends Migration
             $table->increments('id');
             $table->unsignedInteger('user_id');
             $table->string('title');
+            $table->string('abstract')->comment('摘要');
             $table->longText('description');
             $table->string('image');
             $table->boolean('visible');

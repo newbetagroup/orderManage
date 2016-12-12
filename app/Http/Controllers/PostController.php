@@ -13,6 +13,7 @@ class PostController extends Controller
 {
     protected $fields = [
         'title' => '',
+        'abstract' => '',
         'description' => '',
         'visible' => '',
     ];

@@ -10,16 +10,26 @@
 
             <div class="panel-body">
 
-                <form class="form-horizontal" role="form" ng-submit="fnAddPost(postInfo)">
+                <form class="form" role="form" ng-submit="fnAddPost(postInfo)">
                     <!-- name -->
                     <div class="form-group">
+                        <label for="title">标题</label>
                         <div class="input-group col-md-5">
                             <input type="text" id="title" name="title" placeholder="标题" class="form-control" ng-model="postInfo.title"/>
                         </div>
                     </div>
 
+                    <!-- abstract -->
+                    <div class="form-group">
+                        <label for="abstract">摘要</label>
+                        <div class="input-group col-md-5">
+                            <textarea name="abstract" ng-model="postInfo.abstract" id="abstract" cols="100%" rows="6"></textarea>
+                        </div>
+                    </div>
+
                     <!-- Description -->
                     <div class="form-group">
+                        <label for="description">详细内容</label>
                         <div class="input-group">
                             <text-angular name="description" ng-model="postInfo.description">
                                 <p>Any <b>HTML</b> we put in-between the text-angular tags gets automatically put into the editor if there <strong style="font-size: 12pt;"><u><em>is not</em></u></strong> a value assigned to the ngModel.</p>

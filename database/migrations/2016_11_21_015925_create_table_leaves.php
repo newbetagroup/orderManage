@@ -37,6 +37,6 @@ class CreateTableLeaves extends Migration
      */
     public function down()
     {
-        Schema::drop('leave');
+        Schema::drop('leaves');
     }
 }

@@ -124,7 +124,22 @@ myApp.config([
             .state('post.postIndex', {
                 url: '/postIndex',
                 templateUrl: 'tpl/post/postIndex',
-                controller: 'PostIndexCtrl'
+                resolve:{
+                    loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/css/timeline.css');
+                    }]
+                },
+                controller: 'PostTimelineCtrl'
+            })
+            .state('post.postDescription', {
+                url: '/postDescription/:postId',
+                templateUrl: 'tpl/post/postDescription',
+                resolve:{
+                    loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/css/post.css');
+                    }]
+                },
+                controller: 'PostDescriptionCtrl'
             })
             .state('post.postManageIndex', {
                 url: '/postManageIndex',

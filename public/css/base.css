@@ -5,6 +5,13 @@ html {
 
 .nav, .pagination, .carousel, .panel-title a { cursor: pointer; }
 
+.floatRight {
+    float: right;
+}
+.floatLeft {
+    float: left;
+}
+
 /*start modal-----------------------------*/
 /* Fix for Bootstrap 3 with Angular UI Bootstrap */
 .modal {

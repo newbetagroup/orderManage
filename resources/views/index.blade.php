@@ -28,7 +28,7 @@
 
     {{--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.4.8/angular-sanitize.js"></script>--}}
     <script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>
-    <script src="/node_modules/angular-ui-bootstrap/dist/dialogs.min.js"></script>
+    <script src="/node_modules/angular-ui-bootstrap/dist/dialogs.min.js"></script>{{--依赖于ngSanitize和ui.bootstrap--}}
 
     <script src="/plugins/jquerydatetime/jquery.datetimepicker.js"></script>
     <script src="/app/common/directives/angular.datetime.js"></script>
@@ -37,7 +37,7 @@
     <script src="/app/user/user.js"></script>
 
     {{--延迟加载有问题？--}}
-    <script src="/app/post/textAngular.min.js"></script>
+    <script src="/app/post/textAngular.min.js"></script>{{--依赖于ngSanitize和 rangy--}}
     {{--<script src="/app/manager/manager.js"></script>--}}
 @endsection
 

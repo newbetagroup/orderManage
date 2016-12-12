@@ -88,6 +88,7 @@ Route::get('tpl/manager/editPermission', function() { return view('tpl.manager.e
 //post
 Route::get('tpl/post/base', function() { return view('tpl.post.base'); });
 Route::get('tpl/post/postIndex', function() { return view('tpl.post.postIndex'); });
+Route::get('tpl/post/postDescription', function() { return view('tpl.post.postDescription'); });
 Route::get('tpl/post/postManageIndex', function() { return view('tpl.post.postManageIndex'); });
 Route::get('tpl/post/postManageAdd', function() { return view('tpl.post.postManageAdd'); });
 Route::get('tpl/post/postManageEdit', function() { return view('tpl.post.postManageEdit'); });
