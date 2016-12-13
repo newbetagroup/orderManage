@@ -24,8 +24,8 @@
 
                     <footer class="post-footer clearfix">
                         <div class="prev-next-wrap clearfix row">
-                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" href="/post/laravel-turns-five/"><i class="fa fa-angle-left fa-fw"></i> Laravel 五岁了</a>
-                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" href="/post/laravel-5-3-is-now-released/">Laravel 5.3 正式发布 <i class="fa fa-angle-right fa-fw"></i></a>
+                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" ng-if="prePost.id" ui-sref="post.postDescription({postId:prePost.id})"><i class="fa fa-angle-left fa-fw"></i> [: prePost.title :]</a>
+                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" ng-if="nextPost.id" ui-sref="post.postDescription({postId:nextPost.id})">[: nextPost.title :]<i class="fa fa-angle-right fa-fw"></i></a>
                         </div>
                     </footer>
                     <hr>

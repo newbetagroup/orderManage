@@ -8,7 +8,8 @@
         .service('ManagerService',[
             '$http',
             '$q',
-            function ($http, $q) {
+            'CommonService',
+            function ($http, $q, CommonService) {
                 var me = this;
                 me.errMessage = null;
                 me.staffsInfo = {};
@@ -16,9 +17,11 @@
                 me.permissionsInfo ={};
 
                 //获取员工数据
-                me.fnGetStaffs = function () {
+                me.fnGetStaffs = function (filterValue, type, params) {
+                    type = type || 'cache';//cache or remote
+
                     var deffered = $q.defer();
-                    if(angular.equals({}, me.staffsInfo)) {
+                    if(angular.equals({}, me.staffsInfo) || type == 'remote') {
                         $http.get("/user").then(function (r) {
 
                             if(r.status !== 200 || r.data.status !=1) {
@@ -28,13 +31,34 @@
 
                             me.staffsInfo = r.data.data;
 
-                            deffered.resolve(me.staffsInfo);
+                            if(angular.isUndefined(params)) {
+                                var filteredData = CommonService.filterData(me.staffsInfo.data,filterValue);
+                                deffered.resolve(filteredData);
+                                return;
+                            }
+
+                            params.total(r.data.data.recordsTotal);
+                            var transformedData = CommonService.transformData(me.staffsInfo.data, filterValue, params);
+
+                            deffered.resolve(transformedData);
                         });
+
                         return deffered.promise;
+
                     } else {
-                         return $q.when(me.staffsInfo);
+                        var filteredData = CommonService.filterData(me.staffsInfo.data,filterValue);
+
+                        //!ng-table
+                        if(angular.isUndefined(params)) {
+                            return $q.when(filteredData);
+                        }
+
+                        params.total(filteredData.length);
+                        var transformedData = CommonService.sliceOrderData(filteredData,params);
+                        return $q.when(transformedData);
                     }
                 };
+
                 //添加新员工
                 me.fnAddStaff = function (staffInfo) {
                     if(staffInfo.pending) return;
@@ -43,6 +67,7 @@
                         .then(function (r) {
                             if(r.data.status == 1) {
                                 staffInfo.addStatus = true;
+                                me.staffsInfo = {};//reload
                             } else {
                                 staffInfo.addStatus = false;
                             }
@@ -60,6 +85,7 @@
                         .then(function (r) {
                             if(r.data.status == 1) {
                                 staffInfo.editStatus = true;
+                                me.staffsInfo = {};//reload
                             } else {
                                 staffInfo.editStatus = false;
                             }
@@ -71,14 +97,21 @@
                         })
                 };
                 //删除用户
-                me.fnDestroyStaff = function (id) {
-                  $http.delete('/user/'+id).then(function (r) {
-                      if(r.data.status == 1) {
-                         delete me.staffsInfo.data[id];
-                      }
-                  },function (e) {
-                      console.log(e);
-                  })
+                me.fnDestroyStaff = function (id, deleteAction) {
+                    if(deleteAction.pending) return; //正在删除
+                    deleteAction.pending =true;
+                    $http.delete('/user/'+id).then(function (r) {
+                        if(r.data.status == 1) {
+                            deleteAction.status = true; //成功
+                        } else {
+                            deleteAction.status = false;
+                        }
+                    },function (e) {
+                            deleteAction.pending = false;
+                    })
+                        .finally(function () {
+                            deleteAction.pending = false;
+                        })
                 };
 
                 //groups
@@ -203,11 +236,46 @@
         .controller('StaffInfoCtrl',[
             '$scope',
             'ManagerService',
-            function ($scope, ManagerService) {
-                $scope.Manager = ManagerService;
-                ManagerService.fnGetStaffs();
+            'NgTableParams',
+            'dialogs',
+            function ($scope, ManagerService, NgTableParams, dialogs) {
+                var getType = 'cache';// 每次去拉取posts的方式: cache or remote
+
+                var self = this;
+
+                self.deleteAction = {};//删除的状态 pendding 和 status
+
+                // init
+                self.tableParams = createUsingFullOptions();
+                function createUsingFullOptions() {
+                    var initialParams = {
+                        page: 1,
+                        sorting: { created_at: "desc" },
+                        count:5
+                    };
+                    var initialSettings = {
+                        counts: [5, 20, 50, 100],
+                        paginationMaxBlocks: 5,
+                        paginationMinBlocks: 2,
+                        getData: function(params) {
+                            return ManagerService.fnGetStaffs($scope.filterValue, getType, params);
+                        }
+                    };
+                    return new NgTableParams(initialParams, initialSettings);
+                }
+
+                //筛选
+                $scope.$watch("filterValue", function () {
+                    self.tableParams.reload();
+                });
+                
                 $scope.fnDestroyStaff = function (id) {
-                    ManagerService.fnDestroyStaff(id);
+                    dialogs.confirm('CONFIRM', '确定要删除该用户吗？').result.then(function (btn) {
+                        ManagerService.fnDestroyStaff(id, self.deleteAction);
+                        getType = 'remote';
+                        self.tableParams.reload();//更新表格，重新拉取数据
+                        getType = 'cache';
+                    });
                 }
             }
         ])
@@ -226,7 +294,6 @@
                 //所有部门
                 ManagerService.getGroups().then(function (r) {
                     $scope.allGroups = r.data;
-                    console.log($scope.allGroups);
                 });
 
                 //是否选中
@@ -272,14 +339,23 @@
             'CommonService',
             function ($scope, ManagerService, CommonService) {
                 var staffId = $scope.$stateParams.staffId; //员工id
-                if (angular.isDefined(ManagerService.staffsInfo.data)) {
-                    $scope.staffInfo = ManagerService.staffsInfo.data[staffId];
+
+                //对应的staffInfo
+                ManagerService.fnGetStaffs().then(function (staffsInfo) {
+                   var staffs = CommonService.filterData(staffsInfo, {id:staffId});
+                    filterStaffs(staffs); //get $scope.staffInfo
+                    //group
                     if(angular.isDefined($scope.staffInfo.groups[0])) {
                         $scope.staffInfo.groupId = $scope.staffInfo.groups[0].id;
                     }
-                    $scope.staffInfo.permissions = null;
-                } else {
-                    $scope.$state.go('manager.staff.index');
+                });
+
+                function filterStaffs(staffs) {
+                    angular.forEach(staffs, function (value,key) {
+                        if(value.id == staffId) {
+                            $scope.staffInfo = value;
+                        }
+                    });
                 }
 
                 //初始化权限

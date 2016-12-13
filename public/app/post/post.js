@@ -11,24 +11,13 @@
                 '$http',
                 '$q',
                 '$filter',
-                function ($http, $q, $filter) {
+                'CommonService',
+                function ($http, $q, $filter, CommonService) {
                     var me = this;
                     me.postsInfo = {};//{recordTotal:*, data}
 
                     function filterData(data, filter){
                         return $filter('filter')(data, filter);
-                    }
-
-                    function orderData(data, params){
-                        return params.sorting() ? $filter('orderBy')(data, params.orderBy()) : filteredData;
-                    }
-
-                    function sliceData(data, params){
-                        return data.slice((params.page() - 1) * params.count(), params.page() * params.count())
-                    }
-
-                    function transformData(data,filter,params){
-                        return sliceData( orderData( filterData(data,filter), params ), params);
                     }
 
                     //all
@@ -52,7 +41,7 @@
                                 }
                                 params.total(r.data.data.recordsTotal);
                                 //var transformedData = sliceData(orderData(r.data.data.data,params),params);
-                                var transformedData = transformData(me.postsInfo.data, filterValue, params);
+                                var transformedData = CommonService.transformData(me.postsInfo.data, filterValue, params);
                                 deffered.resolve(transformedData);
                             });
 
@@ -62,12 +51,13 @@
                             
                             var filteredData = filterData(me.postsInfo.data,filterValue);
 
+                            //!ng-table
                             if(angular.isUndefined(params)) {
                                 return $q.when(filteredData);
                             }
 
                             params.total(filteredData.length);
-                            var transformedData = sliceData(orderData(filteredData,params),params);
+                            var transformedData = CommonService.sliceOrderData(filteredData,params);
                             return $q.when(transformedData);
                         }
                     };
@@ -167,14 +157,21 @@
                 function ($scope, PostService, $filter) {
                     var postId = $scope.$stateParams.postId;
                     var posts = null;
+                    var current;
                     if(angular.equals({}, PostService.postsInfo)) {
                         PostService.fnGetPosts().then(function (postsInfo) {
                             posts = $filter('filter')(postsInfo, {id:postId});
-                            filterPosts(posts);
+                            filterPosts(posts); //get $scope.post
+                            current = postsInfo.indexOf($scope.post);
+                            $scope.prePost = postsInfo.slice(current-1, current)[0];
+                            $scope.nextPost = postsInfo.slice(current+1, current+2)[0];
                         });
                     } else {
                         posts = $filter('filter')(PostService.postsInfo.data, {id:postId});
                         filterPosts(posts);
+                        current = PostService.postsInfo.data.indexOf($scope.post);
+                        $scope.prePost = PostService.postsInfo.data.slice(current-1, current)[0];
+                        $scope.nextPost = PostService.postsInfo.data.slice(current+1, current+2)[0];
                     }
 
                     function filterPosts(posts) {

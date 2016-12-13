@@ -8,7 +8,8 @@
                 '$http',
                 '$rootScope',
                 '$q',
-                function ($http, $rootScope, $q) {
+                '$filter',
+                function ($http, $rootScope, $q, $filter) {
                     var me = this;
 
                     //贯穿的个人权限
@@ -53,6 +54,52 @@
                         } else {
                             return $q.when(me.PermissionsNameHad[userId]);
                         }
+                    };
+
+                    /*================== 公共常用的方法 ==================*/
+
+                    /**
+                     * $filter('filter')
+                     * 实际生产中直接$filter('filter')(data, filter);
+                     * @param data
+                     * @param filter
+                     * @returns {*}
+                     */
+                    me.filterData = function(data, filter){
+                        return $filter('filter')(data, filter);
+                    };
+
+                    //下面三种方法只针对于ngTable，params是getData传入参数
+                    
+                    /**
+                     * 排序
+                     * @param data
+                     * @param params
+                     * @returns {*}
+                     */
+                    me.orderData = function(data, params){
+                        return params.sorting() ? $filter('orderBy')(data, params.orderBy()) : data;
+                    };
+
+                    /**
+                     * 排序、分页数据
+                     * @param data
+                     * @param params
+                     * @returns {Array.<T>|*|Blob|string|ArrayBuffer}
+                     */
+                    me.sliceOrderData = function(data, params){
+                        return me.orderData(data, params).slice((params.page() - 1) * params.count(), params.page() * params.count())
+                    };
+
+                    /**
+                     * 返回筛选、排序、分页后的数据
+                     * @param data
+                     * @param filter
+                     * @param params
+                     * @returns {Array.<T>|*|Blob|string|ArrayBuffer}
+                     */
+                    me.transformData = function(data,filter,params){
+                        return me.sliceOrderData(me.filterData(data,filter), params);
                     };
                 }
             ])

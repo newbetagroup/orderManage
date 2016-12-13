@@ -57,7 +57,8 @@ myApp.config([
             .state('manager.staff.index', {
                 url: '/index',
                 templateUrl: 'tpl/manager/staffIndex',
-                controller: 'StaffInfoCtrl'
+                controller: 'StaffInfoCtrl',
+                controllerAs: 'staffs'
             })
             .state('manager.staff.addStaff', {
                 url: '/addStaff',

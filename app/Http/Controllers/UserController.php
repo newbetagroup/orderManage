@@ -29,7 +29,7 @@ class UserController extends Controller
     public function index()
     {
         $data['recordsFiltered'] = User::count();
-        $data['data'] = User::with('groups')->get()->keyBy('id');
+        $data['data'] = User::with('groups')->get();
         return ['status' => 1, 'data' => $data];
     }
 

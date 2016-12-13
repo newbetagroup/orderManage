@@ -6,8 +6,8 @@
     </div>
 
     <ul class="timeline">
-        <li ng-repeat="post in posts">
-            <div class="timeline-badge"><i class="glyphicon glyphicon-check"></i></div>
+        <li ng-repeat="post in posts" ng-class-odd="'timeline-inverted'">
+            <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>
             <div class="timeline-panel">
                 <div class="timeline-heading">
                     <h4 class="timeline-title">[: post.title :]</h4>
