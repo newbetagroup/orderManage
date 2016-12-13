@@ -92,27 +92,38 @@ class PerformanceController extends Controller
     }
 
 
-    public function createPerformances()
+    public function createPerformances(Request $request)
     {
-        $currentMonth = 
-        $firstDay = date('Y-m-01', strtotime(date("Y-m-d")));
-        $totalDay = date('t');//current month total days
+        $currentMonth = $request->get('currentMonth');// Y-m
+        //$firstDay = date('Y-m-01', strtotime(date("Y-m-d")));
+        $firstDay = $currentMonth.'-01';
+        $totalDay = date('t',strtotime($firstDay));//current month total days
 
         $userId = Auth::user()->id;
 
-        $performance = new Performance();
+        $whatDayChinese = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期天'];
 
-        $whatDay = date("w",strtotime($firstDay));
+        $whatDay = date("N",strtotime($firstDay));
         for ($i = 1; $i <= $totalDay; $i++) {
+            $performance = new Performance();
             $performance->user_id = $userId;
-            $whatDay = $whatDay == 6 ? 0 : $whatDay;
-            if($whatDay == 0) {
-                $performance -> //
-            } else {
-                
-            }
-            
+
+            $currentDay = $currentMonth.'-'.$i;
+            $performance->day_time = $currentDay;//
+            $performance->what_day = $whatDayChinese[$whatDay-1];//
             $performance->save();
+
+            if($whatDay == 7) {
+                //本周目标及完成情况
+                $performance = new Performance();
+                $weekBegin = date('Y-m-d', strtotime("$currentDay -6 days"));
+                $performance->user_id = $userId;
+                $performance->week_target = "$weekBegin 到 $currentDay 的目标：";//周一到周天
+                $performance->week_completed_target = "本周实际完成盘点:";
+                $performance->save();
+            }
+
+            $whatDay = $whatDay == 7 ? 1 : $whatDay+1;
         }
     }
 }

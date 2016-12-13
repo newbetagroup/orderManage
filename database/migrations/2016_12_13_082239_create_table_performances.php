@@ -15,6 +15,10 @@ class CreateTablePerformances extends Migration
         Schema::create('performances', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('user_id');
+            $table->timestamp('day_time')->nullable();
+            $table->char('what_day')->nullable()->comment('星期几');
+            $table->string('week_target')->nullable()->comment('周计划');
+            $table->string('week_completed_target')->nullable()->comment('周完成目标');
             $table->timestamps();
         });
     }

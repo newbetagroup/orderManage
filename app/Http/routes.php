@@ -54,6 +54,9 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     //post
     Route::get('post/index', ['as' => 'post.index', 'uses' => 'PostController@allPost']);//
     Route::resource('post', 'PostController', ['names' => ['update' => 'post.edit', 'store' => 'post.create']]);
+
+    //performance
+    Route::get('performance/newMonth', ['uses' => 'PerformanceController@createPerformances']);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
