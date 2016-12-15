@@ -11,8 +11,18 @@ use Illuminate\Support\Facades\Auth;
 
 class PerformanceController extends Controller
 {
-    protected $field = [
-        'user_id' => '',
+    protected $fields = [
+        // 'user_id' => '',
+        'day_time' => '',
+        'what_day' => '',
+        'day_work' => '',
+        'self_rating' => '',
+        'efficiency_rating' => '',
+        'quality_rating' => '',
+        'overall_rating' => '',
+        'remark' => '',
+        'week_target' => '',
+        'week_completed_target' => ''
     ];
 
     /**
@@ -20,10 +30,28 @@ class PerformanceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        if(!$request->get('userId')) return ['status' => 0, 'msg' => 'user_id is required'];
+
+        $userId = $request->get('userId');
+        $currentMonth = $request->get('currentMonth');
+
+       $total = Performance::where('user_id', $userId)
+            ->where('day_time', 'like', '%'.$currentMonth.'%')
+            ->count();
+
+        if($total == 0) {
+            $this->createPerformances($currentMonth);
+        }
+
+        $data = Performance::where('user_id', $userId)
+            ->where('day_time', 'like', '%'.$currentMonth.'%')
+            ->get();
+
+        return ['status' => 1, 'data' => $data];
     }
+
 
     /**
      * Show the form for creating a new resource.
@@ -43,7 +71,7 @@ class PerformanceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+            
     }
 
     /**
@@ -77,7 +105,16 @@ class PerformanceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $performance = Performance::find($id);
+
+        foreach (array_keys($this->fields) as $field) {
+            if($request->get($field)) $performance->$field = $request->get($field);
+        }
+
+       // $performance->update();
+        if($performance->save()) {
+            return ['status' => 1, 'msg' => '更新成功'];
+        }
     }
 
     /**
@@ -92,9 +129,13 @@ class PerformanceController extends Controller
     }
 
 
-    public function createPerformances(Request $request)
+    /**
+     * 生成当月的全部
+     * @param $currentMonth
+     */
+    public function createPerformances($currentMonth)
     {
-        $currentMonth = $request->get('currentMonth');// Y-m
+        //$currentMonth = $request->get('currentMonth');// Y-m
         //$firstDay = date('Y-m-01', strtotime(date("Y-m-d")));
         $firstDay = $currentMonth.'-01';
         $totalDay = date('t',strtotime($firstDay));//current month total days
@@ -118,7 +159,8 @@ class PerformanceController extends Controller
                 $performance = new Performance();
                 $weekBegin = date('Y-m-d', strtotime("$currentDay -6 days"));
                 $performance->user_id = $userId;
-                $performance->week_target = "$weekBegin 到 $currentDay 的目标：";//周一到周天
+                $performance->day_time = $currentDay;
+                $performance->week_target = "$weekBegin to $currentDay 本周工作基础目标计划(个人与主管协商):";//周一到周天
                 $performance->week_completed_target = "本周实际完成盘点:";
                 $performance->save();
             }

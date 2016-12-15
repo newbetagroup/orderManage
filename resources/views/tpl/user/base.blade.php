@@ -1,7 +1,7 @@
 <header>
     <ul class="nav nav-tabs" role="tablist">
         <li role="presentation" ui-sref-active="active"><a ui-sref="user.info">个人信息</a></li>
-        <li role="presentation" ui-sref-active="active"><a href="#">绩效目标</a></li>
+        <li role="presentation" ui-sref-active="active"><a ui-sref="user.performance">绩效目标</a></li>
         <li role="presentation" class="dropdown" ui-sref-active="active">
             <a class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false">
                 请假管理 <span class="caret"></span>

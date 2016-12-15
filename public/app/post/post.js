@@ -5,8 +5,7 @@
 
         'use strict';
 
-        angular
-            .module('postDashboard',[])
+        angular.module('postDashboard',[])
             .service('PostService',[
                 '$http',
                 '$q',

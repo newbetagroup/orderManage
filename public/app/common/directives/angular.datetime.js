@@ -2,7 +2,7 @@
  * Created by summer on 2016/11/21.
  */
 ;(function () {
-    myApp.directive("datetimepicker",function(){
+    orderApp.directive("datetimepicker",function(){
         return {
             restrict: "EA",
             require : "ngModel",

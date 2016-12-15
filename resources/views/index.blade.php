@@ -36,6 +36,8 @@
     <script src="/app/common/service/common.js"></script>
     <script src="/app/user/user.js"></script>
 
+    <script src="/app/performance/performance.js"></script>
+
     {{--延迟加载有问题？--}}
     <script src="/app/post/textAngular.min.js"></script>{{--依赖于ngSanitize和 rangy--}}
     {{--<script src="/app/manager/manager.js"></script>--}}

@@ -56,7 +56,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::resource('post', 'PostController', ['names' => ['update' => 'post.edit', 'store' => 'post.create']]);
 
     //performance
-    Route::get('performance/newMonth', ['uses' => 'PerformanceController@createPerformances']);
+    Route::post('performance/index', ['uses' => 'PerformanceController@index']);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -96,3 +96,6 @@ Route::get('tpl/post/postManageIndex', function() { return view('tpl.post.postMa
 Route::get('tpl/post/postManageAdd', function() { return view('tpl.post.postManageAdd'); });
 Route::get('tpl/post/postManageEdit', function() { return view('tpl.post.postManageEdit'); });
 Route::get('tpl/post/postManageDestroy', function() { return view('tpl.post.postManageDestroy'); });
+
+//performance
+Route::get('tpl/user/performance', function() { return view('tpl.user.performance');});

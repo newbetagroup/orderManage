@@ -3,7 +3,7 @@
  */
 
 "use strict";
-myApp.config([
+orderApp.config([
     "$stateProvider",
     "$urlRouterProvider",
     function ($stateProvider,$urlRouterProvider){
@@ -15,7 +15,7 @@ myApp.config([
                 templateUrl:'tpl/page/home'
             })
             .state('user', {
-                //abstract: true,
+                abstract: true,
                 url: '/user',
                 templateUrl:'tpl/user/base'
             })
@@ -162,6 +162,22 @@ myApp.config([
                 url: '/postManageDestroy',
                 templateUrl: 'tpl/post/postManageDestroy',
                 controller: 'PostManageDestroyCtrl'
+            })
+
+        //performance
+            .state('user.performance', {
+                url: '/performances',
+                resolve:{
+                  loadPerformanceCtrl: ["$ocLazyLoad", function ($ocLazyLoad) {
+                      return $ocLazyLoad.load('/app/performance/performance.js');
+                  }]
+                },
+                views: {
+                    '': {
+                        controller: 'PerformanceCtrl',
+                        templateUrl: 'tpl/user/performance'
+                    }
+                }
             })
         ;
     }

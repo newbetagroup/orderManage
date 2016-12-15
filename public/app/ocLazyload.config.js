@@ -3,7 +3,7 @@
  */
 
 "use strict";
-myApp.constant("Modules_Config",[
+orderApp.constant("Modules_Config",[
         {
             name:"ngTable",
             files:[

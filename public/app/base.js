@@ -4,7 +4,7 @@
     'use strict';
 
     //绑定module
-    var myApp = angular.module('zwb', [
+    var orderApp = angular.module('zwb', [
         'ui.router',
         'oc.lazyLoad',
         'ui.bootstrap',
@@ -17,7 +17,7 @@
         'textAngular' //待解决
         //'managerDashboard'
     ]);
-    myApp.config([
+    orderApp.config([
         '$interpolateProvider',
         function ($interpolateProvider) {
             //定界符
