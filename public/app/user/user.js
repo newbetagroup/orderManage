@@ -211,7 +211,7 @@
                     var result = getWorkDayCount(from, to);
                     UserService.askLeaveInfo.total_day = result[0];
                     UserService.askLeaveInfo.total_hour = result[1];
-                    UserService.askLeaveInfo.total_time = result[0]*9 + result[1];
+                    UserService.askLeaveInfo.total_time = 9*parseInt(result[0]) + parseFloat(result[1]);
                 },true);
 
                 function nearlyWeeks (weekcount, end) {

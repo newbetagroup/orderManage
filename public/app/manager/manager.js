@@ -339,6 +339,7 @@
             'CommonService',
             function ($scope, ManagerService, CommonService) {
                 var staffId = $scope.$stateParams.staffId; //员工id
+                $scope.staffInfo ={}; //init
 
                 //对应的staffInfo
                 ManagerService.fnGetStaffs().then(function (staffsInfo) {
@@ -432,7 +433,7 @@
 
                 //所有用户
                 ManagerService.fnGetStaffs().then(function (r) {
-                    $scope.allUsers = r.data;
+                    $scope.allUsers = data;
                 });
 
                 //是否选中
@@ -464,6 +465,7 @@
                 var groupId = $scope.$stateParams.groupId;
                 $scope.groupInfo = {};
                 $scope.groupInfo.permissions = [];
+                $scope.allUsers = {};
 
                 //所有权限
                 ManagerService.getPermissions().then(function (r) {
@@ -484,7 +486,7 @@
 
                 //所有用户
                 ManagerService.fnGetStaffs().then(function (r) {
-                    $scope.allUsers = r.data;
+                    $scope.allUsers = r;
                 });
 
                 //判断选中

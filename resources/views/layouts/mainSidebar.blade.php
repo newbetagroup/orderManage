@@ -47,8 +47,11 @@
                         <li ng-class="{active: $state.includes('post')}">
                             <a ui-sref="post.postIndex">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>新闻公告</a>
                         </li>
-                        <li>
-                            <a href="/">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
+                        <li ui-sref-active="active">
+                            <a ui-sref="user.performance">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
+                        </li>
+                        <li ui-sref-active="active">
+                            <a ui-sref="leaveRecords">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>所有员工请假记录</a>
                         </li>
                     </ul>
                 </li>

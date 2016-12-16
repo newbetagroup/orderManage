@@ -193,4 +193,15 @@ class GroupController extends Controller
         $data['recordsTotal'] = count($data['data']);
         return ['status' => 1, 'data' => $data];
     }
+
+    /**
+     * 一个部门下的所有成员
+     * @param $id 部门id
+     * @return array
+     */
+    public function getUsersByGroup($id)
+    {
+        $data = Group::find($id)->users;
+        return ['status' => 1, 'data' => $data];
+    }
 }

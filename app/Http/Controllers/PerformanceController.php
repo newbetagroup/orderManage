@@ -13,8 +13,8 @@ class PerformanceController extends Controller
 {
     protected $fields = [
         // 'user_id' => '',
-        'day_time' => '',
-        'what_day' => '',
+        ///'day_time' => '',
+        //'what_day' => '',
         'day_work' => '',
         'self_rating' => '',
         'efficiency_rating' => '',
@@ -42,12 +42,12 @@ class PerformanceController extends Controller
             ->count();
 
         if($total == 0) {
-            $this->createPerformances($currentMonth);
+            $this->createPerformances($userId, $currentMonth);
         }
 
         $data = Performance::where('user_id', $userId)
             ->where('day_time', 'like', '%'.$currentMonth.'%')
-            ->get();
+            ->get()->keyBy('id');
 
         return ['status' => 1, 'data' => $data];
     }
@@ -108,13 +108,15 @@ class PerformanceController extends Controller
         $performance = Performance::find($id);
 
         foreach (array_keys($this->fields) as $field) {
-            if($request->get($field)) $performance->$field = $request->get($field);
+            if($request->get($field) && $performance->$field!=$request->get($field)) $performance->$field = $request->get($field);
         }
 
        // $performance->update();
-        if($performance->save()) {
-            return ['status' => 1, 'msg' => '更新成功'];
+        if(!$performance->save()) {
+            return ['status' => 0, 'msg' => '更新失败'];
         }
+
+        return ['status' => 1, 'msg' => '更新成功'];
     }
 
     /**
@@ -133,14 +135,12 @@ class PerformanceController extends Controller
      * 生成当月的全部
      * @param $currentMonth
      */
-    public function createPerformances($currentMonth)
+    public function createPerformances($userId, $currentMonth)
     {
         //$currentMonth = $request->get('currentMonth');// Y-m
         //$firstDay = date('Y-m-01', strtotime(date("Y-m-d")));
         $firstDay = $currentMonth.'-01';
         $totalDay = date('t',strtotime($firstDay));//current month total days
-
-        $userId = Auth::user()->id;
 
         $whatDayChinese = ['星期一', '星期二', '星期三', '星期四', '星期五', '星期六', '星期天'];
 

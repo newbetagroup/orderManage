@@ -8,7 +8,6 @@
                         <h3 class="panel-title">修改员工信息</h3>
                     </div>
                     <div class="panel-body">
-
                         <form class="form-horizontal" role="form" ng-submit="fnEditStaff(staffInfo)">
                             <div class="form-group">
                                 <label for="name" class="col-md-3 control-label">员工名字</label>

@@ -179,6 +179,12 @@ orderApp.config([
                     }
                 }
             })
+
+        //所有员工请假记录
+            .state('leaveRecords', {
+                url: '/leaveRecords',
+                templateUrl: 'tpl/leaves/records'
+            })
         ;
     }
     ])

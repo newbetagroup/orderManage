@@ -12,7 +12,7 @@
                 function ($http, $rootScope, $q, $filter) {
                     var me = this;
 
-                    //贯穿的个人权限
+                    /*======================贯穿的个人权限============================*/
                     me.PermissionsHad = {};
                     me.PermissionsNameHad = {};
                     me.fnGetPermissionsHad = function (userId, groupId) {
@@ -54,6 +54,23 @@
                         } else {
                             return $q.when(me.PermissionsNameHad[userId]);
                         }
+                    };
+
+                    /*=======================部门下的所有员工========================*/
+                    
+                    var usersBygroup = {};
+                    me.fnGetUsersBygroup = function (groupId) {
+                            var deffered = $q.defer();
+                          if (!usersBygroup[groupId]) {
+                              $http.get('/group/getUsers/'+groupId).then(function (r) {
+                                  if (r.data.status != 1) deffered.reject('status 0');
+                                  usersBygroup[groupId] = r.data.data;
+                                  deffered.resolve(r.data.data);
+                              });
+                              return deffered.promise;
+                          } else {
+                              return $q.when(usersBygroup[groupId]);
+                          }
                     };
 
                     /*================== 公共常用的方法 ==================*/

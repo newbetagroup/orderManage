@@ -42,6 +42,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     //group 路由
     Route::get('group/aGroupPermissions/{id}', ['uses' => 'GroupController@oneGroupPermission']);
     Route::get('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
+    Route::get('/group/getUsers/{id}', ['as' => 'group.getUsersByGroup', 'uses' => 'GroupController@getUsersByGroup']);
     Route::post('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
     Route::resource('group', 'GroupController', ['names' => ['update' => 'group.edit', 'store' => 'group.create']]);
 
@@ -57,6 +58,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
     //performance
     Route::post('performance/index', ['uses' => 'PerformanceController@index']);
+    Route::put('performance/{id}', ['uses' => 'PerformanceController@update']);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
