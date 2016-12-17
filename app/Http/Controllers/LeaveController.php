@@ -234,12 +234,25 @@ class LeaveController extends Controller
     }
 
 
+    /**
+     * 查询月份的所有员工请假记录
+     * @param $currentMonth
+     * @return array
+     */
     public function monthLeaves($currentMonth)
     {
         User::lists('name', 'identity');
-        $users = User::select('users.id', 'users.name', 'leaves.*')->join('leaves', 'users.id', '=', 'leaves.user_id')->with('leaves')->get();
-        dd($users);
-        Leave::where('begin', 'like', '%'.$currentMonth.'%')
-            ->orWhere('end', 'like', '%'.$currentMonth.'%');
+        $data = User::select('users.id', 'users.name', 'leaves.*')
+            ->join('leaves', 'users.id', '=', 'leaves.user_id')
+           // ->with('leaves')
+            ->where('begin', 'like', '%'.$currentMonth.'%')
+            ->orWhere('end', 'like', '%'.$currentMonth.'%')
+            ->orWhere(function ($query) use ($currentMonth) {
+                $query->where('begin', '<', $currentMonth)
+                    ->where('end', '>', $currentMonth);
+            })
+            ->get();
+
+        return ['status' => 1, 'data' => $data];
     }
 }

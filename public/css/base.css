@@ -12,6 +12,10 @@ html {
     float: left;
 }
 
+.mt20 {
+    margin-top:20px;
+}
+
 /*start modal-----------------------------*/
 /* Fix for Bootstrap 3 with Angular UI Bootstrap */
 .modal {
