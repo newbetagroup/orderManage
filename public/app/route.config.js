@@ -183,7 +183,13 @@ orderApp.config([
         //所有员工请假记录
             .state('leaveRecords', {
                 url: '/leaveRecords',
-                templateUrl: 'tpl/leaves/records'
+                templateUrl: 'tpl/leaves/records',
+                resolve: {
+                    loadleaveRecordsDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/leaves/leaveRecords.js');
+                    }]
+                },
+                controller: 'LeaveRecordsController'
             })
         ;
     }

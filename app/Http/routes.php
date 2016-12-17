@@ -37,6 +37,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
 
     //leave 请假
+    Route::get('leave/monthLeaves/{currentMonth}', ['uses' => 'LeaveController@monthLeaves']);
     Route::resource('leave', 'LeaveController');
 
     //group 路由
@@ -101,3 +102,6 @@ Route::get('tpl/post/postManageDestroy', function() { return view('tpl.post.post
 
 //performance
 Route::get('tpl/user/performance', function() { return view('tpl.user.performance');});
+
+//leaves
+Route::get('tpl/leaves/records', function() { return view('tpl.leaves.records');});

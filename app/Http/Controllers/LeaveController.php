@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Leave;
+use App\User;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -230,5 +231,15 @@ class LeaveController extends Controller
         $data['recordsTotal'] = Leave::where('user_id', '=', Auth::User()->id)->count();
 
         return ['status' => 1, 'data' => $data];
+    }
+
+
+    public function monthLeaves($currentMonth)
+    {
+        User::lists('name', 'identity');
+        $users = User::select('users.id', 'users.name', 'leaves.*')->join('leaves', 'users.id', '=', 'leaves.user_id')->with('leaves')->get();
+        dd($users);
+        Leave::where('begin', 'like', '%'.$currentMonth.'%')
+            ->orWhere('end', 'like', '%'.$currentMonth.'%');
     }
 }

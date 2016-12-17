@@ -1,10 +1,10 @@
 /**
  * Created by geekzwb on 2016/12/14.
  */
-;(function () {
+;(function (angular) {
     'use strict';
     
-    angular.module('zwb').service('PerformanceService',[
+    angular.module('performanceDashboard', []).service('PerformanceService',[
         '$http',
         '$q',
         function ($http, $q) {
@@ -135,4 +135,4 @@
                 }
             }
         ])
-})();
+})(angular);
