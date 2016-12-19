@@ -191,6 +191,37 @@ orderApp.config([
                 },
                 controller: 'LeaveRecordsController'
             })
+
+        //网站信息管理
+            .state('website', {
+                template:'<div ui-view=""></div>'
+            })
+
+            //server
+            .state('website.server', {
+                url:'/server',
+                resolve: {
+                    loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/website/server/server.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('website.server.index', {
+                url:'/serverIndex',
+                templateUrl: 'tpl/website/server/index',
+                controller: 'ServersIndexCtrl as servers'
+            })
+            .state('website.server.add', {
+                url:'/serverAdd',
+                templateUrl: 'tpl/website/server/add',
+                controller: 'ServerAddCtrl'
+            })
+            .state('website.server.edit', {
+                url:'/serverEdit/:serverId',
+                templateUrl: 'tpl/website/server/edit',
+                controller: 'ServerEditCtrl'
+            })
         ;
     }
     ])

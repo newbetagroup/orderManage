@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="/css/textAngular.css">
     <link rel="stylesheet" href="/plugins/jquerydatetime/jquery.datetimepicker.css">
     <link rel="stylesheet" href="/plugins/ng-table/ng-table.min.css">
+
+    <link href="/css/base.css" rel="stylesheet">
 @endsection
 
 @section('js')

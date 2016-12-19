@@ -264,19 +264,20 @@
                     return new NgTableParams(initialParams, initialSettings);
                 }
 
-                //筛选
-                $scope.$watch("filterValue", function () {
-                    self.tableParams.reload();
-                });
-                
-                $scope.fnDestroyStaff = function (id) {
+                //delete user
+                self.fnDestroyStaff = function (id) {
                     dialogs.confirm('CONFIRM', '确定要删除该用户吗？').result.then(function (btn) {
                         ManagerService.fnDestroyStaff(id, self.deleteAction);
                         getType = 'remote';
                         self.tableParams.reload();//更新表格，重新拉取数据
                         getType = 'cache';
                     });
-                }
+                };
+
+                //筛选
+                $scope.$watch("filterValue", function () {
+                    self.tableParams.reload();
+                });
             }
         ])
         .controller('AddStaffCtrl', [
@@ -410,11 +411,16 @@
         .controller('GroupInfoCtrl', [
             '$scope',
             'ManagerService',
-            function ($scope, ManagerService) {
+            'dialogs',
+            function ($scope, ManagerService, dialogs) {
                 $scope.Manager = ManagerService;
                 ManagerService.getGroups();
+
+                //delete group
                 $scope.fnDestroyGroup = function (id) {
-                    ManagerService.fnDestroyGroup(id);
+                    dialogs.confirm('CONFIRM', '确定要删除该部门吗？', {size:'sm'}).result.then(function (btn) {
+                        ManagerService.fnDestroyGroup(id);
+                    });
                 }
             }
         ])
@@ -433,7 +439,7 @@
 
                 //所有用户
                 ManagerService.fnGetStaffs().then(function (r) {
-                    $scope.allUsers = data;
+                    $scope.allUsers = r;
                 });
 
                 //是否选中
@@ -517,11 +523,16 @@
         .controller('PermissionInfoCtrl', [
             '$scope',
             'ManagerService',
-            function ($scope, ManagerService) {
+            'dialogs',
+            function ($scope, ManagerService, dialogs) {
                 $scope.Manager = ManagerService;
                 ManagerService.getPermissions();
+
+                //delete permission
                 $scope.fnDestroyPermission = function (id) {
-                    ManagerService.fnDestroyPermission(id);
+                    dialogs.confirm('CONFIRM', '确定要删除该权限吗？', {size:'sm'}).result.then(function (btn) {
+                        ManagerService.fnDestroyPermission(id);
+                    });
                 }
             }
         ])

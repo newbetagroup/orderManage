@@ -30,7 +30,7 @@
                                         <th>开始时间</th>
                                         <th>结束时间</th>
                                         <th>批准情况</th>
-                                        <th>总共请假时间</th>
+                                        <th>合计时间(hour)</th>
                                     </tr>
                                     </thead>
                                     <tbody>

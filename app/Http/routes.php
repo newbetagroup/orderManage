@@ -60,6 +60,9 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     //performance
     Route::post('performance/index', ['uses' => 'PerformanceController@index']);
     Route::put('performance/{id}', ['uses' => 'PerformanceController@update']);
+
+    //server 服务器管理
+    Route::resource('server', 'ServerController', ['names' => ['update' => 'server.edit', 'store' => 'server.create']]);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -80,16 +83,20 @@ Route::get('tpl/user/askForLeave', function() { return view('tpl.user.askForLeav
 Route::get('tpl/user/allLeaves', function() { return view('tpl.user.allLeaves'); });
 Route::get('tpl/user/test', function() { return view('tpl.user.test'); });
 
+//manager
 Route::get('tpl/manager/base', function() { return view('tpl.manager.base'); });
-Route::get('tpl/manager/staffIndex', function() { return view('tpl.manager.staffIndex'); });
-Route::get('tpl/manager/addStaff', function() { return view('tpl.manager.addStaff'); });
-Route::get('tpl/manager/editStaff', function() { return view('tpl.manager.editStaff'); });
-Route::get('tpl/manager/groupIndex', function() { return view('tpl.manager.groupIndex'); });
-Route::get('tpl/manager/addGroup', function() { return view('tpl.manager.addGroup'); });
-Route::get('tpl/manager/editGroup', function() { return view('tpl.manager.editGroup'); });
-Route::get('tpl/manager/permissionIndex', function() { return view('tpl.manager.permissionIndex'); });
-Route::get('tpl/manager/addPermission', function() { return view('tpl.manager.addPermission'); });
-Route::get('tpl/manager/editPermission', function() { return view('tpl.manager.editPermission'); });
+    //===========staff
+Route::get('tpl/manager/staffIndex', function() { return view('tpl.manager.staff.staffIndex'); });
+Route::get('tpl/manager/addStaff', function() { return view('tpl.manager.staff.addStaff'); });
+Route::get('tpl/manager/editStaff', function() { return view('tpl.manager.staff.editStaff'); });
+    //==========group
+Route::get('tpl/manager/groupIndex', function() { return view('tpl.manager.group.groupIndex'); });
+Route::get('tpl/manager/addGroup', function() { return view('tpl.manager.group.addGroup'); });
+Route::get('tpl/manager/editGroup', function() { return view('tpl.manager.group.editGroup'); });
+    //=========permission
+Route::get('tpl/manager/permissionIndex', function() { return view('tpl.manager.permission.permissionIndex'); });
+Route::get('tpl/manager/addPermission', function() { return view('tpl.manager.permission.addPermission'); });
+Route::get('tpl/manager/editPermission', function() { return view('tpl.manager.permission.editPermission'); });
 
 //post
 Route::get('tpl/post/base', function() { return view('tpl.post.base'); });
@@ -105,3 +112,10 @@ Route::get('tpl/user/performance', function() { return view('tpl.user.performanc
 
 //leaves
 Route::get('tpl/leaves/records', function() { return view('tpl.leaves.records');});
+
+//website
+    //========server
+Route::get('tpl/website/server', function () { return view('tpl.website.server.base');});
+Route::get('tpl/website/server/index', function () { return view('tpl.website.server.index');});
+Route::get('tpl/website/server/add', function () { return view('tpl.website.server.add');});
+Route::get('tpl/website/server/edit', function () { return view('tpl.website.server.edit');});

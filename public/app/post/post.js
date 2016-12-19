@@ -241,7 +241,7 @@
                     //确认删除模态框
                     var dlg = null;
                     self.fnConfirmDestory = function (id) {
-                       dlg = dialogs.confirm('Confirm','确定要删除该post吗?');
+                       dlg = dialogs.confirm('Confirm','确定要删除该post吗?',{size: 'sm'});
                         dlg.result.then(function(btn){
                             //确认删除
                             PostService.fnDestroyPost(id, self.deleteAction);
@@ -264,7 +264,6 @@
                      $scope.postInfo.description = '<p>内容</p>';
                     $scope.disabled = false;
                     $scope.fnAddPost = function (postInfo) {
-                        console.log(postInfo);
                         PostService.fnAddPost(postInfo);
                     }
                 }

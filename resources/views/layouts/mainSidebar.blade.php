@@ -34,28 +34,35 @@
 
             <li><a href="/"><i class="fa fa-dashboard"></i> <span>控制面板</span></a></li>
 
-                <li class="treeview active">
-                    <a href="#"><i class="fa"></i> <span>公司管理</span> <i
-                                class="fa fa-angle-left pull-right"></i></a>
-                    <ul class="treeview-menu">
-                        <li ng-class="{active: $state.includes('user')}">
-                            <a ui-sref="user.info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>个人信息</a>
-                        </li>
-                        <li ng-class="{active: $state.includes('manager')}">
-                            <a ui-sref="manager.staff.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
-                        </li>
-                        <li ng-class="{active: $state.includes('post')}">
-                            <a ui-sref="post.postIndex">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>新闻公告</a>
-                        </li>
-                        <li ui-sref-active="active">
-                            <a ui-sref="user.performance">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
-                        </li>
-                        <li ui-sref-active="active">
-                            <a ui-sref="leaveRecords">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>所有员工请假记录</a>
-                        </li>
-                    </ul>
-                </li>
-
+            <li class="treeview">
+                <a><i class="fa"></i> <span>公司管理</span> <i
+                            class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li ng-class="{active: $state.includes('user')}">
+                        <a ui-sref="user.info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>个人信息</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('manager')}">
+                        <a ui-sref="manager.staff.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('post')}">
+                        <a ui-sref="post.postIndex">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>新闻公告</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="user.performance">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>绩效目标</a>
+                    </li>
+                    <li ui-sref-active="active">
+                        <a ui-sref="leaveRecords">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>所有员工请假记录</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="treeview" ng-class="{active: $state.includes('website')}">
+                <a><i class="fa"></i><span>网站管理</span><i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li ng-class="{active: $state.includes('website.server')}">
+                        <a ui-sref="website.server.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>服务器管理</a>
+                    </li>
+                </ul>
+            </li>
         </ul>
         <!-- /.sidebar-menu -->
     </section>
