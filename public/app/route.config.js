@@ -222,6 +222,31 @@ orderApp.config([
                 templateUrl: 'tpl/website/server/edit',
                 controller: 'ServerEditCtrl'
             })
+            //country
+            .state('website.country', {
+                url:'/country',
+                resolve: {
+                    loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/website/country/country.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('website.country.index', {
+                url:'/countryIndex',
+                templateUrl: 'tpl/website/country/index',
+                controller: 'CountryIndexCtrl as countries'
+            })
+            .state('website.country.add', {
+                url:'/countryAdd',
+                templateUrl: 'tpl/website/country/add',
+                controller: 'CountryAddCtrl'
+            })
+            .state('website.country.edit', {
+                url:'/countryEdit/:countryId',
+                templateUrl: 'tpl/website/country/edit',
+                controller: 'CountryEditCtrl'
+            })
         ;
     }
     ])

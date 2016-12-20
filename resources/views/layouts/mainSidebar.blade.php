@@ -39,7 +39,7 @@
                             class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li ng-class="{active: $state.includes('user')}">
-                        <a ui-sref="user.info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>个人信息</a>
+                        <a ui-sref="user.info">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-user-circle"></i>个人信息</a>
                     </li>
                     <li ng-class="{active: $state.includes('manager')}">
                         <a ui-sref="manager.staff.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>员工管理</a>
@@ -60,6 +60,9 @@
                 <ul class="treeview-menu">
                     <li ng-class="{active: $state.includes('website.server')}">
                         <a ui-sref="website.server.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>服务器管理</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('website.country')}">
+                        <a ui-sref="website.country.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-circle-o"></i>国家管理</a>
                     </li>
                 </ul>
             </li>

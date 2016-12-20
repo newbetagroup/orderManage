@@ -63,6 +63,9 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
     //server 服务器管理
     Route::resource('server', 'ServerController', ['names' => ['update' => 'server.edit', 'store' => 'server.create']]);
+
+    //domain country
+    Route::resource('country', 'DomainCountryController', ['names' => ['update' => 'country.edit', 'store' => 'country.create']]);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -119,3 +122,8 @@ Route::get('tpl/website/server', function () { return view('tpl.website.server.b
 Route::get('tpl/website/server/index', function () { return view('tpl.website.server.index');});
 Route::get('tpl/website/server/add', function () { return view('tpl.website.server.add');});
 Route::get('tpl/website/server/edit', function () { return view('tpl.website.server.edit');});
+    //=========country
+Route::get('tpl/website/country', function () { return view('tpl.website.country.base');});
+Route::get('tpl/website/country/index', function () { return view('tpl.website.country.index');});
+Route::get('tpl/website/country/add', function () { return view('tpl.website.country.add');});
+Route::get('tpl/website/country/edit', function () { return view('tpl.website.country.edit');});
