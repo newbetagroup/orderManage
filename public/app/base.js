@@ -43,6 +43,10 @@
         })
         .run(function (ngTableDefaults) {
             ngTableDefaults.$inject = ["ngTableDefaults"];
-            ngTableDefaults.params.count = 5;
-            ngTableDefaults.settings.counts = [];
+            ngTableDefaults.params.count = 10;
+            ngTableDefaults.settings = {
+                counts: [10, 20, 50, 100],
+                paginationMaxBlocks: 4,
+                paginationMinBlocks: 2
+            }
         });

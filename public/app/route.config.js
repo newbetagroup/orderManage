@@ -247,6 +247,106 @@ orderApp.config([
                 templateUrl: 'tpl/website/country/edit',
                 controller: 'CountryEditCtrl'
             })
+            //brand
+            .state('website.brand', {
+                url:'/brand',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/website/brand/brand.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('website.brand.index', {
+                url:'/brandIndex',
+                templateUrl: 'tpl/website/brand/index',
+                controller: 'BrandIndexCtrl as brands'
+            })
+            .state('website.brand.add', {
+                url:'/brandAdd',
+                templateUrl: 'tpl/website/brand/add',
+                controller: 'BrandAddCtrl'
+            })
+            .state('website.brand.edit', {
+                url:'/brandEdit/:brandId',
+                templateUrl: 'tpl/website/brand/edit',
+                controller: 'BrandEditCtrl'
+            })
+            //ad status
+            .state('website.adStatus', {
+                url:'/adStatus',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/website/adStatus/adStatus.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('website.adStatus.index', {
+                url:'/adStatusIndex',
+                templateUrl: 'tpl/website/adStatus/index',
+                controller: 'AdStatusIndexCtrl as adStatuses'
+            })
+            .state('website.adStatus.add', {
+                url:'/adStatusAdd',
+                templateUrl: 'tpl/website/adStatus/add',
+                controller: 'AdStatusAddCtrl'
+            })
+            .state('website.adStatus.edit', {
+                url:'/adStatusEdit/:adStatusId',
+                templateUrl: 'tpl/website/adStatus/edit',
+                controller: 'AdStatusEditCtrl'
+            })
+            //website status
+            .state('website.websiteStatus', {
+                url:'/websiteStatus',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/website/websiteStatus/websiteStatus.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('website.websiteStatus.index', {
+                url:'/websiteStatusIndex',
+                templateUrl: 'tpl/website/websiteStatus/index',
+                controller: 'WebsiteStatusIndexCtrl as websiteStatuses'
+            })
+            .state('website.websiteStatus.add', {
+                url:'/websiteStatusAdd',
+                templateUrl: 'tpl/website/websiteStatus/add',
+                controller: 'WebsiteStatusAddCtrl'
+            })
+            .state('website.websiteStatus.edit', {
+                url:'/websiteStatusEdit/:websiteStatusId',
+                templateUrl: 'tpl/website/websiteStatus/edit',
+                controller: 'WebsiteStatusEditCtrl'
+            })
+            //host
+            .state('website.host', {
+                url:'/host',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/website/host/host.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('website.host.index', {
+                url:'/hostIndex',
+                templateUrl: 'tpl/website/host/index',
+                controller: 'HostIndexCtrl as hosts'
+            })
+            .state('website.host.add', {
+                url:'/hostAdd',
+                templateUrl: 'tpl/website/host/add',
+                controller: 'HostAddCtrl'
+            })
+            .state('website.host.edit', {
+                url:'/hostEdit/:hostId',
+                templateUrl: 'tpl/website/host/edit',
+                controller: 'HostEditCtrl'
+            })
         ;
     }
     ])

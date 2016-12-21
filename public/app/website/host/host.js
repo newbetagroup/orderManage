@@ -4,39 +4,27 @@
 ;(function (angular) {
     'use strict';
     
-    angular.module('CountryDashboard', [])
-        .service('CountryService', [
+    angular.module('HostDashboard', [])
+        .service('HostService', [
             '$http',
             '$q',
             'CommonService',
             '$timeout',
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
-                me.currencies = [
-                    {currencyId:1, currencyName:'美元'},
-                    {currencyId:2, currencyName:'欧元'},
-                    {currencyId:3, currencyName:'英镑'},
-                    {currencyId:4, currencyName:'加元'},
-                    {currencyId:5, currencyName:'澳元'},
-                    {currencyId:6, currencyName:'人民币'},
-                    {currencyId:8, currencyName:'克朗'},
-                    {currencyId:9, currencyName:'新加坡币'},
-                    {currencyId:10, currencyName:'日元'},
-                    {currencyId:11, currencyName:'韩元'}
-                ];
-                me.countriesInfo = {};
-                me.fnGetCountries = function (filterValue, params, type) {
+                me.hostsInfo = {};
+                me.fnGetHosts = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
 
                     var deffered = $q.defer();
-                    if(angular.equals({}, me.countriesInfo) || type == 'remote') {
-                        $http.get("/country").then(function (r) {
+                    if(angular.equals({}, me.hostsInfo) || type == 'remote') {
+                        $http.get("/host").then(function (r) {
                             if(r.data.status != 1) {
                                 deffered.reject();
                                 return;
                             }
 
-                            me.countriesInfo = r.data.data;
+                            me.hostsInfo = r.data.data;
 
                             if(angular.isUndefined(params)) {
                                 var filteredData = CommonService.filterData(r.data.data.data,filterValue);
@@ -53,7 +41,7 @@
 
                     } else {
 
-                        var filteredData = CommonService.filterData(me.countriesInfo.data,filterValue);
+                        var filteredData = CommonService.filterData(me.hostsInfo.data,filterValue);
 
                         //!ng-table
                         if(angular.isUndefined(params)) {
@@ -67,58 +55,58 @@
                 };
 
                 //新增
-                me.fnAddCountry = function (country) {
-                    if(country.pending) return;
-                    country.pending =true;
-                    $http.post('/country', country)
+                me.fnAddHost = function (host) {
+                    if(host.pending) return;
+                    host.pending =true;
+                    $http.post('/host', host)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                country.addStatus = true;
-                                me.countriesInfo = {};//reload
+                                host.addStatus = true;
+                                me.hostsInfo = {};//reload
                                 $timeout(function () {
-                                    country.addStatus = null;
+                                    host.addStatus = null;
                                 }, 2000);
                             } else {
-                                country.addStatus = false;
+                                host.addStatus = false;
                             }
                         }, function (e) {
-                            country.addStatus = false;
+                            host.addStatus = false;
                         })
                         .finally(function () {
-                            country.pending = false;
+                            host.pending = false;
                         })
                 };
 
                 //edit 修改
-                me.fnEditCountry = function (countryInfo) {
-                    if(countryInfo.pending) return;
-                    countryInfo.pending =true;
-                    $http.put('/country/'+countryInfo.id, countryInfo)
+                me.fnEditHost = function (hostInfo) {
+                    if(hostInfo.pending) return;
+                    hostInfo.pending =true;
+                    $http.put('/host/'+hostInfo.id, hostInfo)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                countryInfo.editStatus = true;
-                                me.countriesInfo = {};//reload
+                                hostInfo.editStatus = true;
+                                me.hostsInfo = {};//reload
                                 $timeout(function () {
-                                    countryInfo.editStatus = null;
+                                    hostInfo.editStatus = null;
                                 }, 2000);
                             } else {
-                                countryInfo.editStatus = false;
+                                hostInfo.editStatus = false;
                             }
                         }, function (e) {
-                            countryInfo.editStatus = false;
+                            hostInfo.editStatus = false;
                         })
                         .finally(function () {
-                            countryInfo.pending = false;
+                            hostInfo.pending = false;
                         });
                 };
 
                 //删除
-                me.fnDestroyCountry = function (id, deleteAction) {
+                me.fnDestroyHost = function (id, deleteAction) {
                     if(deleteAction.pending) return; //正在删除
                     deleteAction.pending =true;
-                    $http.delete('/country/'+id).then(function (r) {
+                    $http.delete('/host/'+id).then(function (r) {
                             if(r.data.status == 1) {
-                                me.countriesInfo = {}; //reload：本地循环还是服务器remote重新拉取？
+                                me.hostsInfo = {}; //reload：本地循环还是服务器remote重新拉取？
                                 deleteAction.status = true; //成功
                                 $timeout(function () {
                                     deleteAction.status = null;
@@ -134,17 +122,15 @@
                 
             }
         ])
-        .controller('CountryIndexCtrl', [
-            'CountryService',
+        .controller('HostIndexCtrl', [
+            'HostService',
             'NgTableParams',
             'dialogs',
-            function (CountryService, NgTableParams, dialogs) {
+            function (HostService, NgTableParams, dialogs) {
 
                 var getType = 'cache';// 每次去拉取posts的方式: cache or remote
 
                 var self = this;
-
-                self.currencies = CountryService.currencies;
 
                 self.filterValue ='';
 
@@ -161,11 +147,8 @@
                         sorting: { created_at: "desc" }
                     };
                     var initialSettings = {
-                        counts: [5, 20, 50, 100],
-                        paginationMaxBlocks: 5,
-                        paginationMinBlocks: 2,
                         getData: function(params) {
-                            return CountryService.fnGetCountries(self.filterValue, params, getType);
+                            return HostService.fnGetHosts(self.filterValue, params, getType);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
@@ -178,66 +161,65 @@
 
                 //确认删除模态框
                 var dlg = null;
-                self.fnDestoryPost = function (id) {
-                    dlg = dialogs.confirm('Confirm','确定要删除该国家吗?',{size: 'sm'});
+                self.fnDestoryHost = function (id) {
+                    dlg = dialogs.confirm('Confirm','确定要删除该host吗?',{size: 'sm'});
                     dlg.result.then(function(btn){
                         //确认删除
-                        CountryService.fnDestroyCountry(id, self.deleteAction);
+                        HostService.fnDestroyHost(id, self.deleteAction);
                         getType = 'remote';
                         self.tableParams.reload().finally(function () {
                             getType = 'cache';
                         });//更新表格，重新拉取数据
                     },function(btn){
-                        console.log('取消删除country');
+                        console.log('取消删除host');
                     });
                 }
 
             }])
-        .controller('CountryAddCtrl', [
+        .controller('HostAddCtrl', [
             '$scope',
-            'CountryService',
-            function ($scope, CountryService) {
-                $scope.countryInfo = {};
-                $scope.currencies = CountryService.currencies;
-                $scope.fnAddCountry = function () {
-                    CountryService.fnAddCountry($scope.countryInfo);
+            'HostService',
+            function ($scope, HostService) {
+                $scope.hostInfo = {};
+
+                $scope.fnAddHost = function () {
+                    HostService.fnAddHost($scope.hostInfo);
                 }
             }
         ])
-        .controller('CountryEditCtrl', [
+        .controller('HostEditCtrl', [
             '$scope',
-            'CountryService',
+            'HostService',
             '$filter',
             'dialogs',
-            function ($scope, CountryService, $filter, dialogs) {
+            function ($scope, HostService, $filter, dialogs) {
 
-                $scope.countryInfo = {};
-                $scope.currencies = CountryService.currencies;
+                $scope.hostInfo = {};
 
-                var countryId = $scope.$stateParams.countryId;
+                var hostId = $scope.$stateParams.hostId;
 
-                CountryService.fnGetCountries().then(function (r) {
-                    var countriesInfo = $filter('filter')(r, {id: countryId});
-                    angular.forEach(countriesInfo, function (value, key) {
-                        //所有的countrys中取出id为postId的一条数据
-                        if(value.id == countryId) {
-                            $scope.countryInfo = value;
+                HostService.fnGetHosts().then(function (r) {
+                    var hostsInfo = $filter('filter')(r, {id: hostId});
+                    angular.forEach(hostsInfo, function (value, key) {
+                        //所有的hosts中取出id为postId的一条数据
+                        if(value.id == hostId) {
+                            $scope.hostInfo = value;
                             return false;
                         }
                     });
 
-                    //没有这个country
-                    if(angular.equals({}, $scope.countryInfo)) {
-                        dialogs.error('Error', '未找到该服务器', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('website.country.index');
+                    //没有这个host
+                    if(angular.equals({}, $scope.hostInfo)) {
+                        dialogs.error('Error', '未找到该host', {size:'sm'}).result.then(function (btn) {
+                            $scope.$state.go('website.host.index');
                         });
                         return;
                     }
                 });
 
                 //提交修改
-                $scope.fnEditCountry = function () {
-                    CountryService.fnEditCountry($scope.countryInfo);
+                $scope.fnEditHost = function () {
+                    HostService.fnEditHost($scope.hostInfo);
                 }
             }
         ]);

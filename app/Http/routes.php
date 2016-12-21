@@ -61,11 +61,24 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('performance/index', ['uses' => 'PerformanceController@index']);
     Route::put('performance/{id}', ['uses' => 'PerformanceController@update']);
 
-    //server 服务器管理
+    //domain server 服务器管理
     Route::resource('server', 'ServerController', ['names' => ['update' => 'server.edit', 'store' => 'server.create']]);
 
     //domain country
-    Route::resource('country', 'DomainCountryController', ['names' => ['update' => 'country.edit', 'store' => 'country.create']]);
+    Route::resource('country', 'DomainCountryController', ['names' => ['update' => 'domainCountry.edit', 'store' => 'domainCountry.create']]);
+
+    //doamin brand
+    Route::resource('brand', 'DomainBrandController', ['names' => ['update' => 'domainBrand.edit', 'store' => 'domainBrand.create']]);
+
+    //domain Ad status
+    Route::resource('adStatus', 'DomainAdStatusController', ['names' => ['update' => 'domainAdStatus.edit', 'store' => 'domainAdStatus.create']]);
+
+    //domain website status
+    Route::resource('websiteStatus', 'DomainWebsiteStatusController', ['names' => ['update' => 'domainWebsiteStatus.edit', 'store' => 'domainWebsiteStatus.create']]);
+
+    //domain host
+    Route::resource('host', 'DomainHostController', ['names' => ['update' => 'domainHost.edit', 'store' => 'domainHost.create']]);
+
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -116,7 +129,7 @@ Route::get('tpl/user/performance', function() { return view('tpl.user.performanc
 //leaves
 Route::get('tpl/leaves/records', function() { return view('tpl.leaves.records');});
 
-//website
+//website domain
     //========server
 Route::get('tpl/website/server', function () { return view('tpl.website.server.base');});
 Route::get('tpl/website/server/index', function () { return view('tpl.website.server.index');});
@@ -127,3 +140,19 @@ Route::get('tpl/website/country', function () { return view('tpl.website.country
 Route::get('tpl/website/country/index', function () { return view('tpl.website.country.index');});
 Route::get('tpl/website/country/add', function () { return view('tpl.website.country.add');});
 Route::get('tpl/website/country/edit', function () { return view('tpl.website.country.edit');});
+    //==========brand
+Route::get('tpl/website/brand/index', function () { return view('tpl.website.brand.index');});
+Route::get('tpl/website/brand/add', function () { return view('tpl.website.brand.add');});
+Route::get('tpl/website/brand/edit', function () { return view('tpl.website.brand.edit');});
+    //==========Ad status
+Route::get('tpl/website/adStatus/index', function () { return view('tpl.website.adStatus.index');});
+Route::get('tpl/website/adStatus/add', function () { return view('tpl.website.adStatus.add');});
+Route::get('tpl/website/adStatus/edit', function () { return view('tpl.website.adStatus.edit');});
+    //==========website status
+Route::get('tpl/website/websiteStatus/index', function () { return view('tpl.website.websiteStatus.index');});
+Route::get('tpl/website/websiteStatus/add', function () { return view('tpl.website.websiteStatus.add');});
+Route::get('tpl/website/websiteStatus/edit', function () { return view('tpl.website.websiteStatus.edit');});
+    //==========host
+Route::get('tpl/website/host/index', function () { return view('tpl.website.host.index');});
+Route::get('tpl/website/host/add', function () { return view('tpl.website.host.add');});
+Route::get('tpl/website/host/edit', function () { return view('tpl.website.host.edit');});

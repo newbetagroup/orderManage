@@ -22,6 +22,7 @@
                             <td data-title="'国家名称'" sortable="'name'">[: row.name :]</td>
                             <td data-title="'国家简写'">[: row.abbreviation :]</td>
                             <td data-title="'国家货币id'">[: row.currency_id :]</td>
+                            <td data-title="'国家货币'">[: countries.currencies[row.currency_id-1].currencyName :]</td>
                             <td data-title="'操作'">
                                 <a style="margin:3px;" ui-sref="website.country.edit({countryId:row.id})" class="X-Small btn-xs text-success ">
                                     <i class="fa fa-edit"></i> 编辑

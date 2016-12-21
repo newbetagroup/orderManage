@@ -15,7 +15,10 @@ html {
 .mt20 {
     margin-top:20px;
 }
+
 .search-box { text-align:left!important;}
+
+.operationbox {width: 105px;}
 
 /*start modal-----------------------------*/
 /* Fix for Bootstrap 3 with Angular UI Bootstrap */
