@@ -6,7 +6,8 @@
             <div class="row">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">修改host</h3>
+                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>
+                         <h3 class="panel-title">修改host</h3>
                     </div>
                     <div class="panel-body">
                         <form class="form-horizontal" role="form" ng-submit="fnEditHost()">

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateServersTable extends Migration
+class CreateDomainServersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateServersTable extends Migration
      */
     public function up()
     {
-        Schema::create('servers', function (Blueprint $table) {
+        Schema::create('domain_servers', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('pid')->default(0)->comment('父级的id');
             $table->string('name')->comment('服务器名称');
@@ -32,6 +32,6 @@ class CreateServersTable extends Migration
      */
     public function down()
     {
-        Schema::drop('servers');
+        Schema::drop('domain_servers');
     }
 }

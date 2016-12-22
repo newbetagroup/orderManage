@@ -26,11 +26,13 @@
                             <td data-title="'使用状态'">[: row.status == 1 ? 'in use':'suspend' :]</td>
                             <td data-title="'备注'">[: row.remark :]</td>
                             <td data-title="'操作'">
-                                <a style="margin:3px;" ui-sref="website.server.edit({serverId:row.id})" class="X-Small btn-xs text-success ">
-                                    <i class="fa fa-edit"></i> 编辑
-                                </a>
-                                <a style="margin:3px;" ng-click="servers.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">
-                                    <i class="fa fa-times-circle-o"></i> 删除</a>
+                                <div class="operationbox">
+                                    <a style="margin:3px;" ui-sref="website.server.edit({serverId:row.id})" class="X-Small btn-xs text-success ">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a style="margin:3px;" ng-click="servers.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">
+                                        <i class="fa fa-times-circle-o"></i> 删除</a>
+                                </div>
                             </td>
                         </tr>
                     </table>

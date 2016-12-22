@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Server;
+use App\DomainServer;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class ServerController extends Controller
+class DomainServerController extends Controller
 {
     protected $fields = [
         'pid' => '',
@@ -19,7 +19,7 @@ class ServerController extends Controller
         'status' => '',
         'remark' => ''
     ];
-
+    
     /**
      * Display a listing of the resource.
      *
@@ -27,11 +27,11 @@ class ServerController extends Controller
      */
     public function index()
     {
-        $data['data'] = Server::all();
-        $data['recordsTotal'] = Server::count();
+        $data['data'] = DomainServer::all();
+        $data['recordsTotal'] = DomainServer::count();
         return ['status' => 1, 'data'=> $data];
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -41,7 +41,7 @@ class ServerController extends Controller
     {
         //
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -50,15 +50,15 @@ class ServerController extends Controller
      */
     public function store(Request $request)
     {
-        $server = new Server();
-        // Server::create($request->all()); 需要在model中定义fillable 字段
+        $domainServer = new DomainServer();
+        // DomainServer::create($request->all()); 需要在model中定义fillable 字段
         foreach (array_keys($this->fields) as $field) {
-            if ($request->has($field)) $server->$field = $request->get($field);
+            if ($request->has($field)) $domainServer->$field = $request->get($field);
         }
-        $server->save();
-       return ['status' => 1, 'msg' => 'add success'];
+        $domainServer->save();
+        return ['status' => 1, 'msg' => 'add success'];
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -69,7 +69,7 @@ class ServerController extends Controller
     {
         //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -80,7 +80,7 @@ class ServerController extends Controller
     {
         //
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -90,20 +90,20 @@ class ServerController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $server = Server::find($id);
-    
+        $domainServer = DomainServer::find($id);
+        
         foreach (array_keys($this->fields) as $field) {
-            if($request->has($field) && $server->$field!=$request->get($field)) $server->$field = $request->get($field);
+            if($request->has($field) && $domainServer->$field!=$request->get($field)) $domainServer->$field = $request->get($field);
         }
-    
+        
         // $performance->update(['']);
-        if(!$server->save()) {
+        if(!$domainServer->save()) {
             return ['status' => 0, 'msg' => '更新失败'];
         }
-    
+        
         return ['status' => 1, 'msg' => '更新成功'];
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -112,8 +112,8 @@ class ServerController extends Controller
      */
     public function destroy($id)
     {
-        Server::destroy($id);
-
+        DomainServer::destroy($id);
+        
         return ['status' => 1, 'msg' => 'delete success'];
     }
 }

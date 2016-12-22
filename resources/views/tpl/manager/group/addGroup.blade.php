@@ -6,7 +6,8 @@
             <div class="">
                 <div class="panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">添加部门</h3>
+                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>
+                         <h3 class="panel-title">添加部门</h3>
                     </div>
                     <div class="panel-body">
 

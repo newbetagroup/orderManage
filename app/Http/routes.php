@@ -29,6 +29,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 //Route::group(['middleware' => ['auth']], function() {
 //如果没有添加as(别名)，即没有添加权限规则，则默认能访问该路由
     //User 路由
+    Route::get('user/getUserOptional', ['as' => 'user.getUserOptional', 'uses' => 'UserController@getUserOptional']);
     Route::get('user/getProfile', ['as' => 'user.getProfile', 'uses' => 'UserController@checkLogin']);
     Route::post('user/profileUpdate', ['as' => 'user.profileUpdate', 'uses' => 'UserController@selfUpdate']);
     //某个用户拥有的的所有权限（部门+个人）
@@ -62,7 +63,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::put('performance/{id}', ['uses' => 'PerformanceController@update']);
 
     //domain server 服务器管理
-    Route::resource('server', 'ServerController', ['names' => ['update' => 'server.edit', 'store' => 'server.create']]);
+    Route::resource('server', 'DomainServerController', ['names' => ['update' => 'domainServer.edit', 'store' => 'domainServer.create']]);
 
     //domain country
     Route::resource('country', 'DomainCountryController', ['names' => ['update' => 'domainCountry.edit', 'store' => 'domainCountry.create']]);
@@ -78,6 +79,9 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
     //domain host
     Route::resource('host', 'DomainHostController', ['names' => ['update' => 'domainHost.edit', 'store' => 'domainHost.create']]);
+
+    //domain website 网站管理
+    Route::resource('website', 'DomainWebsiteController', ['names' => ['update' => 'domainWebsite.edit', 'store' => 'domainWebsite.create']]);
 
 });
 
@@ -156,3 +160,7 @@ Route::get('tpl/website/websiteStatus/edit', function () { return view('tpl.webs
 Route::get('tpl/website/host/index', function () { return view('tpl.website.host.index');});
 Route::get('tpl/website/host/add', function () { return view('tpl.website.host.add');});
 Route::get('tpl/website/host/edit', function () { return view('tpl.website.host.edit');});
+    //==========website
+Route::get('tpl/website/website/index', function () { return view('tpl.website.website.index');});
+Route::get('tpl/website/website/add', function () { return view('tpl.website.website.add');});
+Route::get('tpl/website/website/edit', function () { return view('tpl.website.website.edit');});

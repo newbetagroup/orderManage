@@ -73,6 +73,22 @@
                           }
                     };
 
+                    //=============================常用字段的users信息
+                    var usersOptional = {};
+                    me.fnGetusersOptional = function () {
+                        var deffered = $q.defer();
+                        if (angular.equals({},usersOptional)) {
+                            $http.get('/user/getUserOptional/').then(function (r) {
+                                if (r.data.status != 1) deffered.reject('status 0');
+                                usersOptional = r.data.data;
+                                deffered.resolve(r.data.data);
+                            });
+                            return deffered.promise;
+                        } else {
+                            return $q.when(usersOptional);
+                        }
+                    };
+
                     /*================== 公共常用的方法 ==================*/
 
                     /**
@@ -120,4 +136,17 @@
                     };
                 }
             ])
+            .filter('zwbIdToName', function () {
+                return function (id, data) {
+                    var name='error';
+                    //data format [{id:1,name:'test1'},{id:1,name:'test2'}]
+                    angular.forEach(data, function (value, key) {
+                        if(value.id == id){
+                            name = value.name;
+                            return;
+                        }
+                    });
+                    return name;
+                }
+            })
 })();

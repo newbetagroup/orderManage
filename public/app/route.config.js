@@ -347,6 +347,43 @@ orderApp.config([
                 templateUrl: 'tpl/website/host/edit',
                 controller: 'HostEditCtrl'
             })
+            //website 域名管理
+            .state('website.website', {
+                url:'/website',
+                resolve: {
+                    loadOtherDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            '/app/website/server/server.js',
+                            '/app/website/host/host.js',
+                            '/app/website/websiteStatus/websiteStatus.js',
+                            '/app/website/adStatus/adStatus.js',
+                            '/app/website/brand/brand.js',
+                            '/app/website/country/country.js'
+                        ]).then(function () {
+                            return $ocLazyLoad.load('/app/website/website/website.js');
+                        });
+                    }],
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/website/website/website.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('website.website.index', {
+                url:'/websiteIndex',
+                templateUrl: 'tpl/website/website/index',
+                controller: 'WebsiteIndexCtrl as websites'
+            })
+            .state('website.website.add', {
+                url:'/websiteAdd',
+                templateUrl: 'tpl/website/website/add',
+                controller: 'WebsiteAddCtrl'
+            })
+            .state('website.website.edit', {
+                url:'/websiteEdit/:websiteId',
+                templateUrl: 'tpl/website/website/edit',
+                controller: 'WebsiteEditCtrl'
+            })
         ;
     }
     ])

@@ -36,11 +36,13 @@
                             <td class="hidden-xs" data-title="'手机'">[: row.phone :]</td>
                             <td class="hidden-xs" data-title="'入职日期'" sortable="'created_at'">[: row.created_at :]</td>
                             <td data-title="'操作'">
-                                <a style="margin:3px;" ui-sref="manager.staff.editStaff({staffId:row.id})" class="X-Small btn-xs text-success ">
-                                    <i class="fa fa-edit"></i> 编辑
-                                </a>
-                                <a style="margin:3px;" ng-click="staffs.fnDestroyStaff(row.id)" class="delBtn X-Small btn-xs text-danger ">
-                                    <i class="fa fa-times-circle-o"></i> 删除</a>
+                                <div class="operationbox">
+                                    <a style="margin:3px;" ui-sref="manager.staff.editStaff({staffId:row.id})" class="X-Small btn-xs text-success ">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a style="margin:3px;" ng-click="staffs.fnDestroyStaff(row.id)" class="delBtn X-Small btn-xs text-danger ">
+                                        <i class="fa fa-times-circle-o"></i> 删除</a>
+                                </div>
                             </td>
                         </tr>
                     </table>

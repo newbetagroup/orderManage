@@ -22,11 +22,13 @@
                             <td data-title="'品牌名称'" sortable="'name'">[: row.name :]</td>
                             <td data-title="'排序'">[: row.order :]</td>
                             <td data-title="'操作'">
-                                <a style="margin:3px;" ui-sref="website.brand.edit({brandId:row.id})" class="X-Small btn-xs text-success ">
-                                    <i class="fa fa-edit"></i> 编辑
-                                </a>
-                                <a style="margin:3px;" ng-click="brands.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">
-                                    <i class="fa fa-times-circle-o"></i> 删除</a>
+                                <div class="operationbox">
+                                    <a style="margin:3px;" ui-sref="website.brand.edit({brandId:row.id})" class="X-Small btn-xs text-success ">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a style="margin:3px;" ng-click="brands.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">
+                                        <i class="fa fa-times-circle-o"></i> 删除</a>
+                                </div>
                             </td>
                         </tr>
                     </table>

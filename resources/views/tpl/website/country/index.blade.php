@@ -24,11 +24,13 @@
                             <td data-title="'国家货币id'">[: row.currency_id :]</td>
                             <td data-title="'国家货币'">[: countries.currencies[row.currency_id-1].currencyName :]</td>
                             <td data-title="'操作'">
-                                <a style="margin:3px;" ui-sref="website.country.edit({countryId:row.id})" class="X-Small btn-xs text-success ">
-                                    <i class="fa fa-edit"></i> 编辑
-                                </a>
-                                <a style="margin:3px;" ng-click="countries.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">
-                                    <i class="fa fa-times-circle-o"></i> 删除</a>
+                                <div class="operationbox">
+                                    <a style="margin:3px;" ui-sref="website.country.edit({countryId:row.id})" class="X-Small btn-xs text-success ">
+                                        <i class="fa fa-edit"></i> 编辑
+                                    </a>
+                                    <a style="margin:3px;" ng-click="countries.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">
+                                        <i class="fa fa-times-circle-o"></i> 删除</a>
+                                </div>
                             </td>
                         </tr>
                     </table>

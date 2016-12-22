@@ -330,4 +330,27 @@ class UserController extends Controller
 
         return ['status' => 1, 'data' => $data];
     }
+    
+    /**
+     * user 的可选常用项 'users.id', 'users.name', 'groupId', 'groupName', 'supervisorId'
+     * @return array
+     */
+    public function getUserOptional()
+    {
+        $data['data'] = User::with(['groups' => function($query){
+            $query->select('groups.id', 'groups.name', 'groups.supervisor_id');
+        }])
+            ->select('users.id', 'users.name')
+            ->get();
+        foreach ($data['data'] as $user) {
+            if (isset($user->groups[0])) {
+                $user->groupId = $user->groups[0]->id;
+                $user->groupName = $user->groups[0]->name;
+                $user->supervisorId = $user->groups[0]->supervisor_id;
+            }
+            unset($user->groups);
+        }
+        $data['recordsTotal'] = User::count();
+        return ['status' => 1, 'data' => $data];
+    }
 }
