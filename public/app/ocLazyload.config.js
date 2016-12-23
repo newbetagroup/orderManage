@@ -53,7 +53,7 @@ orderApp.constant("Modules_Config",[
         "Modules_Config",
         function ($ocLazyLoadProvider,Modules_Config){
         $ocLazyLoadProvider.config({
-            debug:true,
+            debug:false,
             events:true,
             modules:Modules_Config
         });

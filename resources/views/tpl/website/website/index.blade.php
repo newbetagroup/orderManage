@@ -6,35 +6,114 @@
             </div>
         </div>
         <div class="col-sm-6 text-right">
+            <a ng-click="websites.toggleSearch()" class="btn btn-success btn-md">
+                <i class="fa" ng-class="{true: 'fa-hand-o-down', false: 'fa-hand-o-right'}[websites.searchRemote]"></i> 服务器搜索
+            </a>
             <a ui-sref="website.website.add" class="btn btn-success btn-md">
                 <i class="fa fa-plus-circle"></i> 新增
             </a>
         </div>
     </div>
 
+    {{--服务器搜索--}}
+    <div ng-show="websites.searchRemote" class="row">
+        <div class="col-xs-12">
+            <form class="form-inline" role="form" ng-submit="websites.fnSearchRemote()">
+                <div class="form-group">
+                    <label for="name" class="sr-only">域名</label>
+                    <input placeholder="域名" type="text" class="form-control" name="website-name" id="name" autofocus ng-model="websites.searchRemoteInfo.name">
+                </div>
+                <div class="form-group">
+                    <label for="domain_server" class="sr-only">服务器</label>
+                    <select class="form-control" name="domain_server" id="domain_server" ng-model="websites.searchRemoteInfo.domain_server_id" ng-options="server.id as server.name for server in websites.WebsiteSer.domainServers | orderBy:['name']">
+                        <option value="">请选择服务器</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="domain_country" class="sr-only">国家</label>
+                    <select class="form-control" name="domain_country" id="domain_country" ng-model="websites.searchRemoteInfo.domain_country_id" ng-options="country.id as country.name for country in websites.WebsiteSer.domainCountries | orderBy:['name']">
+                        <option value="">请选择国家</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="domain_brand" class="sr-only">品牌</label>
+                    <select class="form-control" name="domain_server" id="domain_brand" ng-model="websites.searchRemoteInfo.domain_brand_id" ng-options="brand.id as brand.name for brand in websites.WebsiteSer.domainBrands | orderBy:['name']">
+                        <option value="">请选择品牌</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="domain_ad_status" class="sr-only">广告状态</label>
+                    <select class="form-control" name="domain_ad_status" id="domain_ad_status" ng-model="websites.searchRemoteInfo.domain_ad_status_id" ng-options="adStatus.id as adStatus.name for adStatus in websites.WebsiteSer.domainAdStatuses | orderBy:['name']">
+                        <option value="">请选择广告状态</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="domain_website_status" class="sr-only">网站状态</label>
+                    <select class="form-control" name="domain_website_status" id="domain_website_status" ng-model="websites.searchRemoteInfo.domain_website_status_id" ng-options="websiteStatus.id as websiteStatus.name for websiteStatus in websites.WebsiteSer.domainWebsiteStatuses | orderBy:['name']">
+                        <option value="">请选择网站状态</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="user" class="sr-only">负责人</label>
+                    <select class="form-control" name="user" id="user" ng-model="websites.searchRemoteInfo.user_id" ng-options="user.id as user.name for user in websites.WebsiteSer.usersOptional | orderBy:['groupId', 'name']">
+                        <option value="">请选择负责人</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="ftp_ip" class="sr-only">ftp ip</label>
+                    <input placeholder="ftp ip" type="text" class="form-control" name="ftp_ip" id="ftp_ip" autofocus ng-model="websites.searchRemoteInfo.ftp_ip">
+                </div>
+                <div class="form-group">
+                    <label for="ftp_username" class="sr-only">ftp username</label>
+                    <input placeholder="ftp username" type="text" class="form-control" name="ftp_username" id="ftp_username" autofocus ng-model="websites.searchRemoteInfo.ftp_username">
+                </div>
+                <div class="form-group">
+                    <label for="background_username" class="sr-only">后台账号</label>
+                    <input placeholder="后台账号" type="text" class="form-control" name="background_username" id="background_username" autofocus ng-model="websites.searchRemoteInfo.background_username">
+                </div>
+                <div class="form-group">
+                    <label for="database_username" class="sr-only">数据库账号</label>
+                    <input placeholder="数据库账号" type="text" class="form-control" name="database_username" id="database_username" autofocus ng-model="websites.searchRemoteInfo.database_username">
+                </div>
+                <div class="form-group">
+                    <label for="domain_host" class="sr-only">host账户</label>
+                    <select class="form-control" name="domain_host" id="domain_host" ng-model="websites.searchRemoteInfo.domain_host_id" ng-options="server.id as server.name for server in websites.WebsiteSer.domainHosts">
+                        <option value="">请选择host账户</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn btn-info">搜索服务器</button>
+            </form>
+        </div>
+    </div>
+
     <div class="row">
         <div class="col-xs-12">
             <div class="box">
+                <div class="box-body">
+                    <label class="checkbox-inline" ng-repeat="col in websites.cols" ng-if="show | zwbExceptFields:col.title():['Id','域名','服务器','国家','服务器','品牌','广告状态','网站状态','负责人','ftp ip','操作']">
+                        <input type="checkbox" ng-model-options="{ getterSetter: true }" ng-model="col.show"/> [: col.title() :]
+                    </label>
+                </div>
                 <div class="box-body table-responsive">
-                    <table  ng-table="websites.tableParams" class="table table-condensed table-bordered table-striped">
+                    <table  ng-table="websites.tableParams" class="table table-condensed table-bordered table-striped" ng-table-columns-binding="websites.cols">
                         <tr ng-repeat="row in $data">
-                            <td data-title="'Id'" sortable="'id'">[: row.id :]</td>
-                            <td data-title="'域名'" sortable="'name'">[: row.name :]</td>
-                            <td data-title="'服务器'">[: row.domain_server_id | zwbIdToName:websites.WebsiteSer.domainServers :]</td>
-                            <td data-title="'国家'">[: row.domain_country_id | zwbIdToName:websites.WebsiteSer.domainCountries :]</td>
-                            <td data-title="'品牌'">[: row.domain_brand_id | zwbIdToName:websites.WebsiteSer.domainBrands :]</td>
-                            <td data-title="'广告状态'">[: row.domain_ad_status_id | zwbIdToName:websites.WebsiteSer.domainAdStatuses :]</td>
-                            <td data-title="'网站状态'">[: row.domain_website_status_id | zwbIdToName:websites.WebsiteSer.domainWebsiteStatuses :]</td>
-                            <td data-title="'负责人'">[: row.user_id | zwbIdToName:websites.WebsiteSer.usersOptional :]</td>
-                            <td data-title="'ftp ip'">[: row.ftp_ip :]</td>
-                            <td data-title="'ftp username'">[: row.ftp_username :]</td>
-                            <td data-title="'ftp password'">[: row.ftp_password :]</td>
-                            <td data-title="'后台user'">[: row.background_username :]</td>
-                            <td data-title="'后台 password'">[: row.background_password :]</td>
-                            <td data-title="'数据库 user'">[: row.database_username :]</td>
-                            <td data-title="'数据库 password'">[: row.database_password :]</td>
-                            <td data-title="'host账户'">[: row.domain_host_id | zwbIdToName:websites.WebsiteSer.domainHosts :]</td>
-                            <td data-title="'操作'">
+                            <td ng-if="true" data-title="'Id'" sortable="'id'" show="false">[: row.id :]</td>
+                            <td ng-if="true" data-title="'域名'" sortable="'name'">[: row.name :]</td>
+                            <td ng-if="true" data-title="'服务器'">[: row.domain_server_id | zwbIdToName:websites.WebsiteSer.domainServers :]</td>
+                            <td ng-if="true" data-title="'国家'">[: row.domain_country_id | zwbIdToName:websites.WebsiteSer.domainCountries :]</td>
+                            <td ng-if="true" data-title="'品牌'">[: row.domain_brand_id | zwbIdToName:websites.WebsiteSer.domainBrands :]</td>
+                            <td ng-if="true" data-title="'广告状态'">[: row.domain_ad_status_id | zwbIdToName:websites.WebsiteSer.domainAdStatuses :]</td>
+                            <td ng-if="true" data-title="'网站状态'">[: row.domain_website_status_id | zwbIdToName:websites.WebsiteSer.domainWebsiteStatuses :]</td>
+                            <td ng-if="true" data-title="'负责人'">[: row.user_id | zwbIdToName:websites.WebsiteSer.usersOptional :]</td>
+                            <td ng-if="true" data-title="'ftp ip'">[: row.ftp_ip :]</td>
+                            <td ng-if="false" data-title="'ftp username'">[: row.ftp_username :]</td>
+                            <td ng-if="false" data-title="'ftp password'">[: row.ftp_password :]</td>
+                            <td ng-if="false" data-title="'后台user'">[: row.background_username :]</td>
+                            <td ng-if="false" data-title="'后台 password'">[: row.background_password :]</td>
+                            <td ng-if="false" data-title="'数据库 user'">[: row.database_username :]</td>
+                            <td ng-if="false" data-title="'数据库 password'">[: row.database_password :]</td>
+                            <td ng-if="false" data-title="'host账户'">[: row.domain_host_id | zwbIdToName:websites.WebsiteSer.domainHosts :]</td>
+                            <td ng-if="true" data-title="'操作'">
                                 <div class="operationbox">
                                     <a style="margin:3px;" ui-sref="website.website.edit({websiteId:row.id})" class="X-Small btn-xs text-success ">
                                         <i class="fa fa-edit"></i> 编辑

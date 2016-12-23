@@ -13,49 +13,49 @@
 
                         <form class="form-horizontal" role="form" ng-submit="fnEditWebsite()">
                             <div class="form-group">
-                                <label for="name" class="col-md-3 control-label">域名</label>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="websiteInfo.name">
+                                    <label for="name" class="col-md-3 control-label">域名</label>
+                                    <div class="col-md-5">
+                                        <input type="text" class="form-control" name="name" id="name" autofocus ng-model="websiteInfo.name">
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="domain_server" class="col-md-3 control-label">服务器</label>
-                                <div class="col-md-5">
-                                    <select class="form-control" name="domain_server" id="domain_server" ng-model="websiteInfo.domain_server_id" ng-options="server.id as server.name for server in WebsiteSer.domainServers | orderBy:['name']"></select>
+                                <div class="form-group">
+                                    <label for="domain_server" class="col-md-3 control-label">服务器</label>
+                                    <div class="col-md-5">
+                                        <select class="form-control" name="domain_server" id="domain_server" ng-model="websiteInfo.domain_server_id" ng-options="server.id as server.name for server in WebsiteSer.domainServers | orderBy:['name']"></select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="domain_country" class="col-md-3 control-label">国家</label>
-                                <div class="col-md-5">
-                                    <select class="form-control" name="domain_country" id="domain_country" ng-model="websiteInfo.domain_country_id" ng-options="country.id as country.name for country in WebsiteSer.domainCountries | orderBy:['name']"></select>
+                                <div class="form-group">
+                                    <label for="domain_country" class="col-md-3 control-label">国家</label>
+                                    <div class="col-md-5">
+                                        <select class="form-control" name="domain_country" id="domain_country" ng-model="websiteInfo.domain_country_id" ng-options="country.id as country.name for country in WebsiteSer.domainCountries | orderBy:['name']"></select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="domain_brand" class="col-md-3 control-label">品牌</label>
-                                <div class="col-md-5">
-                                    <select class="form-control" name="domain_server" id="domain_brand" ng-model="websiteInfo.domain_brand_id" ng-options="brand.id as brand.name for brand in WebsiteSer.domainBrands | orderBy:['name']"></select>
+                                <div class="form-group">
+                                    <label for="domain_brand" class="col-md-3 control-label">品牌</label>
+                                    <div class="col-md-5">
+                                        <select class="form-control" name="domain_server" id="domain_brand" ng-model="websiteInfo.domain_brand_id" ng-options="brand.id as brand.name for brand in WebsiteSer.domainBrands | orderBy:['name']"></select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="domain_ad_status" class="col-md-3 control-label">广告状态</label>
-                                <div class="col-md-5">
-                                    <select class="form-control" name="domain_ad_status" id="domain_ad_status" ng-model="websiteInfo.domain_ad_status_id" ng-options="adStatus.id as adStatus.name for adStatus in WebsiteSer.domainAdStatuses | orderBy:['name']"></select>
+                                <div class="form-group">
+                                    <label for="domain_ad_status" class="col-md-3 control-label">广告状态</label>
+                                    <div class="col-md-5">
+                                        <select class="form-control" name="domain_ad_status" id="domain_ad_status" ng-model="websiteInfo.domain_ad_status_id" ng-options="adStatus.id as adStatus.name for adStatus in WebsiteSer.domainAdStatuses | orderBy:['name']"></select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="domain_website_status" class="col-md-3 control-label">网站状态</label>
-                                <div class="col-md-5">
-                                    <select class="form-control" name="domain_website_status" id="domain_website_status" ng-model="websiteInfo.domain_website_status_id" ng-options="websiteStatus.id as websiteStatus.name for websiteStatus in WebsiteSer.domainWebsiteStatuses | orderBy:['name']"></select>
+                                <div class="form-group">
+                                    <label for="domain_website_status" class="col-md-3 control-label">网站状态</label>
+                                    <div class="col-md-5">
+                                        <select class="form-control" name="domain_website_status" id="domain_website_status" ng-model="websiteInfo.domain_website_status_id" ng-options="websiteStatus.id as websiteStatus.name for websiteStatus in WebsiteSer.domainWebsiteStatuses | orderBy:['name']"></select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="user" class="col-md-3 control-label">负责人</label>
-                                <div class="col-md-5">
-                                    <select class="form-control" name="user" id="user" ng-model="websiteInfo.user_id" ng-options="user.id as user.name for user in WebsiteSer.usersOptional | orderBy:['groupId', 'name']"></select>
+                                <div class="form-group">
+                                    <label for="user" class="col-md-3 control-label">负责人</label>
+                                    <div class="col-md-5">
+                                        <select class="form-control" name="user" id="user" ng-model="websiteInfo.user_id" ng-options="user.id as user.name for user in WebsiteSer.usersOptional | orderBy:['groupId', 'name']"></select>
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="form-group">
-                                <label for="ftp_ip" class="col-md-3 control-label">ftp ip</label>
+                                <div class="form-group">
+                                    <label for="ftp_ip" class="col-md-3 control-label">ftp ip</label>
                                 <div class="col-md-5">
                                     <input type="text" class="form-control" name="ftp_ip" id="ftp_ip" autofocus ng-model="websiteInfo.ftp_ip">
                                 </div>

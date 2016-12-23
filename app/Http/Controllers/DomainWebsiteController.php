@@ -7,11 +7,12 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class DomainWebsiteController extends Controller
 {
     protected $fields = [
-        'name' => '',
+        'name' => 'like',
         'domain_server_id' => '',
         'domain_country_id' => '',
         'domain_brand_id' => '',
@@ -19,17 +20,17 @@ class DomainWebsiteController extends Controller
         'domain_website_status_id' => '',
         'user_id' => '',
         'ftp_ip' => '',
-        'ftp_username' => '',
-        'ftp_password' => '',
-        'background_username' => '',
-        'background_password' => '',
-        'database_username' => '',
-        'database_password' => '',
+        'ftp_username' => 'like',
+        'ftp_password' => 'like',
+        'background_username' => 'like',
+        'background_password' => 'like',
+        'database_username' => 'like',
+        'database_password' => 'like',
         'domain_host_id' => '',
-        'expiration_time' => '',
-        'adstart' => '',
-        'adend' => '',
-        'remark' => ''
+        'expiration_time' => 'like',
+        'adstart' => 'like',
+        'adend' => 'like',
+        'remark' => 'like'
     ];
 
     /**
@@ -37,10 +38,32 @@ class DomainWebsiteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $data['data'] = DomainWebsite::all();
-        $data['recordsTotal'] = DomainWebsite::count();
+        if(!$request->isMethod('post')) {
+            //get
+            $data['data'] = DomainWebsite::take(100)->get();
+            $data['recordsTotal'] = DomainWebsite::count();
+        } else {
+            $currentPage = $request->get('currentPage'); //当前页码
+            $countPerpage = $request->get('countPerpage');//每页有几条数据
+            $skip = ($currentPage - 1)*$countPerpage;
+            //post search by field
+            $resu = new DomainWebsite();
+            //$resu = DB::table('domain_websites');
+            foreach (array_keys($this->fields) as $field) {
+                if ($request->has($field)) {
+                    if($this->fields[$field] == 'like') {
+                        $resu = $resu->where($field, 'like', '%'. $request->get($field) .'%');
+                    } else {
+                        $resu = $resu->where($field, $request->get($field));
+                    }
+                }
+            }
+
+            $data['data'] = $resu->skip($skip)->take($countPerpage)->get();
+        }
+
         return ['status' => 1, 'data' => $data];
     }
 

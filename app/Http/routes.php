@@ -81,6 +81,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::resource('host', 'DomainHostController', ['names' => ['update' => 'domainHost.edit', 'store' => 'domainHost.create']]);
 
     //domain website 网站管理
+    Route::post('website/index', ['uses' => 'DomainWebsiteController@index']);
     Route::resource('website', 'DomainWebsiteController', ['names' => ['update' => 'domainWebsite.edit', 'store' => 'domainWebsite.create']]);
 
 });

@@ -136,6 +136,7 @@
                     };
                 }
             ])
+            //传入id，返回对应的name
             .filter('zwbIdToName', function () {
                 return function (id, data) {
                     var name='error';
@@ -147,6 +148,18 @@
                         }
                     });
                     return name;
+                }
+            })
+            // ng-table show fields ng-table显示与隐藏选项：except为必显示项
+            .filter('zwbExceptFields', function () {
+                return function (show, col, except) {
+                    // except is an array
+                    //cols
+                    var result = true;
+                    angular.forEach(except, function (value, key) {
+                        if(value == col) { result = false;return;}
+                    });
+                    return result;
                 }
             })
 })();

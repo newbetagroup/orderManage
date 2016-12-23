@@ -19,6 +19,7 @@
             'HostService',
             function ($http, $q, CommonService, $timeout, ServerService, CountryService, BrandService, AdStatusService, WebsiteStatusService, HostService) {
                 var me = this;
+                //me.usersOptional = [{id:1,title:'1'},{id:2,title:'2'},{id:3,title:'3'},{id:4,title:'4'},{id:5,title:'5'}]; ng-table 要这种格式，id与title
                 //=================相关数据
                 ServerService.fnGetServers().then(function (r) {
                     me.domainServers = r;
@@ -43,11 +44,49 @@
                 });
 
                 me.websitesInfo = {};
-                me.fnGetWebsites = function (filterValue, params, type) {
+                me.fnGetWebsites = function (type, filterValue, searchRemoteInfo, params) {
+                    //params.page() * params.count() 未完待续：下一页，下一页，当本地数据量不够的时候 起始两页，当前页获取下一页内容，实现伪预加载？？？
+                    searchRemoteInfo = searchRemoteInfo || {};
                     type = type || 'cache';//cache or remote
 
+                    var searchRemote = false;
+                    if(!angular.equals({}, searchRemoteInfo)) searchRemote = true;//带着fields去服务器搜索
+
                     var deffered = $q.defer();
-                    if(angular.equals({}, me.websitesInfo) || type == 'remote') {
+
+                    //======================服务器搜索
+                    if(searchRemote) {
+                        //分页的一些参数
+                        searchRemoteInfo.currentPage = params.page();
+                        searchRemoteInfo.countPerpage = params.count();
+
+                        //先去除为空的字段
+                        angular.forEach(searchRemoteInfo, function (value, key) {
+                            if (value == null) delete searchRemoteInfo[key];
+                        });
+
+                        if(me.websitesInfo.recordsTotal > 10) {
+                            //初始化时已经缓存了100条数据，如果总数据小于100，则直接搜索本地即可
+                            $http.post("/website/index", searchRemoteInfo).then(function (r) {
+                                if(r.data.status != 1) {
+                                    deffered.reject();
+                                    return;
+                                }
+                                var transformedData = CommonService.transformData(r.data.data.data, filterValue, params);
+                                params.total(transformedData.length);
+                                deffered.resolve(transformedData);
+                            });
+                            return deffered.promise;
+                        } else {
+                            //数据量小于100，本地搜索
+                            var filteredData = CommonService.filterData(me.websitesInfo.data,searchRemoteInfo);
+                            params.total(filteredData.length);
+                            var transformedData = CommonService.sliceOrderData(filteredData,params);
+                            return $q.when(transformedData);
+                        }
+
+                    } else if(angular.equals({}, me.websitesInfo) || type == 'remote') {
+                        //=========================== remote
                         $http.get("/website").then(function (r) {
                             if(r.data.status != 1) {
                                 deffered.reject();
@@ -70,7 +109,7 @@
                         return deffered.promise;
 
                     } else {
-
+                            //================== local
                         var filteredData = CommonService.filterData(me.websitesInfo.data,filterValue);
 
                         //!ng-table
@@ -180,17 +219,27 @@
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return WebsiteService.fnGetWebsites(self.filterValue, params, getType);
+                            return WebsiteService.fnGetWebsites(getType, self.filterValue, self.searchRemoteInfo,  params);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
                 }
 
-                //筛选
+                //缓存筛选
                 self.fnSearchChange = function () {
                     self.tableParams.reload();
                 };
 
+                //服务器筛选 service判断本地是否已经有全部数据了
+                self.searchRemote = false;
+                self.toggleSearch = function () {
+                    self.searchRemote = !self.searchRemote;
+                    if(self.searchRemote) self.searchRemoteInfo = {};
+                };
+                self.searchRemoteInfo = {};
+                self.fnSearchRemote = function () {
+                    self.tableParams.reload();
+                };
                 //确认删除模态框
                 var dlg = null;
                 self.fnDestoryPost = function (id) {
