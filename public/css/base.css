@@ -20,6 +20,8 @@ html {
 
 .operationbox {width: 105px;}
 
+.form-inline .form-group{margin-bottom:5px!important;}
+
 /*start modal-----------------------------*/
 /* Fix for Bootstrap 3 with Angular UI Bootstrap */
 .modal {

@@ -13,6 +13,47 @@
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
 
+                me.parentServers = {};
+                me.fnGetParentServers = function (filterValue, params, type) {
+                    type = type || 'cache';//cache or remote
+
+                    var deffered = $q.defer();
+                    if(angular.equals({}, me.parentServers) || type == 'remote') {
+                        $http.get("/server").then(function (r) {
+                            if(r.data.status != 1) {
+                                deffered.reject();
+                                return;
+                            }
+
+                            me.parentServers = r.data.data;
+
+                            if(angular.isUndefined(params)) {
+                                var filteredData = CommonService.filterData(r.data.data.data,filterValue);
+                                deffered.resolve(filteredData);
+                                return;
+                            }
+                            params.total(r.data.data.recordsTotal);
+                            var transformedData = CommonService.transformData(r.data.data.data, filterValue, params);
+                            deffered.resolve(transformedData);
+                        });
+
+                        return deffered.promise;
+
+                    } else {
+
+                        var filteredData = CommonService.filterData(me.parentServers.data,filterValue);
+
+                        //!ng-table
+                        if(angular.isUndefined(params)) {
+                            return $q.when(filteredData);
+                        }
+
+                        params.total(filteredData.length);
+                        var transformedData = CommonService.sliceOrderData(filteredData,params);
+                        return $q.when(transformedData);
+                    }
+                };
+
                 me.serversInfo = {};
                 me.fnGetServers = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
@@ -132,6 +173,10 @@
 
                 var self = this;
 
+                ServerService.fnGetParentServers().then(function (r) {
+                    self.parentServers = r;
+                });
+
                 self.filterValue ='';
 
                 self.deleteAction = {};//删除的状态 pendding 和 status
@@ -184,6 +229,10 @@
             'ServerService',
             function ($scope, ServerService) {
                 $scope.serverInfo = {};
+                ServerService.fnGetParentServers().then(function (r) {
+                    console.log(r);
+                    $scope.parentServers = r;
+                });
                 $scope.fnAddServer = function () {
                     ServerService.fnAddServer($scope.serverInfo);
                 }
@@ -199,6 +248,11 @@
                 $scope.serverInfo = {};
 
                 var serverId = $scope.$stateParams.serverId;
+
+                ServerService.fnGetParentServers().then(function (r) {
+                    console.log(r);
+                    $scope.parentServers = r;
+                });
 
                 ServerService.fnGetServers().then(function (r) {
                     var serversInfo = $filter('filter')(r, {id: serverId});

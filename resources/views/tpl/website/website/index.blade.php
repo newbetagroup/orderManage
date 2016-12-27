@@ -2,13 +2,12 @@
     <div class="row" style="margin:5px;">
         <div class="col-sm-6 text-left">
             <div id="tags-table_filter" class="dataTables_filter search-box">
-                <label>搜索:<input type="search" class="form-control input-sm" ng-model="websites.filterValue" ng-change="websites.fnSearchChange()"></label>
+                <a ng-click="websites.toggleSearch()" class="btn btn-success btn-md">
+                    <i class="fa" ng-class="{true: 'fa-search-minus', false: 'fa-search-plus'}[websites.searchRemote]"></i> 搜索
+                </a>
             </div>
         </div>
         <div class="col-sm-6 text-right">
-            <a ng-click="websites.toggleSearch()" class="btn btn-success btn-md">
-                <i class="fa" ng-class="{true: 'fa-hand-o-down', false: 'fa-hand-o-right'}[websites.searchRemote]"></i> 服务器搜索
-            </a>
             <a ui-sref="website.website.add" class="btn btn-success btn-md">
                 <i class="fa fa-plus-circle"></i> 新增
             </a>
@@ -81,7 +80,12 @@
                         <option value="">请选择host账户</option>
                     </select>
                 </div>
-                <button type="submit" class="btn btn-info">搜索服务器</button>
+                <div class="checkbox">
+                    <label ng-init="websites.searchRemoteInfo.isDeleted=false">
+                        <input type="checkbox" ng-model="websites.searchRemoteInfo.isDeleted"> 已删除
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-info">搜索</button>
             </form>
         </div>
     </div>
@@ -99,20 +103,20 @@
                         <tr ng-repeat="row in $data">
                             <td ng-if="true" data-title="'Id'" sortable="'id'" show="false">[: row.id :]</td>
                             <td ng-if="true" data-title="'域名'" sortable="'name'">[: row.name :]</td>
-                            <td ng-if="true" data-title="'服务器'">[: row.domain_server_id | zwbIdToName:websites.WebsiteSer.domainServers :]</td>
-                            <td ng-if="true" data-title="'国家'">[: row.domain_country_id | zwbIdToName:websites.WebsiteSer.domainCountries :]</td>
-                            <td ng-if="true" data-title="'品牌'">[: row.domain_brand_id | zwbIdToName:websites.WebsiteSer.domainBrands :]</td>
-                            <td ng-if="true" data-title="'广告状态'">[: row.domain_ad_status_id | zwbIdToName:websites.WebsiteSer.domainAdStatuses :]</td>
-                            <td ng-if="true" data-title="'网站状态'">[: row.domain_website_status_id | zwbIdToName:websites.WebsiteSer.domainWebsiteStatuses :]</td>
-                            <td ng-if="true" data-title="'负责人'">[: row.user_id | zwbIdToName:websites.WebsiteSer.usersOptional :]</td>
-                            <td ng-if="true" data-title="'ftp ip'">[: row.ftp_ip :]</td>
-                            <td ng-if="false" data-title="'ftp username'">[: row.ftp_username :]</td>
+                            <td ng-if="true" data-title="'服务器'" sortable="'domain_server_id'">[: row.domain_server_id | zwbIdToName:websites.WebsiteSer.domainServers :]</td>
+                            <td ng-if="true" data-title="'国家'" sortable="'domain_country_id'">[: row.domain_country_id | zwbIdToName:websites.WebsiteSer.domainCountries :]</td>
+                            <td ng-if="true" data-title="'品牌'" sortable="'domain_brand_id'">[: row.domain_brand_id | zwbIdToName:websites.WebsiteSer.domainBrands :]</td>
+                            <td ng-if="true" data-title="'广告状态'" sortable="'domain_ad_status_id'">[: row.domain_ad_status_id | zwbIdToName:websites.WebsiteSer.domainAdStatuses :]</td>
+                            <td ng-if="true" data-title="'网站状态'" sortable="'domain_website_status_id'">[: row.domain_website_status_id | zwbIdToName:websites.WebsiteSer.domainWebsiteStatuses :]</td>
+                            <td ng-if="true" data-title="'负责人'" sortable="'user_id'">[: row.user_id | zwbIdToName:websites.WebsiteSer.usersOptional :]</td>
+                            <td ng-if="true" data-title="'ftp ip'" sortable="'ftp_ip'">[: row.ftp_ip :]</td>
+                            <td ng-if="false" data-title="'ftp username'" sortable="'ftp_username'">[: row.ftp_username :]</td>
                             <td ng-if="false" data-title="'ftp password'">[: row.ftp_password :]</td>
-                            <td ng-if="false" data-title="'后台user'">[: row.background_username :]</td>
+                            <td ng-if="false" data-title="'后台user'" sortable="'background_username'">[: row.background_username :]</td>
                             <td ng-if="false" data-title="'后台 password'">[: row.background_password :]</td>
-                            <td ng-if="false" data-title="'数据库 user'">[: row.database_username :]</td>
+                            <td ng-if="false" data-title="'数据库 user'" sortable="'database_username'">[: row.database_username :]</td>
                             <td ng-if="false" data-title="'数据库 password'">[: row.database_password :]</td>
-                            <td ng-if="false" data-title="'host账户'">[: row.domain_host_id | zwbIdToName:websites.WebsiteSer.domainHosts :]</td>
+                            <td ng-if="false" data-title="'host账户'" sortable="'domain_host_id'">[: row.domain_host_id | zwbIdToName:websites.WebsiteSer.domainHosts :]</td>
                             <td ng-if="true" data-title="'操作'">
                                 <div class="operationbox">
                                     <a style="margin:3px;" ui-sref="website.website.edit({websiteId:row.id})" class="X-Small btn-xs text-success ">
@@ -124,6 +128,19 @@
                             </td>
                         </tr>
                     </table>
+                </div>
+                <div class="box-body">
+                    <div class="floatLeft">
+                        <ul class="pagination-sm no-margin" previous-text="上一页" next-text="下一页" uib-pagination ng-change="websites.fnPageChanged()" items-per-page="websites.searchRemoteInfo.itemsPerPage" num-pages="websites.searchRemoteInfo.numPages" total-items="websites.searchRemoteInfo.totalItems" ng-model="websites.searchRemoteInfo.currentPage" max-size="websites.searchRemoteInfo.maxSize" boundary-link-numbers="true"></ul>
+                    </div>
+                    <div class="floatRight">
+                        <div class="btn-group">
+                            <label class="btn btn-default" ng-model="itemsPerPage" uib-btn-radio="10">10</label>
+                            <label class="btn btn-default" ng-model="itemsPerPage" uib-btn-radio="20">20</label>
+                            <label class="btn btn-default" ng-model="itemsPerPage" uib-btn-radio="50">50</label>
+                            <label class="btn btn-default" ng-model="itemsPerPage" uib-btn-radio="100">100</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

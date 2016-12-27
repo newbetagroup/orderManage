@@ -19,6 +19,14 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="parent-server" class="col-md-3 control-label">父级服务器</label>
+                                <div class="col-md-5">
+                                    <select  class="form-control" ng-model="serverInfo.pid" ng-options="parentServer.id as parentServer.name for parentServer in parentServers">
+                                        <option value="">0 级</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <label for="user_name" class="col-md-3 control-label">用户名</label>
                                 <div class="col-md-5">
                                     <input type="text" class="form-control" name="user_name" id="user_name" autofocus ng-model="serverInfo.user_name">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\DomainServer;
 use App\DomainWebsite;
 use Illuminate\Http\Request;
 
@@ -13,20 +14,20 @@ class DomainWebsiteController extends Controller
 {
     protected $fields = [
         'name' => 'like',
-        'domain_server_id' => '',
-        'domain_country_id' => '',
-        'domain_brand_id' => '',
-        'domain_ad_status_id' => '',
-        'domain_website_status_id' => '',
-        'user_id' => '',
-        'ftp_ip' => '',
+        'domain_server_id' => 'extra',
+        'domain_country_id' => 'equal',
+        'domain_brand_id' => 'equal',
+        'domain_ad_status_id' => 'equal',
+        'domain_website_status_id' => 'equal',
+        'user_id' => 'equal',
+        'ftp_ip' => 'like',
         'ftp_username' => 'like',
         'ftp_password' => 'like',
         'background_username' => 'like',
         'background_password' => 'like',
         'database_username' => 'like',
         'database_password' => 'like',
-        'domain_host_id' => '',
+        'domain_host_id' => 'equal',
         'expiration_time' => 'like',
         'adstart' => 'like',
         'adend' => 'like',
@@ -40,29 +41,55 @@ class DomainWebsiteController extends Controller
      */
     public function index(Request $request)
     {
-        if(!$request->isMethod('post')) {
-            //get
-            $data['data'] = DomainWebsite::take(100)->get();
-            $data['recordsTotal'] = DomainWebsite::count();
+        //orderBy
+        $orderBy = $request->get('orderBy');
+        $orderBy = $orderBy[0];
+        $order = strpos($orderBy, '+') === false?'desc':'asc';
+        $orderBy = substr($orderBy, 1);
+
+        $currentPage = $request->get('currentPage'); //当前页码
+        $itemsPerPage = $request->get('itemsPerPage');//每页有几条数据
+        $skip = ($currentPage - 1)*$itemsPerPage;
+        $take = $request->get('takeCount')? $request->get('takeCount'):$itemsPerPage;
+        //post search by field
+
+        if($request->has('isDeleted') && $request->get('isDeleted')) {
+            //已删除
+            $resu = DomainWebsite::onlyTrashed();
         } else {
-            $currentPage = $request->get('currentPage'); //当前页码
-            $countPerpage = $request->get('countPerpage');//每页有几条数据
-            $skip = ($currentPage - 1)*$countPerpage;
-            //post search by field
             $resu = new DomainWebsite();
-            //$resu = DB::table('domain_websites');
-            foreach (array_keys($this->fields) as $field) {
-                if ($request->has($field)) {
-                    if($this->fields[$field] == 'like') {
-                        $resu = $resu->where($field, 'like', '%'. $request->get($field) .'%');
-                    } else {
-                        $resu = $resu->where($field, $request->get($field));
-                    }
+        }
+
+        //$resu = DB::table('domain_websites');
+        foreach (array_keys($this->fields) as $field) {
+            if ($request->has($field)) {
+                if($this->fields[$field] == 'like') {
+                    $resu = $resu->where($field, 'like', '%'. $request->get($field) .'%');
+                }
+                if($this->fields[$field] == 'equal'){
+                    $resu = $resu->where($field, $request->get($field));
                 }
             }
-
-            $data['data'] = $resu->skip($skip)->take($countPerpage)->get();
         }
+
+        //server 服务器 是否是父级服务器，如果是，则取该服务器及其子服务器
+        if($request->has('domain_server_id')) {
+            $domainServerId = $request->get('domain_server_id');
+            $sql = 'domain_server_id = '.$domainServerId;
+            $domainServer = DomainServer::find($domainServerId);
+            if($domainServer->pid == 0) {
+                $domainServerChildren = DomainServer::select('id')
+                    ->where('pid', $domainServerId)
+                    ->get();
+                foreach($domainServerChildren as $domainServerChild) {
+                    $sql .= ' or domain_server_id = '.$domainServerChild->id;
+                }
+                $resu = $resu->whereRaw($sql);
+            }
+        }
+
+        $data['recordsTotal'] = $resu->count();
+        $data['data'] = $resu->skip($skip)->take($take)->orderBy($orderBy, $order)->get();
 
         return ['status' => 1, 'data' => $data];
     }
@@ -115,7 +142,8 @@ class DomainWebsiteController extends Controller
      */
     public function edit($id)
     {
-        //
+        $domainWebsite = DomainWebsite::find($id);
+        return ['status' => 1, 'data' => $domainWebsite];
     }
 
     /**

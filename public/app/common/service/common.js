@@ -139,7 +139,7 @@
             //传入id，返回对应的name
             .filter('zwbIdToName', function () {
                 return function (id, data) {
-                    var name='error';
+                    var name=id;
                     //data format [{id:1,name:'test1'},{id:1,name:'test2'}]
                     angular.forEach(data, function (value, key) {
                         if(value.id == id){

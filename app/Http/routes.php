@@ -63,6 +63,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::put('performance/{id}', ['uses' => 'PerformanceController@update']);
 
     //domain server 服务器管理
+    Route::get('server/parentServers', ['as' => 'server.parentServers', 'uses' => 'DomainServerController@parentServers']);
     Route::resource('server', 'DomainServerController', ['names' => ['update' => 'domainServer.edit', 'store' => 'domainServer.create']]);
 
     //domain country

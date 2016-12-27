@@ -46,7 +46,7 @@
             ngTableDefaults.params.count = 10;
             ngTableDefaults.settings = {
                 counts: [10, 20, 50, 100],
-                paginationMaxBlocks: 4,
-                paginationMinBlocks: 2
+                paginationMaxBlocks: 3,
+                paginationMinBlocks: 1
             }
         });

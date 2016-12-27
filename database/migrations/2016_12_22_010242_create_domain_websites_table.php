@@ -33,6 +33,7 @@ class CreateDomainWebsitesTable extends Migration
             $table->timestamp('adstart')->nullable()->comment('广告上新时间');
             $table->timestamp('adend')->nullable()->comment('广告撤销时间');
             $table->text('remark')->nullable()->comment('备注');
+            $table->softDeletes()->comment('软删除');
             $table->timestamps();
         });
     }

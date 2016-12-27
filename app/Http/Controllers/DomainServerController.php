@@ -31,6 +31,16 @@ class DomainServerController extends Controller
         $data['recordsTotal'] = DomainServer::count();
         return ['status' => 1, 'data'=> $data];
     }
+
+    /**
+     * @return array
+     */
+    public function parentServers()
+    {
+        $data['data'] = DomainServer::where('pid', 0)->get();
+        $data['recordsTotal'] = DomainServer::where('pid', 0)->count();
+        return ['status' => 1, 'data'=> $data];
+    }
     
     /**
      * Show the form for creating a new resource.

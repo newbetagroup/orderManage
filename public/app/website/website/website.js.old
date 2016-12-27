@@ -1,7 +1,6 @@
 /**
  * Created by geekzwb on 2016/12/22.
  * 域名管理
- * 不使用ng-table的分页
  */
 ;(function (angular) {
     'use strict';
@@ -44,16 +43,24 @@
                    me.domainHosts = r;
                 });
 
+                me.websitesInfo = {};
                 /**
-                 * 网站分页数据
-                 * @param searchRemoteInfo currentPage:当前页 itemsPerPage:每页多少
+                 *
+                 * @param type 必须 cache or remote
+                 * @param filterValue 必须，本地搜索 没有可为''
+                 * @param searchRemoteInfo 该对象里面可选属性isSearchRemote,bool 类型，指代是否按条件搜索服务器，其他属性字段可选
                  * @param params ng-table的params,非必须
+                 * @returns {Promise}   websites promise
                  */
-                me.fnGetWebsites = function (searchRemoteInfo, params) {
-                    //params.page() * params.count()
-                    //console.log(params.sorting());
-                    searchRemoteInfo.orderBy = params.orderBy();
-                    params.count(searchRemoteInfo.itemsPerPage);
+                me.fnGetWebsites = function (type, filterValue, searchRemoteInfo, params) {
+                    //params.page() * params.count() 未完待续：下一页，下一页，当本地数据量不够的时候 起始两页，当前页获取下一页内容，实现伪预加载？？？
+                    //searchRemoteInfo = searchRemoteInfo || {};
+                    type = type || 'cache';//cache or remote
+
+                    console.log('searchRemoteInfo', searchRemoteInfo);
+
+                    var isSearchRemote = false;
+                    if(searchRemoteInfo.isSearchRemote) isSearchRemote = true;//带着fields去服务器搜索,并且结果不缓存
 
                     var deffered = $q.defer();
 
@@ -62,21 +69,102 @@
                         if (value == null) delete searchRemoteInfo[key];
                     });
 
-                    //=========================== search
-                    $http.post("/website/index", searchRemoteInfo).then(function (r) {
-                        if(r.data.status != 1) {
-                            deffered.reject();
-                            return;
-                        }
-                        //params.total(r.data.data.recordsTotal); no need ng-table with pagination
-                        searchRemoteInfo.totalItems = r.data.data.recordsTotal;
-                        deffered.resolve(r.data.data.data);
-                    });
-                    return deffered.promise;
-                };
+                    //首次拉取
+                    if (angular.equals({}, me.websitesInfo)) {
+                        console.log('first');
+                       // searchRemoteInfo.take = 2 * params.count(); //???传不到下边！！！！？？？？
+                        me.websitesInfo.data = [];
+                    }
 
-                me.fnGetwebsiteById = function (id) {
-                   return $http.get('/website/' + id + '/edit');
+                    //当前页已经没有数据啦，需要从服务器获取
+                    if(!isSearchRemote && params.page() * params.count() > me.websitesInfo.data.length && me.websitesInfo.data.length < me.websitesInfo.recordsTotal) {
+                        type = 'remote';
+                    }
+
+                    //在非服务器搜索下，下一页的内容不够了,并且服务器数据没有拉取完，则需要preloadNext，并且将结果缓存到本地
+                    var preloadNext = false;
+                    if(!isSearchRemote && (params.page() + 1) * params.count() > me.websitesInfo.data.length && me.websitesInfo.data.length < me.websitesInfo.recordsTotal) {
+                        preloadNext = true;
+                    }
+
+                    console.log('isSearchRemote', isSearchRemote);
+                    console.log('searchRemoteInfo', searchRemoteInfo);
+                    console.log('type', type);
+                    console.log('me.websitesInfo.data.length', me.websitesInfo.data.length);
+
+                    //======================当前页数据不够，拉取服务器 || 服务器搜索
+                   if(angular.equals([], me.websitesInfo.data) || type == 'remote' || (isSearchRemote && me.websitesInfo.data.length < me.websitesInfo.recordsTotal)) {
+                        //=========================== remote
+                       searchRemoteInfo.currentPage = params.page();
+                       searchRemoteInfo.countPerpage = params.count();
+                       if (angular.equals([], me.websitesInfo.data) || type == 'remote') {
+                           console.log('first');
+                           searchRemoteInfo.takeCount = 2 * params.count();
+                           console.log('searchRemoteInfo', searchRemoteInfo);
+                       }
+
+                       if(type == 'remote') {
+                           //补足之前页的内容,以及下一页的内容
+                           searchRemoteInfo.takeCount = (params.page() + 1) * params.count() - me.websitesInfo.data.length;
+                           searchRemoteInfo.currentPage = me.websitesInfo.data.length/params.count() + 1;
+                       }
+
+                        $http.post("/website/index", searchRemoteInfo).then(function (r) {
+                            if(r.data.status != 1) {
+                                deffered.reject();
+                                return;
+                            }
+
+                            //非服务器搜索时将结果缓存
+                            if(angular.equals([], me.websitesInfo.data)) {
+                                me.websitesInfo = r.data.data;//首次拉取，赋予
+                            } else if (type == 'remote') {
+                                me.websitesInfo.data = me.websitesInfo.data.concat(r.data.data.data);//当前页没有数据，并且非服务器搜索，拼接
+                            }
+
+                            if(angular.isUndefined(params)) {
+                                var filteredData = CommonService.filterData(r.data.data.data,filterValue);
+                                deffered.resolve(filteredData);
+                                return;
+                            }
+                            params.total(me.websitesInfo.recordsTotal);
+
+                            var transformedData = CommonService.transformData(me.websitesInfo.data, filterValue, params);
+                            deffered.resolve(transformedData);
+                        }).finally(function () {
+                            delete searchRemoteInfo.takeCount;
+                        });
+
+                        return deffered.promise;
+
+                    } else {
+                       console.log('preload');
+                       // 预加载下一页
+                       if(preloadNext) {
+                           //分页的一些参数,预加载下一页内容
+                           searchRemoteInfo.currentPage = params.page()+1;
+                           searchRemoteInfo.countPerpage = params.count();
+
+                           $http.post("/website/index", searchRemoteInfo).then(function (r) {
+                               me.websitesInfo.data = me.websitesInfo.data.concat(r.data.data.data);//拼接
+                           })
+                       }
+
+                       console.log('me.websitesInfo.data', me.websitesInfo.data);
+                            //================== local
+                        var filteredData = CommonService.filterData(me.websitesInfo.data,filterValue);
+
+                        //!ng-table
+                        if(angular.isUndefined(params)) {
+                            return $q.when(filteredData);
+                        }
+
+                        //filteredData = CommonService.filterData(filteredData,searchRemoteInfo);//数据已经全部在本地了
+
+                        params.total(me.websitesInfo.recordsTotal);
+                        var transformedData = CommonService.sliceOrderData(filteredData,params);
+                        return $q.when(transformedData);
+                    }
                 };
 
                 //新增
@@ -148,11 +236,10 @@
             }
         ])
         .controller('WebsiteIndexCtrl', [
-            '$scope',
             'WebsiteService',
             'NgTableParams',
             'dialogs',
-            function ($scope, WebsiteService, NgTableParams, dialogs) {
+            function (WebsiteService, NgTableParams, dialogs) {
 
                 var getType = 'cache';// 每次去拉取posts的方式: cache or remote
 
@@ -164,14 +251,6 @@
 
                 self.deleteAction = {};//删除的状态 pendding 和 status
 
-                self.searchRemoteInfo = {};
-                self.searchRemoteInfo.maxSize = 5;
-                self.searchRemoteInfo.totalItems = 100;
-                self.searchRemoteInfo.currentPage = 1;
-                //self.searchRemoteInfo.numPages
-                self.searchRemoteInfo.itemsPerPage = 10;
-                $scope.itemsPerPage = self.searchRemoteInfo.itemsPerPage;
-
                 self.$injet = ["NgTableParams", "ngTableSimpleList"];
 
                 self.tableParams = createUsingFullOptions();
@@ -179,14 +258,13 @@
                 // init
                 function createUsingFullOptions() {
                     var initialParams = {
-                        //page: 1,
-                        sorting: { id: "desc" },
-                        count: self.searchRemoteInfo.itemsPerPage
+                        page: 1,
+                        //sorting: { created_at: "desc" },
+                        count: 2
                     };
                     var initialSettings = {
-                        counts: [],
                         getData: function(params) {
-                            return WebsiteService.fnGetWebsites(self.searchRemoteInfo,  params);
+                            return WebsiteService.fnGetWebsites(getType, self.filterValue, self.searchRemoteInfo,  params);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
@@ -197,7 +275,7 @@
                     self.tableParams.reload();
                 };
 
-                //服务器筛选
+                //服务器筛选 service判断本地是否已经有全部数据了
                 self.searchRemote = false;
                 self.toggleSearch = function () {
                     self.searchRemote = !self.searchRemote;
@@ -209,29 +287,10 @@
                         self.tableParams.reload();
                     }
                 };
+                self.searchRemoteInfo = {};
                 self.fnSearchRemote = function () {
                     self.tableParams.reload();
                 };
-
-                //去到第几页
-                self.fnSetPage = function (pageNo) {
-                    console.log(pageNo);
-                    self.searchRemoteInfo.currentPage = pageNo;
-                    self.tableParams.reload();
-                };
-
-                //每页显示几条
-                $scope.$watch('itemsPerPage', function (newValue, oldValue) {
-                    self.searchRemoteInfo.itemsPerPage = newValue;
-                    self.tableParams.reload();
-                });
-
-                //当前页数已经改变
-                self.fnPageChanged = function() {
-                    console.log('Page changed to: ' + self.searchRemoteInfo.currentPage);
-                    self.tableParams.reload();
-                };
-
                 //确认删除模态框
                 var dlg = null;
                 self.fnDestoryPost = function (id) {
@@ -246,7 +305,7 @@
                     },function(btn){
                         console.log('取消删除website');
                     });
-                };
+                }
 
             }])
         .controller('WebsiteAddCtrl', [
@@ -272,13 +331,22 @@
 
                 var websiteId = $scope.$stateParams.websiteId;
 
-                WebsiteService.fnGetwebsiteById(websiteId).then(function (r) {
-                    $scope.websiteInfo = r.data.data;
+                WebsiteService.fnGetWebsites().then(function (r) {
+                    var websitesInfo = $filter('filter')(r, {id: websiteId});
+                    angular.forEach(websitesInfo, function (value, key) {
+                        //所有的websites中取出id为postId的一条数据
+                        if(value.id == websiteId) {
+                            $scope.websiteInfo = value;
+                            return false;
+                        }
+                    });
+
                     //没有这个website
-                    if(angular.equals(null, $scope.websiteInfo)) {
+                    if(angular.equals({}, $scope.websiteInfo)) {
                         dialogs.error('Error', '未找到该域名', {size:'sm'}).result.then(function (btn) {
                             $scope.$state.go('website.website.index');
                         });
+                        return;
                     }
                 });
 

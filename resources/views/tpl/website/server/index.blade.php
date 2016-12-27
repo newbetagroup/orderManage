@@ -20,6 +20,7 @@
                         <tr ng-repeat="row in $data">
                             <td data-title="'Id'" sortable="'id'">[: row.id :]</td>
                             <td data-title="'服务器名称'" sortable="'name'">[: row.name :]</td>
+                            <td data-title="'父级服务器'" sortable="'pid'">[: row.pid | zwbIdToName:servers.parentServers :]</td>
                             <td data-title="'用户名'">[: row.user_name :]</td>
                             <td data-title="'密码'">[: row.password :]</td>
                             <td data-title="'登陆地址'">[: row.login_url :]</td>
