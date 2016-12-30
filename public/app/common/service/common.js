@@ -153,8 +153,8 @@
             // ng-table show fields ng-table显示与隐藏选项：except为必显示项
             .filter('zwbExceptFields', function () {
                 return function (show, col, except) {
-                    // except is an array
-                    //cols
+                    // except is an array 不显示的项
+                    //col title
                     var result = true;
                     angular.forEach(except, function (value, key) {
                         if(value == col) { result = false;return;}

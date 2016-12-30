@@ -39,7 +39,7 @@ return [
     |
     */
 
-    'timezone' => 'UTC',
+    'timezone' => 'Etc/GMT-8',//==========PRC
 
     /*
     |--------------------------------------------------------------------------
@@ -147,7 +147,8 @@ return [
 
         /*IDE-helper*/
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-
+        /*laravel debugbar*/
+        Barryvdh\Debugbar\ServiceProvider::class,
     ],
 
     /*
@@ -195,6 +196,9 @@ return [
         'URL'       => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View'      => Illuminate\Support\Facades\View::class,
+
+        /*laravel debugbar*/
+        'Debugbar' => Barryvdh\Debugbar\Facade::class,
 
     ],
 

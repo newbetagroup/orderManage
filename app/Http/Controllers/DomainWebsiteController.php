@@ -57,7 +57,32 @@ class DomainWebsiteController extends Controller
             //已删除
             $resu = DomainWebsite::onlyTrashed();
         } else {
-            $resu = new DomainWebsite();
+            //$resu = new DomainWebsite();
+           // $resu = DomainWebsite::whereIn('domain_server_id', [1, 2]);
+            $resu = DomainWebsite::withTrashed();
+
+        }
+        //$resu = $resu->whereIn('domain_server_id', [1, 2]);
+        //server 服务器 是否是父级服务器，如果是，则取该服务器及其子服务器
+        if($request->has('domain_server_id')) {
+            $domainServerId = $request->get('domain_server_id');
+            //$sql = 'domain_server_id = '.$domainServerId;
+            $domainServer = DomainServer::find($domainServerId);
+            if($domainServer->pid == 0) {
+                $domainServerChildren = DomainServer::select('id')
+                    ->where('pid', $domainServerId)
+                    ->get();
+                $childrenArray =  $domainServerChildren->pluck('id');
+
+                //sql 语句拼接不可取，改成whereIn
+                /*foreach($domainServerChildren as $domainServerChild) {
+                    $sql .= ' or domain_server_id = '.$domainServerChild->id;
+                }*/
+                //$resu = $resu->whereRaw($sql);
+                $resu = $resu->whereIn('domain_server_id', $childrenArray);
+            }
+            //$resu = $resu->whereIn('domain_server_id', [1, 2]);
+            $resu = $resu->orWhere('domain_server_id', $domainServerId);
         }
 
         //$resu = DB::table('domain_websites');
@@ -69,22 +94,6 @@ class DomainWebsiteController extends Controller
                 if($this->fields[$field] == 'equal'){
                     $resu = $resu->where($field, $request->get($field));
                 }
-            }
-        }
-
-        //server 服务器 是否是父级服务器，如果是，则取该服务器及其子服务器
-        if($request->has('domain_server_id')) {
-            $domainServerId = $request->get('domain_server_id');
-            $sql = 'domain_server_id = '.$domainServerId;
-            $domainServer = DomainServer::find($domainServerId);
-            if($domainServer->pid == 0) {
-                $domainServerChildren = DomainServer::select('id')
-                    ->where('pid', $domainServerId)
-                    ->get();
-                foreach($domainServerChildren as $domainServerChild) {
-                    $sql .= ' or domain_server_id = '.$domainServerChild->id;
-                }
-                $resu = $resu->whereRaw($sql);
             }
         }
 
