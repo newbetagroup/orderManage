@@ -31,5 +31,6 @@ class Kernel extends HttpKernel
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
 
         'permission' => \App\Http\Middleware\Permission::class,
+        'enblecross' => \App\Http\Middleware\EnableCrossRequestMiddleware::class,
     ];
 }

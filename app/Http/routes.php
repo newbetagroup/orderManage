@@ -94,6 +94,8 @@ Route::get('home', function () {
     return view('index');
 });
 
+Route::any('addorder/index', ['middleware' => 'enblecross', 'uses' => 'AddOrderController@index']);
+
 
 //angular view
 Route::get('tpl/page/home', function() { return view('tpl.page.home'); });
