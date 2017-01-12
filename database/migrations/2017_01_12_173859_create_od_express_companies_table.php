@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateOdStatusesTable extends Migration
+class CreateOdExpressCompaniesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,11 @@ class CreateOdStatusesTable extends Migration
      */
     public function up()
     {
-        Schema::create('od_statuses', function (Blueprint $table) {
+        Schema::create('od_express_companies', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 50)->comment('订单状态名称');
-            $table->char('color', 10)->default('normal')->comment('状态颜色标识');
+            $table->string('name')->comment('发货公司名');
+            $table->string('abbreviation')->comment('发货公司名简称');
             $table->timestamps();
-
-            $table->unique('name');
         });
     }
 
@@ -29,6 +27,6 @@ class CreateOdStatusesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('od_statuses');
+        Schema::drop('od_express_companies');
     }
 }

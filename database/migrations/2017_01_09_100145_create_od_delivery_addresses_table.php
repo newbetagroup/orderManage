@@ -15,11 +15,13 @@ class CreateOdDeliveryAddressesTable extends Migration
         Schema::create('od_delivery_addresses', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('od_customer_id')->comment('客户id');
+            $table->string('consignee')->comment('收货人姓名');
             $table->string('country', 50)->comment('国家');
-            $table->string('state', 50)->comment('州、省');
+            $table->string('state', 50)->nullable()->comment('州、省');
             $table->string('city', 50)->comment('城市');
-            $table->string('address')->comment('街道地址');
+            $table->string('street')->comment('街道地址');
             $table->string('postcode', 10)->comment('邮编');
+            $table->string('phone')->comment('收件人手机号');
             $table->timestamps();
 
             $table->index('od_customer_id');

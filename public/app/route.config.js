@@ -384,6 +384,36 @@ orderApp.config([
                 templateUrl: 'tpl/website/website/edit',
                 controller: 'WebsiteEditCtrl'
             })
+
+        //网站信息管理
+            .state('order', {
+                template:'<div ui-view=""></div>'
+            })
+            //order status 订单状态
+            .state('order.orderStatus', {
+                url:'/orderStatus',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/status/status.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.orderStatus.index', {
+                url:'/orderStatusIndex',
+                templateUrl: 'tpl/order/status/index',
+                controller: 'OrderStatusIndexCtrl as orderStatus'
+            })
+            .state('order.orderStatus.add', {
+                url:'/orderStatusAdd',
+                templateUrl: 'tpl/order/status/add',
+                controller: 'OrderStatusAddCtrl'
+            })
+            .state('order.orderStatus.edit', {
+                url:'/orderStatusEdit/:orderStatusId',
+                templateUrl: 'tpl/order/status/edit',
+                controller: 'OrderStatusEditCtrl'
+            })
         ;
     }
     ])

@@ -85,6 +85,10 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('website/index', ['uses' => 'DomainWebsiteController@index']);
     Route::resource('website', 'DomainWebsiteController', ['names' => ['update' => 'domainWebsite.edit', 'store' => 'domainWebsite.create']]);
 
+    //order status
+    Route::resource('orderStatus', 'OrderStatusController', ['names' => ['update' => 'OrderStatus.edit', 'store' => 'OrderStatus.create']]);
+
+
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -94,7 +98,7 @@ Route::get('home', function () {
     return view('index');
 });
 
-Route::any('addorder/index', ['middleware' => 'enblecross', 'uses' => 'AddOrderController@index']);
+Route::any('addorder/index', ['uses' => 'AddOrderController@index']);
 
 
 //angular view
@@ -168,3 +172,9 @@ Route::get('tpl/website/host/edit', function () { return view('tpl.website.host.
 Route::get('tpl/website/website/index', function () { return view('tpl.website.website.index');});
 Route::get('tpl/website/website/add', function () { return view('tpl.website.website.add');});
 Route::get('tpl/website/website/edit', function () { return view('tpl.website.website.edit');});
+
+//order 订单相关
+//==========order status
+Route::get('tpl/order/status/index', function () { return view('tpl.order.status.index');});
+Route::get('tpl/order/status/add', function () { return view('tpl.order.status.add');});
+Route::get('tpl/order/status/edit', function () { return view('tpl.order.status.edit');});
