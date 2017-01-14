@@ -4,8 +4,8 @@
 ;(function (angular) {
     'use strict';
     
-    angular.module('OrderStatusDashboard', [])
-        .service('OrderStatusService', [
+    angular.module('OrderPayAfterStatusDashboard', [])
+        .service('OrderPayAfterStatusService', [
             '$http',
             '$q',
             'CommonService',
@@ -13,13 +13,13 @@
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
                 me.statusesInfo = {};
-                me.fnGetOrderStatuses = function (filterValue, params, type) {
+                me.fnGetOrderPayAfterStatuses = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
 
                     var deffered = $q.defer();
 
                     if(angular.equals({}, me.statusesInfo) || type == 'remote') {
-                        $http.get("/orderStatus").then(function (r) {
+                        $http.get("/orderPayAfterStatus").then(function (r) {
                             if(r.data.status != 1) {
                                 deffered.reject();
                                 return;
@@ -56,22 +56,22 @@
                 };
 
                 //新增
-                me.fnAddOrderStatus = function (status) {
+                me.fnAddOrderPayAfterStatus = function (status) {
                     if(status.pending) return;
                     status.pending =true;
-                    $http.post('/orderStatus', status)
+                    $http.post('/orderPayAfterStatus', status)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                status.addOrderStatus = true;
+                                status.addOrderPayAfterStatus = true;
                                 me.statusesInfo = {};//reload
                                 $timeout(function () {
-                                    status.addOrderStatus = null;
+                                    status.addOrderPayAfterStatus = null;
                                 }, 2000);
                             } else {
-                                status.addOrderStatus = false;
+                                status.addOrderPayAfterStatus = false;
                             }
                         }, function (e) {
-                            status.addOrderStatus = false;
+                            status.addOrderPayAfterStatus = false;
                         })
                         .finally(function () {
                             status.pending = false;
@@ -79,22 +79,22 @@
                 };
 
                 //edit 修改
-                me.fnEditOrderStatus = function (statusInfo) {
+                me.fnEditOrderPayAfterStatus = function (statusInfo) {
                     if(statusInfo.pending) return;
                     statusInfo.pending =true;
-                    $http.put('/orderStatus/'+statusInfo.id, statusInfo)
+                    $http.put('/orderPayAfterStatus/'+statusInfo.id, statusInfo)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                statusInfo.editOrderStatus = true;
+                                statusInfo.editOrderPayAfterStatus = true;
                                 me.statusesInfo = {};//reload
                                 $timeout(function () {
-                                    statusInfo.editOrderStatus = null;
+                                    statusInfo.editOrderPayAfterStatus = null;
                                 }, 2000);
                             } else {
-                                statusInfo.editOrderStatus = false;
+                                statusInfo.editOrderPayAfterStatus = false;
                             }
                         }, function (e) {
-                            statusInfo.editOrderStatus = false;
+                            statusInfo.editOrderPayAfterStatus = false;
                         })
                         .finally(function () {
                             statusInfo.pending = false;
@@ -102,10 +102,10 @@
                 };
 
                 //删除
-                me.fnDestroyOrderStatus = function (id, deleteAction) {
+                me.fnDestroyOrderPayAfterStatus = function (id, deleteAction) {
                     if(deleteAction.pending) return; //正在删除
                     deleteAction.pending =true;
-                    $http.delete('/orderStatus/'+id).then(function (r) {
+                    $http.delete('/orderPayAfterStatus/'+id).then(function (r) {
                             if(r.data.status == 1) {
                                 me.statusesInfo = {}; //reload：本地循环还是服务器remote重新拉取？
                                 deleteAction.status = true; //成功
@@ -123,11 +123,11 @@
                 
             }
         ])
-        .controller('OrderStatusIndexCtrl', [
-            'OrderStatusService',
+        .controller('OrderPayAfterStatusIndexCtrl', [
+            'OrderPayAfterStatusService',
             'NgTableParams',
             'dialogs',
-            function (OrderStatusService, NgTableParams, dialogs) {
+            function (OrderPayAfterStatusService, NgTableParams, dialogs) {
 
                 var getType = 'cache';// 每次去拉取posts的方式: cache or remote
 
@@ -149,7 +149,7 @@
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return OrderStatusService.fnGetOrderStatuses(self.filterValue, params, getType);
+                            return OrderPayAfterStatusService.fnGetOrderPayAfterStatuses(self.filterValue, params, getType);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
@@ -166,7 +166,7 @@
                     dlg = dialogs.confirm('Confirm','确定要删除该国家吗?',{size: 'sm'});
                     dlg.result.then(function(btn){
                         //确认删除
-                        OrderStatusService.fnDestroyOrderStatus(id, self.deleteAction);
+                        OrderPayAfterStatusService.fnDestroyOrderPayAfterStatus(id, self.deleteAction);
                         getType = 'remote';
                         self.tableParams.reload().finally(function () {
                             getType = 'cache';
@@ -177,79 +177,34 @@
                 }
 
             }])
-        .controller('OrderStatusAddCtrl', [
+        .controller('OrderPayAfterStatusAddCtrl', [
             '$scope',
-            'OrderStatusService',
-            function ($scope, OrderStatusService) {
+            'OrderPayAfterStatusService',
+            function ($scope, OrderPayAfterStatusService) {
 
-                //there has a test post
-                $.ajax({
-                    type: 'post',
-                    dataType: 'json',
-                    url: '/addorder/index',
-                    data: {
-                        //withCredentials: true,
-                        websiteOrderId: '894210001',
-                        domain: 'www.geekzwb.ca',
-                        customerName: 'testname',
-                        email: 'testemail@qq.com',
-                        phone: 13720892502,
-                        gender: 'm',
-                        country: 'United States',
-                        state: 'haiweiyi', //nullable
-                        city: 'Guam',
-                        street: 'street',
-                        postcode: '360000',
-                        price: '$770',
-                        datePurchased: '2017-01-10 22:06:14',
-                        payType: 'Myorderapproved',//Myorderapproved
-                        payComments: 'TradeNo:YKF1701111406178142  ||BillNo:949010002  ||Amount:770.00USD ||errorMsg:Paid web site restrictions! ',
-                        products: [
-                            {
-                                quantity: 2,
-                                name: 'Supreme Box Logo Hooded Sweatshirt Pullover Black 001',
-                                attributes: 'Size: M;Color:black',
-                                sku: 'SUPERME0A004',
-                                img: 'http://www.supremeussale.com/images/SUPREME0A004.jpg'
-                            },
-                            {
-                                quantity: 3,
-                                name: 'Supreme Box Logo Crewneck Sweatshirt Pink',
-                                attributes: 'Size: M',//用;隔开
-                                sku: 'SUPREME0A019',
-                                img: 'http://www.supremeussale.com/images/SUPREME0A019.jpg'
-                            }
-                        ]
-                    },
-                    success: function (data, status) {
-                        console.log(data);
-                    }
-                });
+                $scope.orderPayAfterStatusInfo = {};
 
-                $scope.orderStatusInfo = {};
-
-                $scope.fnAddOrderStatus = function () {
-                    OrderStatusService.fnAddOrderStatus($scope.orderStatusInfo);
+                $scope.fnAddOrderPayAfterStatus = function () {
+                    OrderPayAfterStatusService.fnAddOrderPayAfterStatus($scope.orderPayAfterStatusInfo);
                 }
             }
         ])
-        .controller('OrderStatusEditCtrl', [
+        .controller('OrderPayAfterStatusEditCtrl', [
             '$scope',
-            'OrderStatusService',
+            'OrderPayAfterStatusService',
             '$filter',
             'dialogs',
-            function ($scope, OrderStatusService, $filter, dialogs) {
+            function ($scope, OrderPayAfterStatusService, $filter, dialogs) {
 
-                $scope.orderStatusInfo = {};
+                $scope.orderPayAfterStatusInfo = {};
+                var orderPayAfterStatusId = $scope.$stateParams.orderPayAfterStatusId;
 
-                var orderStatusId = $scope.$stateParams.orderStatusId;
-
-                OrderStatusService.fnGetOrderStatuses().then(function (r) {
-                    var statusesInfo = $filter('filter')(r, {id: orderStatusId});
+                OrderPayAfterStatusService.fnGetOrderPayAfterStatuses().then(function (r) {
+                    var statusesInfo = $filter('filter')(r, {id: orderPayAfterStatusId});
                     angular.forEach(statusesInfo, function (value, key) {
                         //所有的statuses中取出id为postId的一条数据
-                        if(value.id == orderStatusId) {
-                            $scope.orderStatusInfo = value;
+                        if(value.id == orderPayAfterStatusId) {
+                            $scope.orderPayAfterStatusInfo = value;
                             return false;
                         }
                     });
@@ -264,8 +219,8 @@
                 });
 
                 //提交修改
-                $scope.fnEditOrderStatus = function () {
-                    OrderStatusService.fnEditOrderStatus($scope.orderStatusInfo);
+                $scope.fnEditOrderPayAfterStatus = function () {
+                    OrderPayAfterStatusService.fnEditOrderPayAfterStatus($scope.orderPayAfterStatusInfo);
                 }
             }
         ]);

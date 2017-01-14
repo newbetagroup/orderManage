@@ -86,7 +86,10 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::resource('website', 'DomainWebsiteController', ['names' => ['update' => 'domainWebsite.edit', 'store' => 'domainWebsite.create']]);
 
     //order status
-    Route::resource('orderStatus', 'OrderStatusController', ['names' => ['update' => 'OrderStatus.edit', 'store' => 'OrderStatus.create']]);
+    Route::resource('orderStatus', 'OrderStatusController', ['names' => ['update' => 'orderStatus.edit', 'store' => 'orderStatus.create']]);
+
+    //order pay after status 付款后订单状态
+    Route::resource('orderPayAfterStatus', 'OdPayAfterStatusController', ['names' => ['update' => 'orderPayAfterStatus.edit', 'store' => 'orderPayAfterStatus.create']]);
 
 
 });
@@ -174,7 +177,12 @@ Route::get('tpl/website/website/add', function () { return view('tpl.website.web
 Route::get('tpl/website/website/edit', function () { return view('tpl.website.website.edit');});
 
 //order 订单相关
-//==========order status
+    //==========order status
 Route::get('tpl/order/status/index', function () { return view('tpl.order.status.index');});
 Route::get('tpl/order/status/add', function () { return view('tpl.order.status.add');});
 Route::get('tpl/order/status/edit', function () { return view('tpl.order.status.edit');});
+
+    //==========order pay after status
+Route::get('tpl/order/payAfterStatus/index', function () { return view('tpl.order.orderPayAfterStatus.index');});
+Route::get('tpl/order/payAfterStatus/add', function () { return view('tpl.order.orderPayAfterStatus.add');});
+Route::get('tpl/order/payAfterStatus/edit', function () { return view('tpl.order.orderPayAfterStatus.edit');});

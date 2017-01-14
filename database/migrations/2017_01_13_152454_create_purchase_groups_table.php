@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttributesTable extends Migration
+class CreatePurchaseGroupsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,9 +12,8 @@ class CreateAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('purchase_groups', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 120)->comment('属性');
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ class CreateAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('attributes');
+        Schema::drop('purchase_groups');
     }
 }

@@ -15,16 +15,22 @@ class CreateOdProductsTable extends Migration
         Schema::create('od_products', function (Blueprint $table) {
             $table->increments('id');
             $table->unsignedInteger('od_order_id')->comment('订单id');
-            $table->unsignedInteger('od_products_id')->comment('产品');
-            $table->string('attribute_id', 50)->comment('属性集合，用,隔开');
-            $table->unsignedInteger('purchase_id')->comment('');
-            $table->timestamp('purchase_date')->default('0000-00-00 00:00:00')->comment('');
-            $table->decimal('purchase_price', 8, 2)->default(0)->comment();
-            $table->unsignedInteger('check_id')->comment('');
-            $table->timestamp('check_date')->default('0000-00-00 00:00:00')->comment('');
-            $table->unsignedInteger('order_quantity_status')->comment('');
+            $table->unsignedInteger('od_product_id')->comment('产品id');
+            $table->string('product_name', 120)->comment('冗余字段，产品名');
+            $table->string('image_url')->nullable()->comment('产品图片地址');
+            $table->string('attributes_id')->comment('属性集合, json格式，如{"1":"MENSIZE:XL"},1是产品属性id');
+            $table->unsignedSmallInteger('purchase_group_id')->default(0)->comment('采购分组id');
+            $table->timestamp('purchase_date')->default('0000-00-00 00:00:00')->comment('将产品添加进采购分组的时间');
+            $table->decimal('purchase_price', 8, 2)->default(0)->comment('采购价');
+            $table->unsignedSmallInteger('shipping_group_id')->default(0)->comment('发货分组id');
+            $table->timestamp('shipping_group_date')->default('0000-00-00 00:00:00')->comment('将产品加入发货分组的时间');
+            $table->unsignedMediumInteger('order_quantity_status')->default(0)->comment('更改订单状态是否影响库存，0代表可以');
             $table->text('remark')->comment('备注');
+            $table->string('suk', 50)->comment('模型号，一个产品对应一个');
             $table->timestamps();
+
+            $table->index('od_order_id');
+            $table->index('suk');
         });
     }
 

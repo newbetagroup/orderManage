@@ -385,7 +385,7 @@ orderApp.config([
                 controller: 'WebsiteEditCtrl'
             })
 
-        //网站信息管理
+        //订单信息管理
             .state('order', {
                 template:'<div ui-view=""></div>'
             })
@@ -413,6 +413,31 @@ orderApp.config([
                 url:'/orderStatusEdit/:orderStatusId',
                 templateUrl: 'tpl/order/status/edit',
                 controller: 'OrderStatusEditCtrl'
+            })
+            //order status 订单状态
+            .state('order.orderPayAfterStatus', {
+                url:'/orderPayAfterStatus',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/orderPayAfterStatus/orderPayAfterStatus.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.orderPayAfterStatus.index', {
+                url:'/orderPayAfterStatusIndex',
+                templateUrl: 'tpl/order/payAfterStatus/index',
+                controller: 'OrderPayAfterStatusIndexCtrl as orderPayAfterStatus'
+            })
+            .state('order.orderPayAfterStatus.add', {
+                url:'/orderPayAfterStatusAdd',
+                templateUrl: 'tpl/order/payAfterStatus/add',
+                controller: 'OrderPayAfterStatusAddCtrl'
+            })
+            .state('order.orderPayAfterStatus.edit', {
+                url:'/orderPayAfterStatusEdit/:orderPayAfterStatusId',
+                templateUrl: 'tpl/order/payAfterStatus/edit',
+                controller: 'OrderPayAfterStatusEditCtrl'
             })
         ;
     }

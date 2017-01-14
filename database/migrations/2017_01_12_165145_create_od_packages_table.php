@@ -21,6 +21,7 @@ class CreateOdPackagesTable extends Migration
             $table->unsignedInteger('parent_id')->default(0)->comment('如果是转单号，则为上一个快递单号id');
             $table->timestamp('date_delivery')->default('0000-00-00 00:00:00')->comment('发货时间');
             $table->string('tracking_number', 64)->comment('快递单号');
+            $table->decimal('shipping_price')->comment('运费');
             $table->string('tracking_remark')->comment('快递备注,包裹备注');
             $table->timestamps();
 

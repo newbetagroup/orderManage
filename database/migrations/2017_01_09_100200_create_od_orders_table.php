@@ -22,10 +22,15 @@ class CreateOdOrdersTable extends Migration
             $table->unsignedInteger('website_supervisor_id')->comment('网站负责人id');
             $table->timestamp('date_purchased')->comment('下单时间');
             $table->unsignedInteger('order_total')->comment('订单总金额');
+            $table->char('order_currency', 6)->default('unsure')->comment('货币符号');
             $table->unsignedInteger('order_qty')->comment('订单商品总数');
-            $table->unsignedInteger('od_status_id')->comment('订单状态');
+            $table->unsignedInteger('od_status_id')->default(0)->comment('订单付款前状态，如未付款等');
+            $table->unsignedInteger('od_pay_after_status_id')->default(0)->comment('订单付款后状态，如已发货等');
+            $table->timestamp('order_pay_after_date')->default('0000-00-00 00:00:00')->comment('订单付款后状态修改时间');
 
             $table->timestamps();
+
+            $table->index('website_order_id');
         });
     }
 

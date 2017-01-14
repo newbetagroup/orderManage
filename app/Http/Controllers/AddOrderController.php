@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\DomainWebsite;
 use App\OdCustomer;
 use App\OdDeliveryAddress;
+use App\OdOrder;
+use App\OdProduct;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -15,7 +17,7 @@ class AddOrderController extends Controller
 {
     /*customer []*/
     protected $fields = [
-        'oID' => '',
+        'websiteOrderId' => '',
         'domain' => '', //www.example.com
         'customerName' => '',
         'street' => '',
@@ -33,7 +35,8 @@ class AddOrderController extends Controller
         'country' => '',
         'payType' => '',
         'payComments' => '',
-        'gender' => ''
+        'gender' => '',
+        'orderCount' => '',//一个订单里的产品总数
     ];
     
     protected $orderInfo = [];
@@ -47,7 +50,7 @@ class AddOrderController extends Controller
     {
       // $data = $request->all();
         $this->validate($request, [
-           'oID' => 'required|Integer',
+           'websiteOrderId' => 'required|Integer',
             'ip' => 'IP Address',
             'products' => 'required|array',
             'email' => 'required|email',
@@ -61,6 +64,11 @@ class AddOrderController extends Controller
         }
         
         //处理逻辑，存进数据库
+        $orderCount = 0;//一个订单里的产品总数
+        foreach ($this->orderInfo['products'] as $product) {
+            $orderCount += $product['quantity'];
+        }
+        $this->orderInfo['orderCount'] = $orderCount;
 
         // Start 事务
         DB::beginTransaction();
@@ -73,11 +81,10 @@ class AddOrderController extends Controller
             $deliveryAddressId = $this->storeDeliveryAddress($customerId);
 
             //存订单信息
-            $orderId = $this->storeOrder();
+            $orderId = $this->storeOrder($customerId, $deliveryAddressId);
 
-
-            //存订单产品，返回新增订单id
-            $orderProductsId = $this->storeOrderProducts($this->orderInfo['products']);
+            //存订单产品
+            $orderProductsIds = $this->storeOrderProducts($orderId, $this->orderInfo['products']);
 
             //提交事务
             DB::commit();
@@ -86,6 +93,7 @@ class AddOrderController extends Controller
         {
             //回滚
             DB::rollBack();
+            throw $e;
             //获取抛出的异常信息
             $errorMessage = $e->getMessage();
             //返回错误信息
@@ -95,18 +103,63 @@ class AddOrderController extends Controller
         return ['status' => 1, 'data' => $this->orderInfo];
     }
 
-    public function storeOrder()
+    /**
+     * 新增订单
+     * @param $customerId
+     * @param $deliveryAddressId
+     * @return mixed 返回新增订单id
+     * @throws \Exception
+     */
+    public function storeOrder($customerId, $deliveryAddressId)
     {
         $orderInfo = $this->orderInfo;
         $websiteName = str_replace('www.', '', $orderInfo['domain']);
-        $website = DomainWebsite::select('id, user_id')->where('name', $websiteName)->first();
+        $website = DomainWebsite::select('id', 'user_id')->where('name', $websiteName)->first();
 
         if(!$website) throw new \Exception('该域名不存在');
 
         $websiteId = $website->id;
-        $website_supervisor_id = $website->user_id; //网站负责人
+        $websiteSupervisorId = $website->user_id; //网站负责人
 
-        
+        preg_match('/\d+/',$orderInfo['price'],$orderTotal);//总价
+        $orderTotal = $orderTotal[0];
+
+        $currency = str_replace($orderTotal, '', $orderInfo['price']);//货币符号
+
+        $orderInfo['od_status_id'] = 0;
+        $orderInfo['od_pay_after_status_id'] = 0;
+        $timeNow = 0;
+        if($orderInfo['payType'] == 'Myorderapproved') {
+            $orderInfo['od_status_id'] = 1;//已付款
+            $orderInfo['od_pay_after_status_id'] = 1;
+            $timeNow = date("Y-m-d H:i:s");
+        }
+
+        $order = OdOrder::updateOrCreate(['website_order_id' => $orderInfo['websiteOrderId'], 'website_name' => $websiteName], [
+            'website_id' => $websiteId,
+            'website_order_id' => $orderInfo['websiteOrderId'],
+            'website_name' => $websiteName,
+            'od_customer_id' => $customerId,
+            'od_delivery_address_id' => $deliveryAddressId,
+            'website_supervisor_id' => $websiteSupervisorId,
+            'date_purchased' => $orderInfo['datePurchased'],
+            'order_total' => $orderTotal,
+            'order_currency' => $currency,
+            'order_qty' => $orderInfo['orderCount'],
+            'od_status_id' => $orderInfo['od_status_id'],
+            //'od_pay_after_status_id' => $orderInfo['od_pay_after_status_id'],
+            //'order_pay_after_date' => $timeNow?:'0000-00-00 00:00:00',
+        ]);
+
+        if($orderInfo['payType'] == 'Myorderapproved' && $order->od_pay_after_status_id == 0) {
+            $order->od_pay_after_status_id = 1;//已付款
+            $order->order_pay_after_date = $timeNow;
+            $order->save();
+        }
+
+        if(!$order) throw new \Exception('添加订单失败，请检查格式');
+
+        return $order->id;
     }
 
     /**
@@ -153,35 +206,49 @@ class AddOrderController extends Controller
     {
         $addressInfo = $this->orderInfo;
 
-        $address = OdDeliveryAddress::select('id', 'consignee', 'street')->where('od_customer_id', $customerId)->first();
+        //$address = OdDeliveryAddress::select('id', 'consignee', 'street')->where('od_customer_id', $customerId)->first();
         
-        if($address && $address->consignee == $addressInfo['customerName'] && $address->address == $addressInfo['street']) {
-            $addressId = $address->id;
-        } else {
-            $addressId = OdDeliveryAddress::insertGetId(
-                [
-                    'od_customer_id' => $customerId,
-                    'consignee' => $addressInfo['customerName'],
-                    'country' => $addressInfo['country'],
-                    'state' => $addressInfo['state'],
-                    'city' => $addressInfo['city'],
-                    'street' => $addressInfo['street'], //街道地址
-                    'postcode' => $addressInfo['postcode'],
-                    'phone' => $addressInfo['phone']
-                ]
-            );
-        }
 
-        if(!$addressId) throw new \Exception('地址不存在且存储新地址失败');
+        $address = OdDeliveryAddress::updateOrCreate(
+            [
+                'od_customer_id' => $customerId,
+                'consignee' =>$addressInfo['customerName'],
+                'street' =>$addressInfo['street']
+            ],
+            [
+                'od_customer_id' => $customerId,
+                'consignee' => $addressInfo['customerName'],
+                'country' => $addressInfo['country'],
+                'state' => $addressInfo['state'],
+                'city' => $addressInfo['city'],
+                'street' => $addressInfo['street'], //街道地址
+                'postcode' => $addressInfo['postcode'],
+                'phone' => $addressInfo['phone']
+            ]
+        );
 
-        return $addressId;
+        if(!$address) throw new \Exception('地址不存在且存储新地址失败');
+
+        return $address->id;
     }
 
-    private function storeOrderProducts($products)
+    private function storeOrderProducts($orderId, $products)
     {
+        
         foreach ($products as $product) {
-            //dd($product);
+            $attributes = $product['attributes'];
+            $attributes = explode(';', $attributes);
+            dd($attributes);
+            /*OdProduct::createOrUpdate(
+                [
+                    'od_order_id' => $orderId,
+                    'od_product_id' => 
+                    'attributes_id' => 
+                ],
+                [
 
+                ]
+            );*/
         }
     }
 }

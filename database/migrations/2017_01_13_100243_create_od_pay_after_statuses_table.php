@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateAttributesTable extends Migration
+class CreateOdPayAfterStatusesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,13 @@ class CreateAttributesTable extends Migration
      */
     public function up()
     {
-        Schema::create('attributes', function (Blueprint $table) {
+        Schema::create('od_pay_after_statuses', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name', 120)->comment('属性');
+            $table->string('name', 50)->comment('付款后订单状态名称');
+            $table->char('color', 10)->default('normal')->comment('状态颜色标识');
             $table->timestamps();
+
+            $table->unique('name');
         });
     }
 
@@ -26,6 +29,6 @@ class CreateAttributesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('attributes');
+        Schema::drop('od_pay_after_statuses');
     }
 }

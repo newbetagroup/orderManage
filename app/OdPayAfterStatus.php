@@ -4,7 +4,7 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class OdOrder extends Model
+class OdPayAfterStatus extends Model
 {
-    protected $guarded =['id'];
+    //
 }
