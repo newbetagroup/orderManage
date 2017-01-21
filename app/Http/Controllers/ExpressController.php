@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Express;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class ExpressCompany extends Controller
+class ExpressController extends Controller
 {
+    protected $fields = [
+        'name' => '',
+        'abbreviation' => ''
+    ];
+    
     /**
      * Display a listing of the resource.
      *
@@ -16,9 +22,11 @@ class ExpressCompany extends Controller
      */
     public function index()
     {
-        //
+        $data['data'] = Express::all();
+        $data['recordsTotal'] = Express::count();
+        return ['status' => 1, 'data' => $data];
     }
-
+    
     /**
      * Show the form for creating a new resource.
      *
@@ -28,7 +36,7 @@ class ExpressCompany extends Controller
     {
         //
     }
-
+    
     /**
      * Store a newly created resource in storage.
      *
@@ -37,9 +45,17 @@ class ExpressCompany extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $express = new Express();
+        
+        foreach (array_keys($this->fields) as $field) {
+            if ($request->has($field)) $express->$field = $request->get($field);
+        }
+        
+        $express->save();
+        
+        return ['status' => 1, 'msg' => 'add success'];
     }
-
+    
     /**
      * Display the specified resource.
      *
@@ -50,7 +66,7 @@ class ExpressCompany extends Controller
     {
         //
     }
-
+    
     /**
      * Show the form for editing the specified resource.
      *
@@ -61,7 +77,7 @@ class ExpressCompany extends Controller
     {
         //
     }
-
+    
     /**
      * Update the specified resource in storage.
      *
@@ -71,9 +87,20 @@ class ExpressCompany extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $express = Express::find($id);
+        
+        foreach (array_keys($this->fields) as $field) {
+            if($request->has($field) && $express->$field!=$request->get($field)) $express->$field = $request->get($field);
+        }
+        
+        // $performance->update(['']);
+        if(!$express->save()) {
+            return ['status' => 0, 'msg' => '更新失败'];
+        }
+        
+        return ['status' => 1, 'msg' => '更新成功'];
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -82,6 +109,8 @@ class ExpressCompany extends Controller
      */
     public function destroy($id)
     {
-        //
+        Express::destroy($id);
+        
+        return ['status' => 1, 'msg' => 'delete success'];
     }
 }

@@ -235,7 +235,7 @@
                 //确认删除模态框
                 var dlg = null;
                 self.fnDestoryPost = function (id) {
-                    dlg = dialogs.confirm('Confirm','确定要删除该国家吗?',{size: 'sm'});
+                    dlg = dialogs.confirm('Confirm','确定要删除该域名吗?',{size: 'sm'});
                     dlg.result.then(function(btn){
                         //确认删除
                         WebsiteService.fnDestroyWebsite(id, self.deleteAction);

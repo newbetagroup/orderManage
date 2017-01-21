@@ -2,13 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\OdExpressCompany;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class Express extends Controller
+class ExpressCompanyController extends Controller
 {
+    protected $fields = [
+        'name' => '',
+        'abbreviation' => ''
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +22,9 @@ class Express extends Controller
      */
     public function index()
     {
-        //
+        $data['data'] = OdExpressCompany::all();
+        $data['recordsTotal'] = OdExpressCompany::count();
+        return ['status' => 1, 'data' => $data];
     }
 
     /**
@@ -37,7 +45,15 @@ class Express extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $odExpressCompany = new OdExpressCompany();
+
+        foreach (array_keys($this->fields) as $field) {
+            if ($request->has($field)) $odExpressCompany->$field = $request->get($field);
+        }
+
+        $odExpressCompany->save();
+
+        return ['status' => 1, 'msg' => 'add success'];
     }
 
     /**
@@ -71,7 +87,18 @@ class Express extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $odExpressCompany = OdExpressCompany::find($id);
+
+        foreach (array_keys($this->fields) as $field) {
+            if($request->has($field) && $odExpressCompany->$field!=$request->get($field)) $odExpressCompany->$field = $request->get($field);
+        }
+
+        // $performance->update(['']);
+        if(!$odExpressCompany->save()) {
+            return ['status' => 0, 'msg' => '更新失败'];
+        }
+
+        return ['status' => 1, 'msg' => '更新成功'];
     }
 
     /**
@@ -82,6 +109,8 @@ class Express extends Controller
      */
     public function destroy($id)
     {
-        //
+        OdExpressCompany::destroy($id);
+
+        return ['status' => 1, 'msg' => 'delete success'];
     }
 }

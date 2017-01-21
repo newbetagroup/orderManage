@@ -90,6 +90,21 @@
                     <li ng-class="{active: $state.includes('order.orderPayAfterStatus')}">
                         <a ui-sref="order.orderPayAfterStatus.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>订单付款后状态管理</a>
                     </li>
+                    <li ng-class="{active: $state.includes('order.express')}">
+                        <a ui-sref="order.express.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>货运方式</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.expressCompany')}">
+                        <a ui-sref="order.expressCompany.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>发货公司</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.customerServiceDepartment')}">
+                        <a ui-sref="order.customerServiceDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>客服部</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.orderDepartment')}">
+                        <a ui-sref="order.orderDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>订货部</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.deliveryDepartment')}">
+                        <a ui-sref="order.deliveryDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>发货部</a>
+                    </li>
                 </ul>
             </li>
         </ul>

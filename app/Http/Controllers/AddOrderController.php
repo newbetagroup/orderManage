@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Attribute;
 use App\DomainWebsite;
 use App\OdCustomer;
 use App\OdDeliveryAddress;
 use App\OdOrder;
 use App\OdProduct;
+use App\Product;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -93,18 +95,26 @@ class AddOrderController extends Controller
         {
             //回滚
             DB::rollBack();
-            throw $e;
+            //throw $e;
             //获取抛出的异常信息
             $errorMessage = $e->getMessage();
             //返回错误信息
             return ['status' => 0, 'msg' => $errorMessage];
         }
 
-        return ['status' => 1, 'data' => $this->orderInfo];
+        /*
+         * 测试成功，发送邮件
+         * \Mail::send('emails.test', $this->orderInfo, function($msg) {
+            $msg->to('515639342@qq.com', '夏日很温暖')->subject('An email test from laravel');
+            $msg->from('13720892502@163.com');
+            $msg->sender('13720892502@163.com');
+        });*/
+
+        return ['status' => 1, 'msg' => '添加订单成功'];
     }
 
     /**
-     * 新增订单
+     * 存订单
      * @param $customerId
      * @param $deliveryAddressId
      * @return mixed 返回新增订单id
@@ -131,8 +141,6 @@ class AddOrderController extends Controller
         $timeNow = 0;
         if($orderInfo['payType'] == 'Myorderapproved') {
             $orderInfo['od_status_id'] = 1;//已付款
-            $orderInfo['od_pay_after_status_id'] = 1;
-            $timeNow = date("Y-m-d H:i:s");
         }
 
         $order = OdOrder::updateOrCreate(['website_order_id' => $orderInfo['websiteOrderId'], 'website_name' => $websiteName], [
@@ -140,6 +148,7 @@ class AddOrderController extends Controller
             'website_order_id' => $orderInfo['websiteOrderId'],
             'website_name' => $websiteName,
             'od_customer_id' => $customerId,
+            'customer_name' => $orderInfo['customerName'],
             'od_delivery_address_id' => $deliveryAddressId,
             'website_supervisor_id' => $websiteSupervisorId,
             'date_purchased' => $orderInfo['datePurchased'],
@@ -151,11 +160,20 @@ class AddOrderController extends Controller
             //'order_pay_after_date' => $timeNow?:'0000-00-00 00:00:00',
         ]);
 
+        //判断是否是重复单
+        $orderBycustomer = OdOrder::where('od_customer_id', $customerId)->count();
+        if($orderBycustomer > 1 && $order->od_status_id == 0) {
+            $order->od_status_id = 2; //重复单
+            $order->remark = '下过'. $orderBycustomer .'单';
+        }
+
+        //判断付款状态
         if($orderInfo['payType'] == 'Myorderapproved' && $order->od_pay_after_status_id == 0) {
             $order->od_pay_after_status_id = 1;//已付款
-            $order->order_pay_after_date = $timeNow;
-            $order->save();
+            $order->order_pay_after_date = date("Y-m-d H:i:s");
         }
+
+        $order->save();
 
         if(!$order) throw new \Exception('添加订单失败，请检查格式');
 
@@ -163,8 +181,8 @@ class AddOrderController extends Controller
     }
 
     /**
-     *存储客户信息
-     * 邮箱和姓名唯一为一个用户
+     * 查询或存储客户信息
+     * 邮箱唯一为一个用户
      * @return mixed 返回customerId
      */
     private function storeCustomer()
@@ -231,24 +249,88 @@ class AddOrderController extends Controller
 
         return $address->id;
     }
-
+    
+    /**
+     * 存订单里面有的产品
+     * @param $orderId
+     * @param $products
+     * @return array  返回产品id数组
+     */
     private function storeOrderProducts($orderId, $products)
     {
-        
+        $orderProductsIds = [];
+
         foreach ($products as $product) {
+            //存产品
+            $productId = $this->storeProduct($product);
+
             $attributes = $product['attributes'];
             $attributes = explode(';', $attributes);
-            dd($attributes);
-            /*OdProduct::createOrUpdate(
+            //存属性
+            $attributesJson = $this->storeAttributes($attributes);
+
+            $remark = isset($product['remark'])?$product['remark']:'';
+            $objOdProduct = OdProduct::updateOrCreate(
                 [
                     'od_order_id' => $orderId,
-                    'od_product_id' => 
-                    'attributes_id' => 
+                    'product_id' => $productId,
+                    'attributes_id' => $attributesJson,
                 ],
                 [
-
+                    'od_order_id' => $orderId,
+                    'product_id' => $productId,
+                    'product_name' => $product['name'],
+                    'quantity' => $product['quantity'],
+                    'image_url' => isset($product['img'])?$product['img']:'',
+                    'attributes_id' => $attributesJson,
+                    'sku' => $product['sku'],
+                    'remark' => $remark
                 ]
-            );*/
+            );
+
+            $orderProductsIds[] = $objOdProduct->id;
         }
+
+        return $orderProductsIds;
     }
+
+    /**
+     * 返回$attributes 的json格式，key为数据库id，value为name
+     * @param $attributes  array
+     * @return mixed json
+     */
+    private function storeAttributes($attributes)
+    {
+        $arrAttribute = [];
+        foreach ($attributes as $attribute) {
+            $objAttribute = Attribute::firstOrCreate(['name' => $attribute]);
+            $arrAttribute[$objAttribute->id] = $objAttribute->name;
+        }
+
+        return json_encode($arrAttribute);
+    }
+
+    /**
+     * 商品不存在，存储
+     * @param $product
+     * @return mixed 返回产品id
+     */
+    private function storeProduct($product)
+    {
+        $objProtuct = Product::firstOrCreate(['model' => $product['sku']],
+            [
+                'name' => $product['name'],
+                'model' => $product['sku']
+            ]
+        );
+
+        //判断name是否为(英文和数字)
+        if(preg_match("/^[a-zA-Z0-9\s]+$/",$product['name']) && !preg_match("/^[a-zA-Z0-9\s]+$/",$objProtuct->name))
+        {
+            $objProtuct->name = $product['name'];
+            $objProtuct->save();
+        }
+        return $objProtuct->id;
+    }
+
 }

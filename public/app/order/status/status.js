@@ -189,8 +189,8 @@
                     url: '/addorder/index',
                     data: {
                         //withCredentials: true,
-                        websiteOrderId: '894210001',
-                        domain: 'www.geekzwb.ca',
+                        websiteOrderId: '110001',
+                        domain: 'www.geekzwb.com',
                         customerName: 'testname',
                         email: 'testemail@qq.com',
                         phone: 13720892502,
@@ -200,17 +200,18 @@
                         city: 'Guam',
                         street: 'street',
                         postcode: '360000',
-                        price: '$770',
-                        datePurchased: '2017-01-10 22:06:14',
+                        price: '$970',
+                        datePurchased: '2017-01-12 12:06:14',
                         payType: 'Myorderapproved',//Myorderapproved
                         payComments: 'TradeNo:YKF1701111406178142  ||BillNo:949010002  ||Amount:770.00USD ||errorMsg:Paid web site restrictions! ',
                         products: [
                             {
-                                quantity: 2,
+                                quantity: 5,
                                 name: 'Supreme Box Logo Hooded Sweatshirt Pullover Black 001',
                                 attributes: 'Size: M;Color:black',
                                 sku: 'SUPERME0A004',
-                                img: 'http://www.supremeussale.com/images/SUPREME0A004.jpg'
+                                img: 'http://www.supremeussale.com/images/SUPREME0A004.jpg',
+                                remark: '产品备注'//？订单产品表中的remark
                             },
                             {
                                 quantity: 3,

@@ -91,6 +91,20 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     //order pay after status 付款后订单状态
     Route::resource('orderPayAfterStatus', 'OdPayAfterStatusController', ['names' => ['update' => 'orderPayAfterStatus.edit', 'store' => 'orderPayAfterStatus.create']]);
 
+    //货运方式 如EMS
+    Route::resource('express', 'ExpressController', ['names' => ['update' => 'express.edit', 'store' => 'express.create']]);
+
+    //快递发货公司
+    Route::resource('expressCompany', 'ExpressCompanyController', ['names' => ['update' => 'expressCompany.edit', 'store' => 'expressCompany.create']]);
+
+    //order
+        //客服部
+    Route::post('customerService/order', ['uses' => 'Order\CustomerServiceDepartmentController@index']);
+    Route::post('customerService/ordersUpdate', ['uses' => 'Order\CustomerServiceDepartmentController@ordersUpdate']);
+        //订货部
+    Route::any('orderDepartment/order', ['uses' => 'Order\OrderDepartmentController@index']);
+        //发货部
+    Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
 
 });
 
@@ -181,8 +195,21 @@ Route::get('tpl/website/website/edit', function () { return view('tpl.website.we
 Route::get('tpl/order/status/index', function () { return view('tpl.order.status.index');});
 Route::get('tpl/order/status/add', function () { return view('tpl.order.status.add');});
 Route::get('tpl/order/status/edit', function () { return view('tpl.order.status.edit');});
-
     //==========order pay after status
 Route::get('tpl/order/payAfterStatus/index', function () { return view('tpl.order.orderPayAfterStatus.index');});
 Route::get('tpl/order/payAfterStatus/add', function () { return view('tpl.order.orderPayAfterStatus.add');});
 Route::get('tpl/order/payAfterStatus/edit', function () { return view('tpl.order.orderPayAfterStatus.edit');});
+    //==========express
+Route::get('tpl/order/express/index', function () { return view('tpl.order.express.index');});
+Route::get('tpl/order/express/add', function () { return view('tpl.order.express.add');});
+Route::get('tpl/order/express/edit', function () { return view('tpl.order.express.edit');});
+    //==========express company
+Route::get('tpl/order/expressCompany/index', function () { return view('tpl.order.expressCompany.index');});
+Route::get('tpl/order/expressCompany/add', function () { return view('tpl.order.expressCompany.add');});
+Route::get('tpl/order/expressCompany/edit', function () { return view('tpl.order.expressCompany.edit');});
+    //客服部 订单相关
+Route::get('tpl/order/customerServiceDepartment/index', function () { return view('tpl.order.customerService.index');});
+    //订货部 订单相关
+Route::get('tpl/order/orderDepartment/index', function () { return view('tpl.order.orderDepartment.index');});
+    //发货部 订单相关
+Route::get('tpl/order/deliveryDepartment/index', function () { return view('tpl.order.deliveryDepartment.index');});

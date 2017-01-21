@@ -18,6 +18,7 @@ class CreateOdOrdersTable extends Migration
             $table->unsignedInteger('website_order_id')->comment('网站订单id');
             $table->string('website_name', 50)->comment('网站域名');
             $table->unsignedInteger('od_customer_id')->comment('客户id');
+            $table->string('customer_name', 50)->comment('收件人姓名，区别于下单客户');
             $table->unsignedInteger('od_delivery_address_id')->comment('收货地址id');
             $table->unsignedInteger('website_supervisor_id')->comment('网站负责人id');
             $table->timestamp('date_purchased')->comment('下单时间');
@@ -27,10 +28,11 @@ class CreateOdOrdersTable extends Migration
             $table->unsignedInteger('od_status_id')->default(0)->comment('订单付款前状态，如未付款等');
             $table->unsignedInteger('od_pay_after_status_id')->default(0)->comment('订单付款后状态，如已发货等');
             $table->timestamp('order_pay_after_date')->default('0000-00-00 00:00:00')->comment('订单付款后状态修改时间');
-
+            $table->string('remark')->nullable()->comment('订单备注');
             $table->timestamps();
 
             $table->index('website_order_id');
+            $table->index('od_customer_id');
         });
     }
 

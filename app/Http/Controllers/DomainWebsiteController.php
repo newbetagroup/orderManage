@@ -60,8 +60,8 @@ class DomainWebsiteController extends Controller
             //$resu = new DomainWebsite();
            // $resu = DomainWebsite::whereIn('domain_server_id', [1, 2]);
             $resu = DomainWebsite::withTrashed();
-
         }
+        
         //$resu = $resu->whereIn('domain_server_id', [1, 2]);
         //server 服务器 是否是父级服务器，如果是，则取该服务器及其子服务器
         if($request->has('domain_server_id')) {

@@ -387,7 +387,12 @@ orderApp.config([
 
         //订单信息管理
             .state('order', {
-                template:'<div ui-view=""></div>'
+                template:'<div ui-view=""></div>',
+                resolve: {
+                    loadCommonService: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/common/commonService.js');
+                    }]
+                }
             })
             //order status 订单状态
             .state('order.orderStatus', {
@@ -414,7 +419,7 @@ orderApp.config([
                 templateUrl: 'tpl/order/status/edit',
                 controller: 'OrderStatusEditCtrl'
             })
-            //order status 订单状态
+            //order status after pay 付款后订单状态
             .state('order.orderPayAfterStatus', {
                 url:'/orderPayAfterStatus',
                 resolve: {
@@ -438,6 +443,101 @@ orderApp.config([
                 url:'/orderPayAfterStatusEdit/:orderPayAfterStatusId',
                 templateUrl: 'tpl/order/payAfterStatus/edit',
                 controller: 'OrderPayAfterStatusEditCtrl'
+            })
+            //express 货运方式
+            .state('order.express', {
+                url:'/express',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/express/express.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.express.index', {
+                url:'/express',
+                templateUrl: 'tpl/order/express/index',
+                controller: 'ExpressIndexCtrl as express'
+            })
+            .state('order.express.add', {
+                url:'/expressAdd',
+                templateUrl: 'tpl/order/express/add',
+                controller: 'ExpressAddCtrl'
+            })
+            .state('order.express.edit', {
+                url:'/expressEdit/:expressId',
+                templateUrl: 'tpl/order/express/edit',
+                controller: 'ExpressEditCtrl'
+            })
+            //快递发货公司
+            .state('order.expressCompany', {
+                url:'/expressCompany',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/expressCompany/expressCompany.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.expressCompany.index', {
+                url:'/expressCompanyIndex',
+                templateUrl: 'tpl/order/expressCompany/index',
+                controller: 'ExpressCompanyIndexCtrl as expressCompany'
+            })
+            .state('order.expressCompany.add', {
+                url:'/expressCompanyAdd',
+                templateUrl: 'tpl/order/expressCompany/add',
+                controller: 'ExpressCompanyAddCtrl'
+            })
+            .state('order.expressCompany.edit', {
+                url:'/expressCompanyEdit/:expressCompanyId',
+                templateUrl: 'tpl/order/expressCompany/edit',
+                controller: 'ExpressCompanyEditCtrl'
+            })
+            //客服部 订单相关
+            .state('order.customerServiceDepartment', {
+                url:'/customerServiceDepartment',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/customerServiceDepartment/customerServiceDepartment.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.customerServiceDepartment.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/customerServiceDepartment/index',
+                controller: 'ServiceDepartmentIndexCtrl as serviceDepartment'
+            })
+            //订货部 订单相关
+            .state('order.orderDepartment', {
+                url:'/orderDepartment',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/orderDepartment/orderDepartment.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.orderDepartment.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/orderDepartment/index',
+                controller: 'OrderDepartmentIndexCtrl as orderDepartment'
+            })
+            //发货部 订单相关
+            .state('order.deliveryDepartment', {
+                url:'/deliveryDepartment',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/deliveryDepartment/deliveryDepartment.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.deliveryDepartment.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/deliveryDepartment/index',
+                controller: 'DeliveryDepartmentIndexCtrl as deliveryDepartment'
             })
         ;
     }

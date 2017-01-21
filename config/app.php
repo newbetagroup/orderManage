@@ -144,6 +144,9 @@ return [
         App\Providers\AuthServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        
+        /*订单相关服务提供者*/
+        App\Providers\OrderServiceProvider::class,
 
         /*IDE-helper*/
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
