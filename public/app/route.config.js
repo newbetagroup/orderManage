@@ -385,6 +385,37 @@ orderApp.config([
                 controller: 'WebsiteEditCtrl'
             })
 
+            //店铺平台信息管理
+            .state('mall', {
+                template:'<div ui-view=""></div>'
+            })
+
+            //店铺状态
+            .state('mall.mallstatus', {
+                url:'/mallstatus',
+                resolve: {
+                    loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/mall/mallstatus/mallstatus.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('mall.mallstatus.index', {
+                url:'/mallstatusIndex',
+                templateUrl: 'tpl/mall/mallstatus/index',
+                controller: 'MallstatusIndexCtrl as Mallstatuses'
+            })
+            .state('mall.mallstatus.add', {
+                url:'/mallstatusAdd',
+                templateUrl: 'tpl/mall/server/add',
+                controller: 'MallstatusAddCtrl'
+            })
+            .state('mall.mallstatus.edit', {
+                url:'/mallstatusEdit/:mallstatusId',
+                templateUrl: 'tpl/mall/mallstatus/edit',
+                controller: 'MallstatusEditCtrl'
+            })
+
         //订单信息管理
             .state('order', {
                 template:'<div ui-view=""></div>',

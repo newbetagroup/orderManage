@@ -106,6 +106,10 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
         //发货部
     Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
 
+    //平台状态
+    Route::resource('mallStatus', 'MallStatusController', ['names' => ['update' => 'mallStatus.edit', 'store' => 'mallStatus.create']]);
+
+
 });
 
 Route::get('/', ['middleware' => 'auth', function () {

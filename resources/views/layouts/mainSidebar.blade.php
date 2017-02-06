@@ -81,6 +81,17 @@
                     </li>
                 </ul>
             </li>
+            <li class="treeview" ng-class="{active: $state.includes('mall')}">
+                <a><i class="fa fa-internet-explorer"></i><span>店铺平台管理</span><i class="fa fa-angle-left pull-right"></i></a>
+                <ul class="treeview-menu">
+                    <li ng-class="{active: $state.includes('mall.mall')}">
+                        <a ui-sref="mall.mall.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>域名管理</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('mall.mallStatus')}">
+                        <a ui-sref="mall.mallStatus.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>店铺状态管理</a>
+                    </li>
+                </ul>
+            </li>
             <li class="treeview" ng-class="{active: $state.includes('order')}">
                 <a><i class="fa fa-reorder"></i><span>订单管理</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
