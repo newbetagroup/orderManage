@@ -27,7 +27,7 @@
     <script src="/app/route.config.js"></script>
 
     <script src="/plugins/ng-table/ng-table.js"></script>
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/lodash.js/0.10.0/lodash.min.js"></script>
+    <script src="/libs/lodash/lodash.min.js"></script>
     <script src="/app/common/directives/orderTrackedTable.js"></script>
 
     {{--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.4.8/angular-sanitize.js"></script>--}}
