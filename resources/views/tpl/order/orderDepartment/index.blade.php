@@ -53,7 +53,7 @@
                             <td data-title="'网站'" filter="{website_name: 'text'}">[: row.website_name :]</td>
                             <td data-title="'客户名字'" filter="{name: 'text'}">[: row.customer_name :]</td>
                             <td data-title="'金额'" filter="{order_total: 'text'}">[: row.order_total | currency:row.order_currency :]</td>
-                            <td data-title="'商品'">
+                            <td data-title="'商品以及分组等信息'">
                                 <div class="row" ng-repeat="product in row.order_products">
                                     <div class="col-md-4"><span>[: product.quantity :] x </span><img class="order-small-image" ng-src="[: product.image_url :]" alt="[: product.product_name :]"></div>
                                     <div class="col-md-4">[: product.attributes_id :]</div>

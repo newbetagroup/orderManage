@@ -82,28 +82,28 @@
                 </ul>
             </li>
             <li class="treeview" ng-class="{active: $state.includes('order')}">
-                <a><i class="fa fa-internet-explorer"></i><span>订单管理</span><i class="fa fa-angle-left pull-right"></i></a>
+                <a><i class="fa fa-reorder"></i><span>订单管理</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li ng-class="{active: $state.includes('order.orderStatus')}">
-                        <a ui-sref="order.orderStatus.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>订单付款前状态管理</a>
+                        <a ui-sref="order.orderStatus.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-backward"></i>订单付款前状态管理</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.orderPayAfterStatus')}">
-                        <a ui-sref="order.orderPayAfterStatus.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>订单付款后状态管理</a>
+                        <a ui-sref="order.orderPayAfterStatus.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-forward"></i>订单付款后状态管理</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.express')}">
-                        <a ui-sref="order.express.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>货运方式</a>
+                        <a ui-sref="order.express.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-truck"></i>货运方式</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.expressCompany')}">
-                        <a ui-sref="order.expressCompany.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>发货公司</a>
+                        <a ui-sref="order.expressCompany.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-support"></i>发货公司</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.customerServiceDepartment')}">
-                        <a ui-sref="order.customerServiceDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>客服部</a>
+                        <a ui-sref="order.customerServiceDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-bell"></i>客服部</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.orderDepartment')}">
-                        <a ui-sref="order.orderDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>订货部</a>
+                        <a ui-sref="order.orderDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-suitcase"></i>订货部</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.deliveryDepartment')}">
-                        <a ui-sref="order.deliveryDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>发货部</a>
+                        <a ui-sref="order.deliveryDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货部</a>
                     </li>
                 </ul>
             </li>

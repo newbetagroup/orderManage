@@ -389,8 +389,11 @@ orderApp.config([
             .state('order', {
                 template:'<div ui-view=""></div>',
                 resolve: {
-                    loadCommonService: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    loadOrderCommonService: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/common/commonService.js');
+                    }],
+                    loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/css/order.css');
                     }]
                 }
             })

@@ -5,8 +5,8 @@
 
     'use strict';
 
-    angular.module('orderServiceDashboard', [])
-        .service('orderService', [
+    angular.module('OrderCommonServiceDashboard', [])
+        .service('OrderCommonService', [
             '$http',
             '$q',
             function ($http, $q) {
@@ -36,7 +36,8 @@
                         return defered.promise;
 
                     } else {
-                        $q.when(orderStatuses);
+                        //console.log('orderStatuses', orderStatuses);
+                       return $q.when(orderStatuses);
                     }
                 };
 
@@ -62,7 +63,7 @@
                         return defered.promise;
 
                     } else {
-                        $q.when(orderPayAfterStatuses);
+                        return $q.when(orderPayAfterStatuses);
                     }
                 };
 

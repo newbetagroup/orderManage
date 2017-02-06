@@ -6,15 +6,15 @@
         .service('ServiceDepartmentService', [
             '$http',
             '$q',
-            'orderService',
-            function ($http, $q, orderService) {
+            'OrderCommonService',
+            function ($http, $q, OrderCommonService) {
                 var me = this;
 
                 //表格顶部筛选
                 me.arrOrderStatuses = [];//[{id:1, title:"已付款"}]
                 me.arrOrderPayAfterStatuses = [];//[{id:1, title:"已付款"}]
                 //订单状态
-                orderService.fnGetOrderStatuses().then(function (r) {
+                OrderCommonService.fnGetOrderStatuses().then(function (r) {
                     me.orderStatuses = r.data;
                     angular.forEach(me.orderStatuses, function(value) {
                         var status = {};
@@ -25,7 +25,7 @@
 
                 });
                 //发货等状态
-                orderService.fnGetOrderPayAfterStatuses().then(function (r) {
+                OrderCommonService.fnGetOrderPayAfterStatuses().then(function (r) {
                     me.payAfterStatuses = r.data;
                     angular.forEach(me.payAfterStatuses, function(value) {
                         var status = {};
