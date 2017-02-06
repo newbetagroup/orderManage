@@ -10,6 +10,24 @@ use App\Http\Controllers\Controller;
 
 class OrderDepartmentController extends Controller
 {
+    protected $fields = [
+        'id' => 'equals',
+        'website_id' => 'equals',
+        'website_order_id' => 'equals',
+        'website_name' => 'like',
+        'od_customer_id' => 'equals',
+        'od_delivery_address_id' => 'equals',
+        'website_supervisor_id' => 'equals',
+        'date_purchased' => 'like',
+        'order_total' => 'equals',
+        'order_currency' => 'equals',
+        'order_qty' => 'equals',
+        'od_status_id' => 'equals',
+        'od_pay_after_status_id' => 'equals',
+        'order_pay_after_date' => 'like',
+        'remark' => 'like',
+    ];
+
     /**
      * Display a listing of the resource.
      *
@@ -56,7 +74,7 @@ class OrderDepartmentController extends Controller
             ->orderBy($orderBy, $order)
             ->get();
         $data['data'] = $orders;
-
+        
         return ['status' => 1, 'data' => $data];
     }
 }

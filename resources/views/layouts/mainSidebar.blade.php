@@ -105,6 +105,9 @@
                     <li ng-class="{active: $state.includes('order.deliveryDepartment')}">
                         <a ui-sref="order.deliveryDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货部</a>
                     </li>
+                    <li ng-class="{active: $state.includes('order.orderCategory')}">
+                        <a ui-sref="order.orderCategory.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>产品分类(发货部)</a>
+                    </li>
                 </ul>
             </li>
         </ul>
