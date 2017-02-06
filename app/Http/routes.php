@@ -105,10 +105,12 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::any('orderDepartment/order', ['uses' => 'Order\OrderDepartmentController@index']);
         //发货部
     Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
+    
+        //订单产品分类
+    Route::resource('orderCategory', 'Order\OrderCategoryController', ['names' => ['update' => 'orderCategory.edit', 'store' => 'orderCategory.create']]);
 
     //平台状态
     Route::resource('mallStatus', 'MallStatusController', ['names' => ['update' => 'mallStatus.edit', 'store' => 'mallStatus.create']]);
-
 
 });
 
@@ -217,3 +219,7 @@ Route::get('tpl/order/customerServiceDepartment/index', function () { return vie
 Route::get('tpl/order/orderDepartment/index', function () { return view('tpl.order.orderDepartment.index');});
     //发货部 订单相关
 Route::get('tpl/order/deliveryDepartment/index', function () { return view('tpl.order.deliveryDepartment.index');});
+    //==========订单产品分类
+Route::get('tpl/order/category/index', function () { return view('tpl.order.category.index');});
+Route::get('tpl/order/category/add', function () { return view('tpl.order.category.add');});
+Route::get('tpl/order/category/edit', function () { return view('tpl.order.category.edit');});

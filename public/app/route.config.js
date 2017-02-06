@@ -573,6 +573,31 @@ orderApp.config([
                 templateUrl: 'tpl/order/deliveryDepartment/index',
                 controller: 'DeliveryDepartmentIndexCtrl as deliveryDepartment'
             })
+            //发货部 订单产品分类
+            .state('order.orderCategory', {
+                url:'/category',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/category/orderCategory.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.orderCategory.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/category/index',
+                controller: 'OrderCategoryIndexCtrl as orderCategory'
+            })
+            .state('order.orderCategory.add', {
+                url:'/categoryAdd',
+                templateUrl: 'tpl/order/category/add',
+                controller: 'OrderCategoryAddCtrl'
+            })
+            .state('order.orderCategory.edit', {
+                url:'/categoryEdit/:orderCategoryId',
+                templateUrl: 'tpl/order/category/edit',
+                controller: 'OrderCategoryEditCtrl'
+            })
         ;
     }
     ])
