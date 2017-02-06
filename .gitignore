@@ -6,3 +6,4 @@ Homestead.json
 /.idea
 /public/storage
 /storage
+composer.lock
