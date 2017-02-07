@@ -117,7 +117,10 @@ class PermissionController extends Controller
      */
     public function edit($id)
     {
-        //
+        $permission = Permission::find((int)$id);
+
+        if(!$permission) return ['status' => 0, 'msg' => 'not exist'];
+        return ['status' => 1, 'data' => $permission];
     }
 
     /**

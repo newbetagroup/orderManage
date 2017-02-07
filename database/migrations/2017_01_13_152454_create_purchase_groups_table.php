@@ -14,6 +14,8 @@ class CreatePurchaseGroupsTable extends Migration
     {
         Schema::create('purchase_groups', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name', 50)->comment('订货分组名称');
+            $table->string('remark')->comment('订货分组描述与备注');
             $table->timestamps();
         });
     }

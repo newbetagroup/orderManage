@@ -77,4 +77,6 @@ class OrderDepartmentController extends Controller
         
         return ['status' => 1, 'data' => $data];
     }
+    
+    
 }

@@ -613,6 +613,31 @@ orderApp.config([
                 templateUrl: 'tpl/order/orderDepartment/index',
                 controller: 'OrderDepartmentIndexCtrl as orderDepartment'
             })
+            //订货部 订货分组
+            .state('order.purchaseGroup', {
+                url:'/purchaseGroup',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/purchaseGroup/purchaseGroup.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.purchaseGroup.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/purchaseGroup/index',
+                controller: 'PurchaseGroupIndexCtrl as purchaseGroup'
+            })
+            .state('order.purchaseGroup.add', {
+                url:'/purchaseGroupAdd',
+                templateUrl: 'tpl/order/purchaseGroup/add',
+                controller: 'PurchaseGroupAddCtrl'
+            })
+            .state('order.purchaseGroup.edit', {
+                url:'/purchaseGroupEdit/:purchaseGroupId',
+                templateUrl: 'tpl/order/purchaseGroup/edit',
+                controller: 'PurchaseGroupEditCtrl'
+            })
             //发货部 订单相关
             .state('order.deliveryDepartment', {
                 url:'/deliveryDepartment',
@@ -652,6 +677,31 @@ orderApp.config([
                 url:'/categoryEdit/:orderCategoryId',
                 templateUrl: 'tpl/order/category/edit',
                 controller: 'OrderCategoryEditCtrl'
+            })
+            //发货部 发货分组
+            .state('order.shippingGroup', {
+                url:'/shippingGroup',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/shippingGroup/shippingGroup.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.shippingGroup.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/shippingGroup/index',
+                controller: 'ShippingGroupIndexCtrl as shippingGroup'
+            })
+            .state('order.shippingGroup.add', {
+                url:'/shippingGroupAdd',
+                templateUrl: 'tpl/order/shippingGroup/add',
+                controller: 'ShippingGroupAddCtrl'
+            })
+            .state('order.shippingGroup.edit', {
+                url:'/shippingGroupEdit/:shippingGroupId',
+                templateUrl: 'tpl/order/shippingGroup/edit',
+                controller: 'ShippingGroupEditCtrl'
             })
         ;
     }

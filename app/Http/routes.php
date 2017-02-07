@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     // Route::get('permission/manage', ['as' => 'permission.manage', 'uses' => 'PermissionController@index']);
     //Route::get('permission/{cid?}', ['as' => 'permission.index', 'uses' => 'PermissionController@index']);
     Route::post('permission/index', ['as' => 'permission.index', 'uses' => 'PermissionController@index']); //查询
-    Route::resource('permission', 'PermissionController', ['names' => ['update' => 'permission.edit', 'store' => 'permission.create']]);
+    Route::resource('permission', 'PermissionController');
 
     //post
     Route::get('post/index', ['as' => 'post.index', 'uses' => 'PostController@allPost']);//
@@ -103,10 +103,15 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('customerService/ordersUpdate', ['uses' => 'Order\CustomerServiceDepartmentController@ordersUpdate']);
         //订货部
     Route::any('orderDepartment/order', ['uses' => 'Order\OrderDepartmentController@index']);
+            //订货分组
+    Route::resource('purchaseGroup', 'Order\PurchaseGroupController', ['names' => ['update' => 'purchaseGroup.edit', 'store' => 'purchaseGroup.create']]);
+
         //发货部
     Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
-    
-        //订单产品分类
+            //发货分组
+    Route::resource('shippingGroup', 'Order\ShippingGroupController', ['names' => ['update' => 'shippingGroup.edit', 'store' => 'shippingGroup.create']]);
+
+    //订单产品分类
     Route::resource('orderCategory', 'Order\OrderCategoryController', ['names' => ['update' => 'orderCategory.edit', 'store' => 'orderCategory.create']]);
 
     //店铺管理
@@ -235,8 +240,16 @@ Route::get('tpl/order/expressCompany/edit', function () { return view('tpl.order
 Route::get('tpl/order/customerServiceDepartment/index', function () { return view('tpl.order.customerService.index');});
     //订货部 订单相关
 Route::get('tpl/order/orderDepartment/index', function () { return view('tpl.order.orderDepartment.index');});
+    //==========订货部 订货分组
+Route::get('tpl/order/purchaseGroup/index', function () { return view('tpl.order.purchaseGroup.index');});
+Route::get('tpl/order/purchaseGroup/add', function () { return view('tpl.order.purchaseGroup.add');});
+Route::get('tpl/order/purchaseGroup/edit', function () { return view('tpl.order.purchaseGroup.edit');});
     //发货部 订单相关
 Route::get('tpl/order/deliveryDepartment/index', function () { return view('tpl.order.deliveryDepartment.index');});
+    //==========发货部 发货分组
+Route::get('tpl/order/shippingGroup/index', function () { return view('tpl.order.shippingGroup.index');});
+Route::get('tpl/order/shippingGroup/add', function () { return view('tpl.order.shippingGroup.add');});
+Route::get('tpl/order/shippingGroup/edit', function () { return view('tpl.order.shippingGroup.edit');});
     //==========订单产品分类
 Route::get('tpl/order/category/index', function () { return view('tpl.order.category.index');});
 Route::get('tpl/order/category/add', function () { return view('tpl.order.category.add');});
