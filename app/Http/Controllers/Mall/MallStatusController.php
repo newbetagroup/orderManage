@@ -2,13 +2,18 @@
 
 namespace App\Http\Controllers\Mall;
 
+use App\Models\Mall\MallStatus;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class PayTypeController extends Controller
+class MallStatusController extends Controller
 {
+    protected $fields = [
+        'name' => '',
+        'sort' => ''
+    ];
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +21,9 @@ class PayTypeController extends Controller
      */
     public function index()
     {
-        //
+        $data['data'] = MallStatus::all();
+        $data['recordsTotal'] = MallStatus::count();
+        return ['status' => 1, 'data' => $data];
     }
 
     /**
@@ -37,7 +44,15 @@ class PayTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $mallStatus = new MallStatus();
+
+        foreach (array_keys($this->fields) as $field) {
+            if ($request->has($field)) $mallStatus->$field = $request->get($field);
+        }
+
+        $mallStatus->save();
+
+        return ['status' => 1, 'msg' => '添加成功'];
     }
 
     /**
@@ -71,7 +86,18 @@ class PayTypeController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $mallStatus = MallStatus::find($id);
+
+        foreach (array_keys($this->fields) as $field) {
+            if($request->has($field) && $mallStatus->$field!=$request->get($field)) $mallStatus->$field = $request->get($field);
+        }
+
+        // $performance->update(['']);
+        if(!$mallStatus->save()) {
+            return ['status' => 0, 'msg' => '更新失败'];
+        }
+
+        return ['status' => 1, 'msg' => '更新成功'];
     }
 
     /**
@@ -82,6 +108,8 @@ class PayTypeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        MallStatus::destroy($id);
+
+        return ['status' => 1, 'msg' => '删除成功'];
     }
 }

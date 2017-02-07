@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Model\Mall;
+namespace App\Models\Mall;
 
 use Illuminate\Database\Eloquent\Model;
 
-class MallPayType extends Model
+class MallStatus extends Model
 {
     //
 }

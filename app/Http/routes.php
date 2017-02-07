@@ -109,8 +109,14 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
         //订单产品分类
     Route::resource('orderCategory', 'Order\OrderCategoryController', ['names' => ['update' => 'orderCategory.edit', 'store' => 'orderCategory.create']]);
 
-    //平台状态
-    Route::resource('mallStatus', 'MallStatusController', ['names' => ['update' => 'mallStatus.edit', 'store' => 'mallStatus.create']]);
+    //店铺管理
+    Route::resource('mall', 'Mall\MallController', ['names' => ['update' => 'mall.edit', 'store' => 'mall.create']]);
+
+    //店铺状态
+    Route::resource('mallStatus', 'Mall\MallStatusController', ['names' => ['update' => 'mallStatus.edit', 'store' => 'mallStatus.create']]);
+
+    //付款方式
+    Route::resource('mallPayType', 'Mall\MallPayTypeController', ['names' => ['update' => 'mallPayType.edit', 'store' => 'mallPayType.create']]);
 
 });
 
@@ -196,6 +202,18 @@ Route::get('tpl/website/website/index', function () { return view('tpl.website.w
 Route::get('tpl/website/website/add', function () { return view('tpl.website.website.add');});
 Route::get('tpl/website/website/edit', function () { return view('tpl.website.website.edit');});
 
+//==========店铺管理
+Route::get('tpl/mall/mall/index', function () { return view('tpl.mall.mall.index');});
+Route::get('tpl/mall/mall/add', function () { return view('tpl.mall.mall.add');});
+Route::get('tpl/mall/mall/edit', function () { return view('tpl.mall.mall.edit');});
+//==========店铺状态
+Route::get('tpl/mall/mallStatus/index', function () { return view('tpl.mall.mallStatus.index');});
+Route::get('tpl/mall/mallStatus/add', function () { return view('tpl.mall.mallStatus.add');});
+Route::get('tpl/mall/mallStatus/edit', function () { return view('tpl.mall.mallStatus.edit');});
+//==========付款方式
+Route::get('tpl/mall/mallPayType/index', function () { return view('tpl.mall.mallPayType.index');});
+Route::get('tpl/mall/mallPayType/add', function () { return view('tpl.mall.mallPayType.add');});
+Route::get('tpl/mall/mallPayType/edit', function () { return view('tpl.mall.mallPayType.edit');});
 //order 订单相关
     //==========order status
 Route::get('tpl/order/status/index', function () { return view('tpl.order.status.index');});

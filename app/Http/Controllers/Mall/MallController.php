@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Mall;
 
+use App\Models\Mall\MallMall;
+use App\Models\Mall\MallStatus;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -16,7 +18,9 @@ class MallController extends Controller
      */
     public function index()
     {
-        //
+        $data['data'] = MallMall::all();
+        $data['recordsTotal'] = MallMall::count();
+        return ['status' => 1, 'data' => $data];
     }
 
     /**
@@ -37,7 +41,12 @@ class MallController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $mallMall = new MallMall();
+        foreach (array_keys($this->fields) as $field) {
+            if ($request->has($field)) $mallMall->$field = $request->get($field);
+        }
+        $mallMall->save();
+        return ['status' => 1, 'msg' => '添加成功'];
     }
 
     /**
@@ -71,9 +80,16 @@ class MallController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $mallMall = MallMall::find($id);
+        foreach (array_keys($this->fields) as $field) {
+            if($request->has($field) && $mallMall->$field!=$request->get($field)) $mallMall->$field = $request->get($field);
+        }
+        if(!$mallMall->save()) {
+            return ['status' => 0, 'msg' => '更新失败'];
+        }
+        return ['status' => 1, 'msg' => '更新成功'];
     }
-
+    
     /**
      * Remove the specified resource from storage.
      *
@@ -82,6 +98,8 @@ class MallController extends Controller
      */
     public function destroy($id)
     {
-        //
+        MallMall::destroy($id);
+        
+        return ['status' => 1, 'msg' => '删除成功'];
     }
 }

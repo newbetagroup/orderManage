@@ -4,27 +4,26 @@
 ;(function (angular) {
     'use strict';
     
-    angular.module('MallStatusDashboard', [])
-        .service('MallStatusService', [
+    angular.module('MallPayTypeDashboard', [])
+        .service('MallPayTypeService', [
             '$http',
             '$q',
             'CommonService',
             '$timeout',
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
-                me.mallStatusesInfo = {};
-                me.fnGetMallStatuses = function (filterValue, params, type) {
+                me.mallPayTypesInfo = {};
+                me.fnGetMallPayTypes = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
-
                     var deffered = $q.defer();
-                    if(angular.equals({}, me.mallStatusesInfo) || type == 'remote') {
-                        $http.get("/mallStatus").then(function (r) {
+
+                    if(angular.equals({}, me.mallPayTypesInfo) || type == 'remote') {
+                        $http.get("/mallPayType").then(function (r) {
                             if(r.data.status != 1) {
                                 deffered.reject();
                                 return;
                             }
-
-                            me.mallStatusesInfo = r.data.data;
+                            me.mallPayTypesInfo = r.data.data;
 
                             if(angular.isUndefined(params)) {
                                 var filteredData = CommonService.filterData(r.data.data.data,filterValue);
@@ -41,7 +40,7 @@
 
                     } else {
 
-                        var filteredData = CommonService.filterData(me.mallStatusesInfo.data,filterValue);
+                        var filteredData = CommonService.filterData(me.mallPayTypesInfo.data,filterValue);
 
                         //!ng-table
                         if(angular.isUndefined(params)) {
@@ -55,58 +54,58 @@
                 };
 
                 //新增
-                me.fnAddMallStatus = function (mallStatus) {
-                    if(mallStatus.pending) return;
-                    mallStatus.pending =true;
-                    $http.post('/mallStatus', mallStatus)
+                me.fnAddMallPayType = function (mallPayType) {
+                    if(mallPayType.pending) return;
+                    mallPayType.pending =true;
+                    $http.post('/mallPayType', mallPayType)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                mallStatus.addStatus = true;
-                                me.mallStatusesInfo = {};//reload
+                                mallPayType.addMallPayType = true;
+                                me.mallPayTypesInfo = {};//reload
                                 $timeout(function () {
-                                    mallStatus.addStatus = null;
+                                    mallPayType.addMallPayType = null;
                                 }, 2000);
                             } else {
-                                mallStatus.addStatus = false;
+                                mallPayType.addMallPayType = false;
                             }
                         }, function (e) {
-                            mallStatus.addStatus = false;
+                            mallPayType.addMallPayType = false;
                         })
                         .finally(function () {
-                            mallStatus.pending = false;
+                            mallPayType.pending = false;
                         })
                 };
 
                 //edit 修改
-                me.fnEditMallStatus = function (mallStatusInfo) {
-                    if(mallStatusInfo.pending) return;
-                    mallStatusInfo.pending =true;
-                    $http.put('/mallStatus/'+mallStatusInfo.id, mallStatusInfo)
+                me.fnEditMallPayType= function (mallPayTypeInfo) {
+                    if(mallPayTypeInfo.pending) return;
+                    mallPayTypeInfo.pending =true;
+                    $http.put('/mallPayType/'+mallPayTypeInfo.id, mallPayTypeInfo)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                mallStatusInfo.editStatus = true;
-                                me.mallStatusesInfo = {};//reload
+                                mallPayTypeInfo.editMallPayType = true;
+                                me.mallPayTypesInfo = {};//reload
                                 $timeout(function () {
-                                    mallStatusInfo.editStatus = null;
+                                    mallPayTypeInfo.editMallPayType = null;
                                 }, 2000);
                             } else {
-                                mallStatusInfo.editStatus = false;
+                                mallPayTypeInfo.editMallPayType = false;
                             }
                         }, function (e) {
-                            mallStatusInfo.editStatus = false;
+                            mallPayTypeInfo.editMallPayType = false;
                         })
                         .finally(function () {
-                            mallStatusInfo.pending = false;
+                            mallPayTypeInfo.pending = false;
                         });
                 };
 
                 //删除
-                me.fnDestroyMallStatus = function (id, deleteAction) {
+                me.fnDestroyMallPayTypes = function (id, deleteAction) {
                     if(deleteAction.pending) return; //正在删除
                     deleteAction.pending =true;
-                    $http.delete('/mallStatus/'+id).then(function (r) {
+                    $http.delete('/mallPayType/'+id).then(function (r) {
                             if(r.data.status == 1) {
-                                me.mallStatusesInfo = {}; //reload：本地循环还是服务器remote重新拉取？
+                                me.mallPayTypesInfo = {}; //reload：本地循环还是服务器remote重新拉取？
                                 deleteAction.status = true; //成功
                                 $timeout(function () {
                                     deleteAction.status = null;
@@ -122,11 +121,11 @@
                 
             }
         ])
-        .controller('MallStatusIndexCtrl', [
-            'MallStatusService',
+        .controller('MallPayTypeIndexCtrl', [
+            'MallPayTypeService',
             'NgTableParams',
             'dialogs',
-            function (MallStatusService, NgTableParams, dialogs) {
+            function (MallPayTypeService, NgTableParams, dialogs) {
 
                 var getType = 'cache';// 每次去拉取posts的方式: cache or remote
 
@@ -144,16 +143,15 @@
                 function createUsingFullOptions() {
                     var initialParams = {
                         page: 1,
-                        sorting: { created_at: "desc" }
+                        sorting: { id: "desc" }
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return MallStatusService.fnGetMallStatuses(self.filterValue, params, getType);
+                            return MallPayTypeService.fnGetMallPayTypes(self.filterValue, params, getType);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
                 }
-
                 //筛选
                 self.fnSearchChange = function () {
                     self.tableParams.reload();
@@ -162,64 +160,64 @@
                 //确认删除模态框
                 var dlg = null;
                 self.fnDestoryPost = function (id) {
-                    dlg = dialogs.confirm('Confirm','确定要删除该状态吗?',{size: 'sm'});
+                    dlg = dialogs.confirm('Confirm','确定要删除该付款方式吗?',{size: 'sm'});
                     dlg.result.then(function(btn){
                         //确认删除
-                        MallStatusService.fnDestroyMallStatus(id, self.deleteAction);
+                        MallPayTypeService.fnDestroyMallPayTypes(id, self.deleteAction);
                         getType = 'remote';
                         self.tableParams.reload().finally(function () {
                             getType = 'cache';
                         });//更新表格，重新拉取数据
                     },function(btn){
-                        console.log('取消删除mallStatus');
+                        console.log('取消删除付款方式');
                     });
                 }
 
             }])
-        .controller('MallStatusAddCtrl', [
+        .controller('MallPayTypeAddCtrl', [
             '$scope',
-            'MallStatusService',
-            function ($scope, MallStatusService) {
-                $scope.mallStatusInfo = {};
+            'MallPayTypeService',
+            function ($scope, MallPayTypeService) {
+                
+                $scope.mallPayTypeInfo = {};
 
-                $scope.fnAddMallStatus = function () {
-                    MallStatusService.fnAddMallStatus($scope.mallStatusInfo);
+                $scope.fnAddMallPayType = function () {
+                    MallPayTypeService.fnAddMallPayType($scope.mallPayTypeInfo);
                 }
             }
         ])
-        .controller('MallStatusEditCtrl', [
+        .controller('MallPayTypeEditCtrl', [
             '$scope',
-            'MallStatusService',
+            'MallPayTypeService',
             '$filter',
             'dialogs',
-            function ($scope, MallStatusService, $filter, dialogs) {
+            function ($scope, MallPayTypeService, $filter, dialogs) {
 
-                $scope.mallStatusInfo = {};
+                $scope.mallPayTypeInfo = {};
+                var mallPayTypeId = $scope.$stateParams.mallPayTypeId;
 
-                var mallStatusId = $scope.$stateParams.mallStatusId;
-                MallStatusService.fnGetMallStatuses().then(function (r) {
-                    var mallStatusesInfo = $filter('filter')(r, {id: mallStatusId});
 
-                    angular.forEach(mallStatusesInfo, function (value, key) {
-                        //所有的mallStatuses中取出id为postId的一条数据
-                        if(value.id == mallStatusId) {
-                            $scope.mallStatusInfo = value;
+                MallPayTypeService.fnGetMallPayTypes().then(function (r) {
+                    var mallPayTypesInfo = $filter('filter')(r, {id: mallPayTypeId});
+                    angular.forEach(mallPayTypesInfo, function (value, key) {
+                        //所有的mallPayTypes中取出id为postId的一条数据
+                        if(value.id == mallPayTypeId) {
+                            $scope.mallPayTypeInfo = value;
                             return false;
                         }
                     });
-
-                    //没有这个mallStatus
-                    if(angular.equals({}, $scope.mallStatusInfo)) {
-                        dialogs.error('Error', '未找到该网站状态', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('mall.mallStatus.index');
+                    //没有这个mallPayType
+                    if(angular.equals({}, $scope.mallPayTypeInfo)) {
+                        dialogs.error('Error', '未找到该状态', {size:'sm'}).result.then(function (btn) {
+                            $scope.$state.go('mall.mallPayType.index');
                         });
                         return;
                     }
                 });
 
                 //提交修改
-                $scope.fnEditMallStatus = function () {
-                    MallStatusService.fnEditMallStatus($scope.mallStatusInfo);
+                $scope.fnEditMallPayType = function () {
+                    MallPayTypeService.fnEditMallPayType($scope.mallPayTypeInfo);
                 }
             }
         ]);

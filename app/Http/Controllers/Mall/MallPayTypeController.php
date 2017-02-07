@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers\Mall;
 
-use App\Model\Mall\MallStatus;
+use App\Models\Mall\MallPayType;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 
-class StatusController extends Controller
+class MallPayTypeController extends Controller
 {
     protected $fields = [
         'name' => '',
@@ -21,8 +21,8 @@ class StatusController extends Controller
      */
     public function index()
     {
-        $data['data'] = MallStatus::all();
-        $data['recordsTotal'] = MallStatus::count();
+        $data['data'] = MallPayType::all();
+        $data['recordsTotal'] = MallPayType::count();
         return ['status' => 1, 'data' => $data];
     }
 
@@ -44,14 +44,11 @@ class StatusController extends Controller
      */
     public function store(Request $request)
     {
-        $mallStatus = new MallStatus();
-
+        $mallPayType = new MallPayType();
         foreach (array_keys($this->fields) as $field) {
-            if ($request->has($field)) $mallStatus->$field = $request->get($field);
+            if ($request->has($field)) $mallPayType->$field = $request->get($field);
         }
-
-        $mallStatus->save();
-
+        $mallPayType->save();
         return ['status' => 1, 'msg' => '添加成功'];
     }
 
@@ -86,17 +83,13 @@ class StatusController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $mallStatus = MallStatus::find($id);
-
+        $mallPayType = MallPayType::find($id);
         foreach (array_keys($this->fields) as $field) {
-            if($request->has($field) && $mallStatus->$field!=$request->get($field)) $mallStatus->$field = $request->get($field);
+            if($request->has($field) && $mallPayType->$field!=$request->get($field)) $mallPayType->$field = $request->get($field);
         }
-
-        // $performance->update(['']);
-        if(!$mallStatus->save()) {
+        if(!$mallPayType->save()) {
             return ['status' => 0, 'msg' => '更新失败'];
         }
-
         return ['status' => 1, 'msg' => '更新成功'];
     }
 
@@ -108,7 +101,7 @@ class StatusController extends Controller
      */
     public function destroy($id)
     {
-        MallStatus::destroy($id);
+        MallPayType::destroy($id);
 
         return ['status' => 1, 'msg' => '删除成功'];
     }

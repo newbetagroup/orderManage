@@ -390,32 +390,87 @@ orderApp.config([
                 template:'<div ui-view=""></div>'
             })
 
-            //店铺状态
-            .state('mall.mallstatus', {
-                url:'/mallstatus',
+            //店铺管理
+            .state('mall.mall', {
+                url:'/mall',
                 resolve: {
-                    loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/mall/mallstatus/mallstatus.js');
+                    loadStatusDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/mall/mallStatus/mallStatus.js');
+                    }],
+                    loadMallDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/mall/mall/mall.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
             })
-            .state('mall.mallstatus.index', {
-                url:'/mallstatusIndex',
-                templateUrl: 'tpl/mall/mallstatus/index',
-                controller: 'MallstatusIndexCtrl as Mallstatuses'
+            .state('mall.mall.index', {
+                url:'/mallIndex',
+                templateUrl: 'tpl/mall/mall/index',
+                controller: 'MallIndexCtrl'
             })
-            .state('mall.mallstatus.add', {
-                url:'/mallstatusAdd',
-                templateUrl: 'tpl/mall/server/add',
-                controller: 'MallstatusAddCtrl'
+            .state('mall.mall.add', {
+                url:'/mallAdd',
+                templateUrl: 'tpl/mall/mall/add',
+                controller: 'MallAddCtrl'
             })
-            .state('mall.mallstatus.edit', {
-                url:'/mallstatusEdit/:mallstatusId',
-                templateUrl: 'tpl/mall/mallstatus/edit',
-                controller: 'MallstatusEditCtrl'
+            .state('mall.mall.edit', {
+                url:'/mallEdit/:mallId',
+                templateUrl: 'tpl/mall/mall/edit',
+                controller: 'MallEditCtrl'
             })
 
+            //店铺状态
+            .state('mall.mallStatus', {
+                url:'/mallStatus',
+                resolve: {
+                    loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/mall/mallStatus/mallStatus.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('mall.mallStatus.index', {
+                url:'/mallStatusIndex',
+                templateUrl: 'tpl/mall/mallStatus/index',
+                controller: 'MallStatusIndexCtrl as mallStatuses'
+            })
+            .state('mall.mallStatus.add', {
+                url:'/mallStatusAdd',
+                templateUrl: 'tpl/mall/mallStatus/add',
+                controller: 'MallStatusAddCtrl'
+            })
+            .state('mall.mallStatus.edit', {
+                url:'/mallStatusEdit/:mallStatusId',
+                templateUrl: 'tpl/mall/mallStatus/edit',
+                controller: 'MallStatusEditCtrl'
+            })
+
+            //店铺付款方式
+            .state('mall.mallPayType', {
+                url:'/mallPayType',
+                resolve: {
+                    loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/mall/mallPayType/mallPayType.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('mall.mallPayType.index', {
+                url:'/mallPayTypeIndex',
+                templateUrl: 'tpl/mall/mallPayType/index',
+                controller: 'MallPayTypeIndexCtrl as mallPayType'
+            })
+            .state('mall.mallPayType.add', {
+                url:'/mallPayTypeAdd',
+                templateUrl: 'tpl/mall/mallPayType/add',
+                controller: 'MallPayTypeAddCtrl'
+            })
+            .state('mall.mallPayType.edit', {
+                url:'/mallPayTypeEdit/:mallPayTypeId',
+                templateUrl: 'tpl/mall/mallPayType/edit',
+                controller: 'MallPayTypeEditCtrl'
+            })
+                
         //订单信息管理
             .state('order', {
                 template:'<div ui-view=""></div>',
