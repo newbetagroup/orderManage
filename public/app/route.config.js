@@ -560,10 +560,10 @@ orderApp.config([
             })
             //订货部 订货分组
             .state('order.purchaseGroup', {
-                url:'/category',
+                url:'/purchaseGroup',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/category/orderCategory.js');
+                        return $ocLazyLoad.load('/app/order/purchaseGroup/purchaseGroup.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -622,6 +622,31 @@ orderApp.config([
                 url:'/categoryEdit/:orderCategoryId',
                 templateUrl: 'tpl/order/category/edit',
                 controller: 'OrderCategoryEditCtrl'
+            })
+            //发货部 发货分组
+            .state('order.shippingGroup', {
+                url:'/shippingGroup',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/shippingGroup/shippingGroup.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.shippingGroup.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/shippingGroup/index',
+                controller: 'ShippingGroupIndexCtrl as shippingGroup'
+            })
+            .state('order.shippingGroup.add', {
+                url:'/shippingGroupAdd',
+                templateUrl: 'tpl/order/shippingGroup/add',
+                controller: 'ShippingGroupAddCtrl'
+            })
+            .state('order.shippingGroup.edit', {
+                url:'/shippingGroupEdit/:shippingGroupId',
+                templateUrl: 'tpl/order/shippingGroup/edit',
+                controller: 'ShippingGroupEditCtrl'
             })
         ;
     }

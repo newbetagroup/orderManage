@@ -222,8 +222,16 @@ Route::get('tpl/order/expressCompany/edit', function () { return view('tpl.order
 Route::get('tpl/order/customerServiceDepartment/index', function () { return view('tpl.order.customerService.index');});
     //订货部 订单相关
 Route::get('tpl/order/orderDepartment/index', function () { return view('tpl.order.orderDepartment.index');});
+    //==========订货部 订货分组
+Route::get('tpl/order/purchaseGroup/index', function () { return view('tpl.order.purchaseGroup.index');});
+Route::get('tpl/order/purchaseGroup/add', function () { return view('tpl.order.purchaseGroup.add');});
+Route::get('tpl/order/purchaseGroup/edit', function () { return view('tpl.order.purchaseGroup.edit');});
     //发货部 订单相关
 Route::get('tpl/order/deliveryDepartment/index', function () { return view('tpl.order.deliveryDepartment.index');});
+    //==========发货部 发货分组
+Route::get('tpl/order/shippingGroup/index', function () { return view('tpl.order.shippingGroup.index');});
+Route::get('tpl/order/shippingGroup/add', function () { return view('tpl.order.shippingGroup.add');});
+Route::get('tpl/order/shippingGroup/edit', function () { return view('tpl.order.shippingGroup.edit');});
     //==========订单产品分类
 Route::get('tpl/order/category/index', function () { return view('tpl.order.category.index');});
 Route::get('tpl/order/category/add', function () { return view('tpl.order.category.add');});

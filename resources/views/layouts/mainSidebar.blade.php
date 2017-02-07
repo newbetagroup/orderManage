@@ -113,11 +113,17 @@
                     <li ng-class="{active: $state.includes('order.orderDepartment')}">
                         <a ui-sref="order.orderDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-suitcase"></i>订货部</a>
                     </li>
+                    <li ng-class="{active: $state.includes('order.purchaseGroup')}">
+                        <a ui-sref="order.purchaseGroup.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>订货分组(订货部)</a>
+                    </li>
                     <li ng-class="{active: $state.includes('order.deliveryDepartment')}">
                         <a ui-sref="order.deliveryDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货部</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.orderCategory')}">
                         <a ui-sref="order.orderCategory.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>产品分类(发货部)</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.shippingGroup')}">
+                        <a ui-sref="order.shippingGroup.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货分组(发货部)</a>
                     </li>
                 </ul>
             </li>

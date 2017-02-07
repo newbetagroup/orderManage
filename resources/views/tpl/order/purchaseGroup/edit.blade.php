@@ -1,5 +1,5 @@
 <section class="mt20">
-    {{--修改发货分组--}}
+    {{--修改订货分组--}}
     <div class="main animsition">
         <div class="container-fluid">
 
@@ -7,21 +7,21 @@
                 <div class="panel panel-default">
                     <div class="panel-heading">
                          <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>
-                         <h3 class="panel-title">修改发货分组</h3>
+                         <h3 class="panel-title">修改订货分组</h3>
                     </div>
                     <div class="panel-body">
 
-                        <form class="form-horizontal" role="form" ng-submit="fnEditShippingGroup()">
+                        <form class="form-horizontal" role="form" ng-submit="fnEditPurchaseGroup()">
                             <div class="form-group">
-                                <label for="name" class="col-md-3 control-label">发货分组</label>
+                                <label for="name" class="col-md-3 control-label">订货分组</label>
                                 <div class="col-md-5">
-                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="shippingGroupInfo.name">
+                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="purchaseGroupInfo.name">
                                 </div>
                             </div>
                             <div class="form-group">
                                 <label for="remark" class="col-md-3 control-label">备注</label>
                                 <div class="col-md-5">
-                                    <input type="text" class="form-control" name="remark" id="remark" autofocus ng-model="shippingGroupInfo.remark">
+                                    <input type="text" class="form-control" name="remark" id="remark" autofocus ng-model="purchaseGroupInfo.remark">
                                 </div>
                             </div>
                             <div class="form-group">
@@ -33,13 +33,13 @@
                                 </div>
                             </div>
                         </form>
-                        <div ng-show="shippingGroupInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+                        <div ng-show="purchaseGroupInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
                             <strong>正在提交...</strong>
                         </div>
-                        <div ng-if="shippingGroupInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
+                        <div ng-if="purchaseGroupInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">
                             <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-                            <strong>修改发货分组成功!</strong>
+                            <strong>修改订货分组成功!</strong>
                         </div>
                     </div>
                 </div>
