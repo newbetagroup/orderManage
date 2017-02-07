@@ -52,7 +52,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     // Route::get('permission/manage', ['as' => 'permission.manage', 'uses' => 'PermissionController@index']);
     //Route::get('permission/{cid?}', ['as' => 'permission.index', 'uses' => 'PermissionController@index']);
     Route::post('permission/index', ['as' => 'permission.index', 'uses' => 'PermissionController@index']); //查询
-    Route::resource('permission', 'PermissionController', ['names' => ['update' => 'permission.edit', 'store' => 'permission.create']]);
+    Route::resource('permission', 'PermissionController');
 
     //post
     Route::get('post/index', ['as' => 'post.index', 'uses' => 'PostController@allPost']);//
@@ -103,10 +103,15 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('customerService/ordersUpdate', ['uses' => 'Order\CustomerServiceDepartmentController@ordersUpdate']);
         //订货部
     Route::any('orderDepartment/order', ['uses' => 'Order\OrderDepartmentController@index']);
+            //订货分组
+    Route::resource('purchaseGroup', 'Order\PurchaseGroupController', ['names' => ['update' => 'purchaseGroup.edit', 'store' => 'purchaseGroup.create']]);
+
         //发货部
     Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
-    
-        //订单产品分类
+            //发货分组
+    Route::resource('shippingGroup', 'Order\ShippingGroupController', ['names' => ['update' => 'shippingGroup.edit', 'store' => 'shippingGroup.create']]);
+
+    //订单产品分类
     Route::resource('orderCategory', 'Order\OrderCategoryController', ['names' => ['update' => 'orderCategory.edit', 'store' => 'orderCategory.create']]);
 
     //平台状态

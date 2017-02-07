@@ -558,6 +558,31 @@ orderApp.config([
                 templateUrl: 'tpl/order/orderDepartment/index',
                 controller: 'OrderDepartmentIndexCtrl as orderDepartment'
             })
+            //订货部 订货分组
+            .state('order.purchaseGroup', {
+                url:'/category',
+                resolve: {
+                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/category/orderCategory.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.purchaseGroup.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/purchaseGroup/index',
+                controller: 'PurchaseGroupIndexCtrl as purchaseGroup'
+            })
+            .state('order.purchaseGroup.add', {
+                url:'/purchaseGroupAdd',
+                templateUrl: 'tpl/order/purchaseGroup/add',
+                controller: 'PurchaseGroupAddCtrl'
+            })
+            .state('order.purchaseGroup.edit', {
+                url:'/purchaseGroupEdit/:purchaseGroupId',
+                templateUrl: 'tpl/order/purchaseGroup/edit',
+                controller: 'PurchaseGroupEditCtrl'
+            })
             //发货部 订单相关
             .state('order.deliveryDepartment', {
                 url:'/deliveryDepartment',
