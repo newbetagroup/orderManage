@@ -103,11 +103,13 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('customerService/ordersUpdate', ['uses' => 'Order\CustomerServiceDepartmentController@ordersUpdate']);
         //订货部
     Route::any('orderDepartment/order', ['uses' => 'Order\OrderDepartmentController@index']);
+    Route::post('productsToPurchaseGroup', ['uses' => 'Order\OrderDepartmentController@addProductsToPurchaseGroup']);
             //订货分组
     Route::resource('purchaseGroup', 'Order\PurchaseGroupController', ['names' => ['update' => 'purchaseGroup.edit', 'store' => 'purchaseGroup.create']]);
 
         //发货部
     Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
+    //Route::post('')
             //发货分组
     Route::resource('shippingGroup', 'Order\ShippingGroupController', ['names' => ['update' => 'shippingGroup.edit', 'store' => 'shippingGroup.create']]);
 

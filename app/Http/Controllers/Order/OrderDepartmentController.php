@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\OdOrder;
+use App\OdProduct;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -10,6 +11,7 @@ use App\Http\Controllers\Controller;
 
 class OrderDepartmentController extends Controller
 {
+    //orders 表字段
     protected $fields = [
         'id' => 'equals',
         'website_id' => 'equals',
@@ -26,6 +28,13 @@ class OrderDepartmentController extends Controller
         'od_pay_after_status_id' => 'equals',
         'order_pay_after_date' => 'like',
         'remark' => 'like',
+    ];
+
+    //od_products 表 采购组
+    protected $purchaseFields = [
+        'purchase_group_id' => '',
+        'purchase_price' => '',
+        'purchase_date' => '',
     ];
 
     /**
@@ -77,6 +86,27 @@ class OrderDepartmentController extends Controller
         
         return ['status' => 1, 'data' => $data];
     }
-    
-    
+
+    /**
+     * 将订单产品添加到订货分组，修改采购价等
+     * @param Request $request
+     * @return array
+     */
+    public function addProductsToPurchaseGroup(Request $request)
+    {
+        $orderProduct = OdProduct::find($request->id);
+
+        foreach (array_keys($this->purchaseFields) as $field) {
+            if($request->get($field)) $orderProduct->$field = $request->get($field);
+        }
+
+        //采购时间
+        $orderProduct->purchase_date = date("Y-m-d H:i:s");
+
+        if(!$orderProduct->save()) {
+            return ['status' => 0, 'msg' => '更新失败'];
+        }
+
+        return ['status' => 1, 'data' => $orderProduct];
+    }
 }

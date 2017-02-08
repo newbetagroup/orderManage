@@ -63,6 +63,14 @@
                         deffered.resolve(r.data.data.data);
                     });
                     return deffered.promise;
+                };
+
+                /**
+                 * 将订单产品添加到订货分组，修改采购价
+                 * @param product
+                 */
+                me.addProductsToPurchaseGroup = function (product) {
+                   return $http.post('productsToPurchaseGroup', product);
                 }
             }
         ])
@@ -74,7 +82,8 @@
             'dialogs',
             'OrderDepartmentService',
             '$http',
-            function ($scope, NgTableParams, dialogs, OrderDepartmentService, $http) {
+            'PurchaseGroupService',
+            function ($scope, NgTableParams, dialogs, OrderDepartmentService, $http, PurchaseGroupService) {
                 var self = this;
                 self.OrderDepartmentSer = OrderDepartmentService;
 
@@ -205,6 +214,28 @@
                         }
                     });
                     return diff;
+                }
+
+            //================采购分组相关操作
+                var currentPurchaseGroup = new Date();
+                self.currentPurchaseGroup = currentPurchaseGroup.toString();
+                PurchaseGroupService.fnGetPurchaseGroups().then(function (r) {
+                    console.log(r);
+                });
+
+                //将商品添加进采购分组，或者修改采购价等
+                self.addProductsToPurchaseGroup = function (product) {
+                    product.id = self.currentPurchaseGroup;
+                    OrderDepartmentService.addProductsToPurchaseGroup(product).then(function (r) {
+                        if (r.data.status != 1) {
+                            dialogs.error('Server Error', '添加进分组失败，请重试！');
+                        }
+                    });
+                };
+
+                //选择发货分组
+                self.fnChangeGroup = function (groupId) {
+                      self.currentPurchaseGroup = groupId;
                 }
             }
         ]);

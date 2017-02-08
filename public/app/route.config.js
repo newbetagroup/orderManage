@@ -617,7 +617,7 @@ orderApp.config([
             .state('order.purchaseGroup', {
                 url:'/purchaseGroup',
                 resolve: {
-                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    loadpurchaseGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/purchaseGroup/purchaseGroup.js');
                     }]
                 },
