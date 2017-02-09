@@ -97,7 +97,7 @@ class OrderDepartmentController extends Controller
         $orderProduct = OdProduct::find($request->id);
 
         foreach (array_keys($this->purchaseFields) as $field) {
-            if($request->get($field)) $orderProduct->$field = $request->get($field);
+            if($request->has($field)) $orderProduct->$field = $request->get($field);
         }
 
         //采购时间
