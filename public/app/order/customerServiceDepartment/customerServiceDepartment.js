@@ -36,7 +36,6 @@
                 });
 
                 me.fnGetOrders = function (searchRemoteInfo, params) {
-
                     searchRemoteInfo.orderBy = params.orderBy();
                     searchRemoteInfo.filters = params.filter();
                     console.log(params);

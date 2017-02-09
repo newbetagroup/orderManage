@@ -13,17 +13,33 @@
             '$timeout',
             function ($http, $q, CommonService, MallStatusService, $timeout) {
                 var me = this;
-                MallStatusService.fnGetMallStatuses().then(function (r) {
+                //表格顶部筛选
+                me.arrmallStatuses = [];//[{id:1, title:"已付款"}]
+                me.arrusersOptional = [];//[{id:1, title:"已付款"}]
+                MallStatusService.fnGetMallStatus().then(function (r) {
                     me.mallStatuses = r;
+                    angular.forEach(me.mallStatuses, function(value) {
+                        var status = {};
+                        status.title = value.name;
+                        status.id = value.id;
+                        me.arrmallStatuses.push(status);
+                        console.log(me.arrmallStatuses);
+                    })
                 });
+
                 CommonService.fnGetusersOptional().then(function (r) {
                     me.usersOptional = r.data;
+                    angular.forEach(me.usersOptional, function(value) {
+                        var status = {};
+                        status.title = value.name;
+                        status.id = value.id;
+                        me.arrusersOptional.push(status);
+                    })
                 });
                 me.mallsInfo = {};
                 me.fnGetMalls = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
                     var deffered = $q.defer();
-
                     if(angular.equals({}, me.mallsInfo) || type == 'remote') {
                         $http.get("/mall").then(function (r) {
                             if(r.data.status != 1) {
@@ -135,9 +151,9 @@
             function (MallService, NgTableParams, dialogs) {
 
                 var getType = 'cache';// 每次去拉取posts的方式: cache or remote
-
                 var self = this;
 
+                self.mallService =MallService;
                 self.filterValue ='';
 
                 self.deleteAction = {};//删除的状态 pendding 和 status
@@ -185,9 +201,8 @@
             '$scope',
             'MallService',
             function ($scope, MallService) {
-                
                 $scope.mallInfo = {};
-
+                $scope.mallService = MallService;
                 $scope.fnAddMall = function () {
                     MallService.fnAddMall($scope.mallInfo);
                 }

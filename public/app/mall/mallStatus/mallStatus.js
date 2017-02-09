@@ -13,7 +13,7 @@
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
                 me.mallStatusesInfo = {};
-                me.fnGetMallStatuses = function (filterValue, params, type) {
+                me.fnGetMallStatus = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
 
                     var deffered = $q.defer();
@@ -148,7 +148,7 @@
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return MallStatusService.fnGetMallStatuses(self.filterValue, params, getType);
+                            return MallStatusService.fnGetMallStatus(self.filterValue, params, getType);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
@@ -197,7 +197,7 @@
                 $scope.mallStatusInfo = {};
 
                 var mallStatusId = $scope.$stateParams.mallStatusId;
-                MallStatusService.fnGetMallStatuses().then(function (r) {
+                MallStatusService.fnGetMallStatus().then(function (r) {
                     var mallStatusesInfo = $filter('filter')(r, {id: mallStatusId});
 
                     angular.forEach(mallStatusesInfo, function (value, key) {

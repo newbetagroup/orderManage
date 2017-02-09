@@ -48,7 +48,7 @@ class CustomerServiceDepartmentController extends Controller
         $currentPage = $request->get('currentPage')?:1; //当前页码
         $itemsPerPage = $request->get('itemsPerPage')?:15;//每页有几条数据
         $skip = ($currentPage - 1)*$itemsPerPage;
-        $take = $request->get('takeCount')? $request->get('takeCount'):$itemsPerPage;
+        $take = $request->get('takeCount')?:$itemsPerPage;
 
         $orders = OdOrder::select('od_orders.*','od_customers.name','od_customers.email')
             ->join('od_customers', function ($join) {

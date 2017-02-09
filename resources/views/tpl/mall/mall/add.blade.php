@@ -39,7 +39,7 @@
                             <div class="form-group">
                                 <label for="mall_status_id" class="col-md-3 control-label">店铺状态</label>
                                 <div class="col-md-5">
-                                    <select class="form-control" name="mall_status_id" id="mall_status_id" ng-model="mallInfo.mall_status_id" ng-options="mallStatuses.id as mallStatuses.name for mallStatuses in mallInfo.mallStatuses | orderBy:['name']">
+                                    <select class="form-control" name="mall_status_id" id="mall_status_id" ng-model="mallInfo.mall_status_id" ng-options="mallStatuses.id as mallStatuses.name for mallStatuses in mallService.mallStatuses | orderBy:['name']">
                                         <option value="">请选择店铺状态</option>
                                     </select>
                                 </div>
@@ -47,7 +47,7 @@
                             <div class="form-group">
                                 <label for="user_id" class="col-md-3 control-label">负责人</label>
                                 <div class="col-md-5">
-                                    <select class="form-control" name="user_id" id="user_id" ng-model="mallInfo.user_id" ng-options="country.id as country.name for country in WebsiteSer.domainCountries | orderBy:['name']">
+                                    <select class="form-control" name="user_id" id="user_id" ng-model="mallInfo.user_id" ng-options="user.id as user.name for user in mallService.usersOptional | orderBy:['groupId', 'name']">
                                         <option value="">请选择负责人</option>
                                     </select>
                                 </div>

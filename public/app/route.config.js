@@ -406,7 +406,7 @@ orderApp.config([
             .state('mall.mall.index', {
                 url:'/mallIndex',
                 templateUrl: 'tpl/mall/mall/index',
-                controller: 'MallIndexCtrl'
+                controller: 'MallIndexCtrl as MallIndex'
             })
             .state('mall.mall.add', {
                 url:'/mallAdd',
