@@ -53,7 +53,7 @@ class PurchaseGroupController extends Controller
 
         $purchaseGroup->save();
 
-        return ['status' => 1, 'msg' => 'add success'];
+        return ['status' => 1, 'id' => $purchaseGroup->id];
     }
 
     /**

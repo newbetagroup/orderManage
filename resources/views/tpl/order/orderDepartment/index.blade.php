@@ -53,10 +53,11 @@
                             <td data-title="'网站'" filter="{website_name: 'text'}">[: row.website_name :]</td>
                             <td data-title="'客户名字'" filter="{name: 'text'}">[: row.customer_name :]</td>
                             <td data-title="'金额'" filter="{order_total: 'text'}">[: row.order_total | currency:row.order_currency :]</td>
-                            <td data-title="'商品以及分组等信息'">
+                            <td style="min-width: 350px;" data-title="'商品信息|采购分组|发货分组'">
                                 <div class="row" ng-repeat="product in row.order_products">
-                                    <div class="col-md-4"><span>[: product.quantity :] x </span><img class="order-small-image" ng-src="[: product.image_url :]" alt="[: product.product_name :]"></div>
+                                    <div class="col-md-4"><span>[: product.quantity :] x </span><img class="order-small-image" ng-src="[: product.image_url :]" alt="[: product.product_name :]" title="[: product.product_name :]"></div>
                                     <div class="col-md-4">[: product.attributes_id :]</div>
+                                    <div class="col-md-4 form-inline"><div class="checkbox"><label><input type="checkbox" ng-disabled="!orderDepartment.isCheckedAbled && product.purchase_group_id == 0" ng-checked="orderDepartment.isPurchaseGroupChecked(product)" ng-click="orderDepartment.addProductsToPurchaseGroup(product)">[: product.purchase_group_id | zwbIdToName:orderDepartment.purchaseGroups :]</label></div></div>
                                 </div>
                             </td>
                         </tr>
@@ -75,6 +76,27 @@
                         </div>
                     </div>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="group-box">
+        <h2>发货分组</h2>
+        <div class="row">
+            <div class="col-sm-8">
+                <label class="sr-only" for="purchaseGroup">采购分组</label>
+                <input type="text" class="form-control" id="purchaseGroup" ng-model="orderDepartment.currentPurchaseGroup.name">
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-default btn-info" ng-click="orderDepartment.fnAddPurchaseGroup()"><i class="fa fa-plus-circle"></i>add</button>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-8">
+                <label class="sr-only" for="selectPurchaseGroup">采购分组</label>
+                <select name="purchaseGroupSelect" class="form-control" ng-model="orderDepartment.purchaseGroupSelect" ng-options="purchaseGroup.name for purchaseGroup in orderDepartment.purchaseGroups"></select>
+            </div>
+            <div class="col-sm-4">
+                <button class="btn btn-default btn-success" ng-click="orderDepartment.fnSelectPurchaseGroup()">select</button>
             </div>
         </div>
     </div>

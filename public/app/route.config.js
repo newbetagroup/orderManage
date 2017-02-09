@@ -602,7 +602,10 @@ orderApp.config([
             .state('order.orderDepartment', {
                 url:'/orderDepartment',
                 resolve: {
-                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    loadpurchaseGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/purchaseGroup/purchaseGroup.js');
+                    }],
+                    loadorderDepartmentDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/orderDepartment/orderDepartment.js');
                     }]
                 },
@@ -617,7 +620,7 @@ orderApp.config([
             .state('order.purchaseGroup', {
                 url:'/purchaseGroup',
                 resolve: {
-                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    loadpurchaseGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/purchaseGroup/purchaseGroup.js');
                     }]
                 },

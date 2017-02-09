@@ -13,7 +13,7 @@
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
                 me.purchaseGroupsInfo = {};
-                me.fnGetPurchaseGroups = function (filterValue, params, type) {
+                me.fnGetPurchaseGroups = function (type, filterValue, params) {
                     type = type || 'cache';//cache or remote
 
                     var deffered = $q.defer();
@@ -148,7 +148,7 @@
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return PurchaseGroupService.fnGetPurchaseGroups(self.filterValue, params, getType);
+                            return PurchaseGroupService.fnGetPurchaseGroups(getType, self.filterValue, params);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
