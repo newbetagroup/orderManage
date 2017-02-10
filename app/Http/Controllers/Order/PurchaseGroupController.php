@@ -7,11 +7,15 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class PurchaseGroupController extends Controller
 {
     protected $fields = [
+        'supplier_id' => '',
         'name' => '',
+        'charger_id' => '',
+        'charger_name' => '',
         'remark' => ''
     ];
 
@@ -22,8 +26,20 @@ class PurchaseGroupController extends Controller
      */
     public function index()
     {
-        $data['data'] = PurchaseGroup::all();
-        $data['recordsTotal'] = PurchaseGroup::count();
+        /*$purchaseGroups = PurchaseGroup::selectRaw('purchase_groups.*, od_products.id as od_product_id, od_products.od_order_id, suppliers.name as supplier_name')
+                            ->join('od_products', 'purchase_groups.id', '=', 'od_products.id')
+                            ->leftJoin('suppliers', 'purchase_groups.supplier_id', '=', 'suppliers.id')
+                            ->get();*/
+
+        $purchaseGroups = PurchaseGroup::selectRaw('purchase_groups.*, suppliers.name as supplier_name')
+            ->with(['odProducts' => function($query) {
+                $query->select('id', 'purchase_group_id', 'od_order_id');//此处关联id purchase_group_id 必须查询，否则结果为空
+            }])
+            ->leftJoin('suppliers', 'purchase_groups.supplier_id', '=', 'suppliers.id')
+            ->get();
+
+        $data['recordsTotal'] = $purchaseGroups->count();
+        $data['data'] = $purchaseGroups;
         return ['status' => 1, 'data' => $data];
     }
 
@@ -50,6 +66,11 @@ class PurchaseGroupController extends Controller
         foreach (array_keys($this->fields) as $field) {
             if ($request->has($field)) $purchaseGroup->$field = $request->get($field);
         }
+
+        $user = Auth::user();
+
+        $purchaseGroup->charger_id = $user->id;
+        $purchaseGroup->charger_name = $user->name;
 
         $purchaseGroup->save();
 

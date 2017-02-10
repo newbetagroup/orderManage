@@ -1,7 +1,8 @@
 <section class="mt20">
     <div class="row" style="margin:5px;">
+        <div><a ui-sref="order.purchaseGroup.index">分组列表</a></div>
         <div class="col-sm-6 text-left">
-            <div id="tags-table_filter" class="dataTables_filter search-box">
+            <div id="tags-table_filter" class="dataTables_filter search-box floatLeft">
                 <label>搜索:<input type="search" class="form-control input-sm" ng-model="orderDepartment.filterValue" ng-change="orderDepartment.fnSearchChange()"></label>
             </div>
         </div>
@@ -80,7 +81,7 @@
         </div>
     </div>
     <div class="group-box">
-        <h2>发货分组</h2>
+        <h2>采购分组</h2>
         <div class="row">
             <div class="col-sm-8">
                 <label class="sr-only" for="purchaseGroup">采购分组</label>

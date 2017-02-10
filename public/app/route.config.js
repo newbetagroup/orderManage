@@ -641,6 +641,11 @@ orderApp.config([
                 templateUrl: 'tpl/order/purchaseGroup/edit',
                 controller: 'PurchaseGroupEditCtrl'
             })
+            .state('order.purchaseGroup.detail', {
+                url:'/purchaseGroupDetail/:purchaseGroupId',
+                templateUrl: 'tpl/order/purchaseGroup/detail',
+                controller: 'PurchaseGroupDetailCtrl'
+            })
             //发货部 订单相关
             .state('order.deliveryDepartment', {
                 url:'/deliveryDepartment',

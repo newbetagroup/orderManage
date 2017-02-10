@@ -230,7 +230,6 @@
                 
                 //
                 self.isPurchaseGroupChecked = function (product) {
-                    console.log('ischecked', product);
                     if (product.purchase_group_id == 0) return false;
                     return true;
                 };
@@ -251,20 +250,20 @@
                     });
                 };
 
-                //选择发货分组
+                //选择采购分组
                 self.fnSelectPurchaseGroup = function () {
                     self.currentPurchaseGroup.id = self.purchaseGroupSelect.id;
                     self.currentPurchaseGroup.name = self.purchaseGroupSelect.name;
                     self.isCheckedAbled = true;//checkbox可选择的
                 };
 
-                //新增发货分组
+                //新增采购分组
                 self.fnAddPurchaseGroup = function () {
                     var cPurchaseGroup = {};
                     cPurchaseGroup.name = self.currentPurchaseGroup.name;
                     OrderDepartmentService.fnAddPurchaseGroup(cPurchaseGroup).then(function (r) {
                         if(r.data.status != 1) {
-                            dialogs.error('Server error', "新增发货分组失败，请重试");
+                            dialogs.error('Server error', "新增采购分组失败，请重试");
                             return;
                         }
                         //返回新增的id赋予给当前的
@@ -276,6 +275,8 @@
                         PurchaseGroupService.fnGetPurchaseGroups('remote').then(function (r) {
                             self.purchaseGroups = r;
                         });
+
+                        dialogs.notify("提示", "新增采购分组成功，现在您可以将产品直接勾选进该分组了", {'size': 'sm'})
                     })
                 }
             }

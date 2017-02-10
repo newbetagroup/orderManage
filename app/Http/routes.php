@@ -246,6 +246,7 @@ Route::get('tpl/order/orderDepartment/index', function () { return view('tpl.ord
 Route::get('tpl/order/purchaseGroup/index', function () { return view('tpl.order.purchaseGroup.index');});
 Route::get('tpl/order/purchaseGroup/add', function () { return view('tpl.order.purchaseGroup.add');});
 Route::get('tpl/order/purchaseGroup/edit', function () { return view('tpl.order.purchaseGroup.edit');});
+Route::get('tpl/order/purchaseGroup/detail', function () { return view('tpl.order.purchaseGroup.detail');});
     //发货部 订单相关
 Route::get('tpl/order/deliveryDepartment/index', function () { return view('tpl.order.deliveryDepartment.index');});
     //==========发货部 发货分组

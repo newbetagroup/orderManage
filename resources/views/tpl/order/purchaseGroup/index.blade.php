@@ -20,6 +20,10 @@
                         <tr ng-repeat="row in $data">
                             <td data-title="'Id'" sortable="'id'">[: row.id :]</td>
                             <td data-title="'名称'" sortable="'name'">[: row.name :]</td>
+                            <td data-title="'供应商'" sortable="'supplier_id'">[: row.supplier_id :]
+                                <select name="superlier" id="superlier" ng-change="purchaseGroup.fnPurchaseGroupToSupplier(row.id, row.supplier_id)" ng-model="row.supplier_id" ng-options="supperlier.id as supperlier.name for supperlier in purchaseGroup.supperliers"></select>
+                            </td>
+                            <td data-title="'创建人'">[: row.charger_name :]</td>
                             <td data-title="'备注'">[: row.remark :]</td>
                             <td data-title="'操作'">
                                 <div class="operationbox">
@@ -28,6 +32,9 @@
                                     </a>
                                     <a style="margin:3px;" ng-click="purchaseGroup.fnDestoryPurchaseGroup(row.id)" class="delBtn X-Small btn-xs text-danger ">
                                         <i class="fa fa-times-circle-o"></i> 删除</a>
+
+                                    <a style="margin:3px;" ui-sref="order.purchaseGroup.detail({purchaseGroupId:row.id})" class="delBtn X-Small btn-xs text-danger ">
+                                        <i class="fa fa-times-circle-o"></i> 查看详情</a>
                                 </div>
                             </td>
                         </tr>

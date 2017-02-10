@@ -54,6 +54,11 @@
                     }
                 };
 
+                //分配订货分组给供应商
+                me.fnPurchaseGroupToSupplier = function (purchaseGroupId, supplierId) {
+                    return $http.put('/purchaseGroup/' + purchaseGroupId, {'supplier_id': supplierId});
+                };
+
                 //新增
                 me.fnAddPurchaseGroup = function (purchaseGroup) {
                     if(purchaseGroup.pending) return;
@@ -173,6 +178,20 @@
                     },function(btn){
                         console.log('取消删除purchaseGroup');
                     });
+                };
+
+                /*分配订货分组给供应商*/
+                self.supperliers = [];
+                //此处获取供应商
+
+                //分配
+                self.fnPurchaseGroupToSupplier = function (purchaseGroupId, supplierId) {
+                    PurchaseGroupService.fnPurchaseGroupToSupplier(purchaseGroupId, supplierId).then(function (r) {
+                        if(r.data.status == 1) {
+                            dialogs.notify('分配结果', '分配成功', {'size': 'sm'});
+                        }
+                        dialogs.error('Server Error', '分配失败', {'size': 'sm'});
+                    })
                 }
 
             }])
@@ -201,7 +220,7 @@
                 PurchaseGroupService.fnGetPurchaseGroups().then(function (r) {
                     var purchaseGroupsInfo = $filter('filter')(r, {id: purchaseGroupId});
                     angular.forEach(purchaseGroupsInfo, function (value, key) {
-                        //所有的purchaseGroups中取出id为postId的一条数据
+                        //所有的purchaseGroups中取出id为purchaseGroupId的一条数据
                         if(value.id == purchaseGroupId) {
                             $scope.purchaseGroupInfo = value;
                             return false;
@@ -221,6 +240,32 @@
                 $scope.fnEditPurchaseGroup = function () {
                     PurchaseGroupService.fnEditPurchaseGroup($scope.purchaseGroupInfo);
                 }
+            }
+        ])
+        .controller('PurchaseGroupDetailCtrl', [
+            '$scope',
+            'PurchaseGroupService',
+            function ($scope, PurchaseGroupService) {
+                var purchaseGroupId = $scope.$stateParams.purchaseGroupId;
+
+                PurchaseGroupService.fnGetPurchaseGroups().then(function (r) {
+                    var purchaseGroupsInfo = $filter('filter')(r, {id: purchaseGroupId});
+                    angular.forEach(purchaseGroupsInfo, function (value, key) {
+                        //所有的purchaseGroups中取出id为purchaseGroupId的一条数据
+                        if(value.id == purchaseGroupId) {
+                            $scope.purchaseGroupInfo = value;
+                            return false;
+                        }
+                    });
+
+                    //没有这个purchaseGroup
+                    if(angular.equals({}, $scope.purchaseGroupInfo)) {
+                        dialogs.error('Error', '未找到该purchaseGroup', {size:'sm'}).result.then(function (btn) {
+                            $scope.$state.go('website.purchaseGroup.index');
+                        });
+                        return;
+                    }
+                });
             }
         ]);
 })(angular);

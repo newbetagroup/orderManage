@@ -15,6 +15,8 @@ class CreateShippingGroupsTable extends Migration
         Schema::create('shipping_groups', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 50)->comment('发货分组名称');
+            $table->unsignedInteger('user_id')->comment('负责人id');
+            $table->string('charger_name', 30)->comment('负责人');
             $table->string('remark')->comment('发货分组描述与备注');
             $table->timestamps();
         });
