@@ -15,6 +15,8 @@ class CreateSuppliersTable extends Migration
         Schema::create('suppliers', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name')->comment('供应商名称');
+            $table->string('account')->comment('账户名');
+            $table->string('password')->comment('密码');
             $table->string('description')->comment('供应商描述');
             $table->unsignedTinyInteger('is_check')->comment('供应商状态');
             $table->string('contacts', 60)->comment('供应商联系人');
