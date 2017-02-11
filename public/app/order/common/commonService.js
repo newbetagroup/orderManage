@@ -13,7 +13,9 @@
                 var me = this;
                 var orderStatuses = null;
                 var orderPayAfterStatuses  = null;
+                var suppliers = null;
 
+                //付款前状态
                 me.fnGetOrderStatuses = function () {
                     var defered = $q.defer();
                     if (angular.equals(null, orderStatuses)) {
@@ -41,6 +43,7 @@
                     }
                 };
 
+                //获取付款后状态
                 me.fnGetOrderPayAfterStatuses = function () {
                     if (angular.equals(null, orderPayAfterStatuses)) {
                         var defered = $q.defer();
@@ -67,6 +70,32 @@
                     }
                 };
 
+                //获取供应商
+                me.fnGetSuppliers = function () {
+                    if (angular.equals(null, suppliers)) {
+                        var defered = $q.defer();
+                        var pendding = false;
+                        if (!pendding) {
+                            pendding = true;
+                            $http.get('supplier').then(function (r) {
+                                if (r.data.status !=1) {
+                                    return defered.reject('server error');
+                                }
+
+                                suppliers = r.data.data;
+                                defered.resolve(suppliers);
+
+                            }).finally(function () {
+                                pendding = false;
+                            });
+                        }
+
+                        return defered.promise;
+
+                    } else {
+                        return $q.when(suppliers);
+                    }
+                };
             }
         ])
 })(angular);

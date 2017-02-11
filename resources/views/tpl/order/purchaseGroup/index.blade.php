@@ -20,7 +20,7 @@
                         <tr ng-repeat="row in $data">
                             <td data-title="'Id'" sortable="'id'">[: row.id :]</td>
                             <td data-title="'名称'" sortable="'name'">[: row.name :]</td>
-                            <td data-title="'供应商'" sortable="'supplier_id'">[: row.supplier_id :]
+                            <td data-title="'供应商'" sortable="'supplier_id'">
                                 <select name="superlier" id="superlier" ng-change="purchaseGroup.fnPurchaseGroupToSupplier(row.id, row.supplier_id)" ng-model="row.supplier_id" ng-options="supperlier.id as supperlier.name for supperlier in purchaseGroup.supperliers"></select>
                             </td>
                             <td data-title="'创建人'">[: row.charger_name :]</td>

@@ -10,7 +10,8 @@
             '$q',
             'CommonService',
             '$timeout',
-            function ($http, $q, CommonService, $timeout) {
+            'OrderCommonService',
+            function ($http, $q, CommonService, $timeout, OrderCommonService) {
                 var me = this;
                 me.purchaseGroupsInfo = {};
                 me.fnGetPurchaseGroups = function (type, filterValue, params) {
@@ -52,6 +53,11 @@
                         var transformedData = CommonService.sliceOrderData(filteredData,params);
                         return $q.when(transformedData);
                     }
+                };
+
+                //获取所有供应商信息
+                me.fnGetSuppliers = function () {
+                    return OrderCommonService.fnGetSuppliers();
                 };
 
                 //分配订货分组给供应商
@@ -183,12 +189,16 @@
                 /*分配订货分组给供应商*/
                 self.supperliers = [];
                 //此处获取供应商
+                PurchaseGroupService.fnGetSuppliers().then(function (r) {
+                    self.supperliers = r.data;
+                });
 
                 //分配
                 self.fnPurchaseGroupToSupplier = function (purchaseGroupId, supplierId) {
                     PurchaseGroupService.fnPurchaseGroupToSupplier(purchaseGroupId, supplierId).then(function (r) {
                         if(r.data.status == 1) {
                             dialogs.notify('分配结果', '分配成功', {'size': 'sm'});
+                            return;
                         }
                         dialogs.error('Server Error', '分配失败', {'size': 'sm'});
                     })
