@@ -113,6 +113,9 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
             //发货分组
     Route::resource('shippingGroup', 'Order\ShippingGroupController', ['names' => ['update' => 'shippingGroup.edit', 'store' => 'shippingGroup.create']]);
 
+    //发货分组
+    Route::resource('supplier', 'Supplier\SupplierController');
+
     //订单产品分类
     Route::resource('orderCategory', 'Order\OrderCategoryController', ['names' => ['update' => 'orderCategory.edit', 'store' => 'orderCategory.create']]);
 
@@ -257,3 +260,7 @@ Route::get('tpl/order/shippingGroup/edit', function () { return view('tpl.order.
 Route::get('tpl/order/category/index', function () { return view('tpl.order.category.index');});
 Route::get('tpl/order/category/add', function () { return view('tpl.order.category.add');});
 Route::get('tpl/order/category/edit', function () { return view('tpl.order.category.edit');});
+//供应商
+Route::get('tpl/order/supplier/index', function () { return view('tpl.order.supplier.index');});
+Route::get('tpl/order/supplier/add', function () { return view('tpl.order.supplier.add');});
+Route::get('tpl/order/supplier/edit', function () { return view('tpl.order.supplier.edit');});

@@ -211,8 +211,8 @@
 
                     //没有这个express
                     if(angular.equals({}, $scope.expressInfo)) {
-                        dialogs.error('Error', '未找到该状态', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('website.express.index');
+                        dialogs.error('Error', '未找到该express', {size:'sm'}).result.then(function (btn) {
+                            $scope.$state.go('order.express.index');
                         });
                         return;
                     }

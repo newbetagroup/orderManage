@@ -230,7 +230,7 @@
                     //没有这个purchaseGroup
                     if(angular.equals({}, $scope.purchaseGroupInfo)) {
                         dialogs.error('Error', '未找到该purchaseGroup', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('website.purchaseGroup.index');
+                            $scope.$state.go('order.purchaseGroup.index');
                         });
                         return;
                     }

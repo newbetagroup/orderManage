@@ -4,27 +4,27 @@
 ;(function (angular) {
     'use strict';
     
-    angular.module('ShippingGroupDashboard', [])
-        .service('ShippingGroupService', [
+    angular.module('SupplierDashboard', [])
+        .service('SupplierService', [
             '$http',
             '$q',
             'CommonService',
             '$timeout',
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
-                me.shippingGroupsInfo = {};
-                me.fnGetShippingGroups = function (filterValue, params, type) {
+                me.suppliersInfo = {};
+                me.fnGetSuppliers = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
 
                     var deffered = $q.defer();
-                    if(angular.equals({}, me.shippingGroupsInfo) || type == 'remote') {
-                        $http.get("/shippingGroup").then(function (r) {
+                    if(angular.equals({}, me.suppliersInfo) || type == 'remote') {
+                        $http.get("/supplier").then(function (r) {
                             if(r.data.status != 1) {
                                 deffered.reject();
                                 return;
                             }
 
-                            me.shippingGroupsInfo = r.data.data;
+                            me.suppliersInfo = r.data.data;
 
                             if(angular.isUndefined(params)) {
                                 var filteredData = CommonService.filterData(r.data.data.data,filterValue);
@@ -41,7 +41,7 @@
 
                     } else {
 
-                        var filteredData = CommonService.filterData(me.shippingGroupsInfo.data,filterValue);
+                        var filteredData = CommonService.filterData(me.suppliersInfo.data,filterValue);
 
                         //!ng-table
                         if(angular.isUndefined(params)) {
@@ -55,58 +55,58 @@
                 };
 
                 //新增
-                me.fnAddShippingGroup = function (shippingGroup) {
-                    if(shippingGroup.pending) return;
-                    shippingGroup.pending =true;
-                    $http.post('/shippingGroup', shippingGroup)
+                me.fnAddSupplier = function (supplier) {
+                    if(supplier.pending) return;
+                    supplier.pending =true;
+                    $http.post('/supplier', supplier)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                shippingGroup.addStatus = true;
-                                me.shippingGroupsInfo = {};//reload
+                                supplier.addStatus = true;
+                                me.suppliersInfo = {};//reload
                                 $timeout(function () {
-                                    shippingGroup.addStatus = null;
+                                    supplier.addStatus = null;
                                 }, 2000);
                             } else {
-                                shippingGroup.addStatus = false;
+                                supplier.addStatus = false;
                             }
                         }, function (e) {
-                            shippingGroup.addStatus = false;
+                            supplier.addStatus = false;
                         })
                         .finally(function () {
-                            shippingGroup.pending = false;
+                            supplier.pending = false;
                         })
                 };
 
                 //edit 修改
-                me.fnEditShippingGroup = function (shippingGroupInfo) {
-                    if(shippingGroupInfo.pending) return;
-                    shippingGroupInfo.pending =true;
-                    $http.put('/shippingGroup/'+shippingGroupInfo.id, shippingGroupInfo)
+                me.fnEditSupplier = function (supplierInfo) {
+                    if(supplierInfo.pending) return;
+                    supplierInfo.pending =true;
+                    $http.put('/supplier/'+supplierInfo.id, supplierInfo)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                shippingGroupInfo.editStatus = true;
-                                me.shippingGroupsInfo = {};//reload
+                                supplierInfo.editStatus = true;
+                                me.suppliersInfo = {};//reload
                                 $timeout(function () {
-                                    shippingGroupInfo.editStatus = null;
+                                    supplierInfo.editStatus = null;
                                 }, 2000);
                             } else {
-                                shippingGroupInfo.editStatus = false;
+                                supplierInfo.editStatus = false;
                             }
                         }, function (e) {
-                            shippingGroupInfo.editStatus = false;
+                            supplierInfo.editStatus = false;
                         })
                         .finally(function () {
-                            shippingGroupInfo.pending = false;
+                            supplierInfo.pending = false;
                         });
                 };
 
                 //删除
-                me.fnDestroyShippingGroup = function (id, deleteAction) {
+                me.fnDestroySupplier = function (id, deleteAction) {
                     if(deleteAction.pending) return; //正在删除
                     deleteAction.pending =true;
-                    $http.delete('/shippingGroup/'+id).then(function (r) {
+                    $http.delete('/supplier/'+id).then(function (r) {
                             if(r.data.status == 1) {
-                                me.shippingGroupsInfo = {}; //reload：本地循环还是服务器remote重新拉取？
+                                me.suppliersInfo = {}; //reload：本地循环还是服务器remote重新拉取？
                                 deleteAction.status = true; //成功
                                 $timeout(function () {
                                     deleteAction.status = null;
@@ -122,11 +122,11 @@
                 
             }
         ])
-        .controller('ShippingGroupIndexCtrl', [
-            'ShippingGroupService',
+        .controller('SupplierIndexCtrl', [
+            'SupplierService',
             'NgTableParams',
             'dialogs',
-            function (ShippingGroupService, NgTableParams, dialogs) {
+            function (SupplierService, NgTableParams, dialogs) {
 
                 var getType = 'cache';// 每次去拉取posts的方式: cache or remote
 
@@ -148,7 +148,7 @@
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return ShippingGroupService.fnGetShippingGroups(self.filterValue, params, getType);
+                            return SupplierService.fnGetSuppliers(self.filterValue, params, getType);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
@@ -161,65 +161,65 @@
 
                 //确认删除模态框
                 var dlg = null;
-                self.fnDestoryShippingGroup = function (id) {
-                    dlg = dialogs.confirm('Confirm','确定要删除该shippingGroup吗?',{size: 'sm'});
+                self.fnDestorySupplier = function (id) {
+                    dlg = dialogs.confirm('Confirm','确定要删除该supplier吗?',{size: 'sm'});
                     dlg.result.then(function(btn){
                         //确认删除
-                        ShippingGroupService.fnDestroyShippingGroup(id, self.deleteAction);
+                        SupplierService.fnDestroySupplier(id, self.deleteAction);
                         getType = 'remote';
                         self.tableParams.reload().finally(function () {
                             getType = 'cache';
                         });//更新表格，重新拉取数据
                     },function(btn){
-                        console.log('取消删除shippingGroup');
+                        console.log('取消删除supplier');
                     });
                 }
 
             }])
-        .controller('ShippingGroupAddCtrl', [
+        .controller('SupplierAddCtrl', [
             '$scope',
-            'ShippingGroupService',
-            function ($scope, ShippingGroupService) {
-                $scope.shippingGroupInfo = {};
+            'SupplierService',
+            function ($scope, SupplierService) {
+                $scope.supplierInfo = {};
 
-                $scope.fnAddShippingGroup = function () {
-                    ShippingGroupService.fnAddShippingGroup($scope.shippingGroupInfo);
+                $scope.fnAddSupplier = function () {
+                    SupplierService.fnAddSupplier($scope.supplierInfo);
                 }
             }
         ])
-        .controller('ShippingGroupEditCtrl', [
+        .controller('SupplierEditCtrl', [
             '$scope',
-            'ShippingGroupService',
+            'SupplierService',
             '$filter',
             'dialogs',
-            function ($scope, ShippingGroupService, $filter, dialogs) {
+            function ($scope, SupplierService, $filter, dialogs) {
 
-                $scope.shippingGroupInfo = {};
+                $scope.supplierInfo = {};
 
-                var shippingGroupId = $scope.$stateParams.shippingGroupId;
+                var supplierId = $scope.$stateParams.supplierId;
 
-                ShippingGroupService.fnGetShippingGroups().then(function (r) {
-                    var shippingGroupsInfo = $filter('filter')(r, {id: shippingGroupId});
-                    angular.forEach(shippingGroupsInfo, function (value, key) {
-                        //所有的shippingGroups中取出id为shippingGroupId的一条数据
-                        if(value.id == shippingGroupId) {
-                            $scope.shippingGroupInfo = value;
+                SupplierService.fnGetSuppliers().then(function (r) {
+                    var suppliersInfo = $filter('filter')(r, {id: supplierId});
+                    angular.forEach(suppliersInfo, function (value, key) {
+                        //所有的suppliers中取出id为supplierId的一条数据
+                        if(value.id == supplierId) {
+                            $scope.supplierInfo = value;
                             return false;
                         }
                     });
 
-                    //没有这个shippingGroup
-                    if(angular.equals({}, $scope.shippingGroupInfo)) {
-                        dialogs.error('Error', '未找到该shippingGroup', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('order.shippingGroup.index');
+                    //没有这个supplier
+                    if(angular.equals({}, $scope.supplierInfo)) {
+                        dialogs.error('Error', '未找到该supplier', {size:'sm'}).result.then(function (btn) {
+                            $scope.$state.go('order.supplier.index');
                         });
                         return;
                     }
                 });
 
                 //提交修改
-                $scope.fnEditShippingGroup = function () {
-                    ShippingGroupService.fnEditShippingGroup($scope.shippingGroupInfo);
+                $scope.fnEditSupplier = function () {
+                    SupplierService.fnEditSupplier($scope.supplierInfo);
                 }
             }
         ]);

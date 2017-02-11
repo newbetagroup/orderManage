@@ -650,7 +650,7 @@ orderApp.config([
             .state('order.deliveryDepartment', {
                 url:'/deliveryDepartment',
                 resolve: {
-                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    loadDeliveryDepartmentDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/deliveryDepartment/deliveryDepartment.js');
                     }]
                 },
@@ -665,7 +665,7 @@ orderApp.config([
             .state('order.orderCategory', {
                 url:'/category',
                 resolve: {
-                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    loadOrderCategoryDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/category/orderCategory.js');
                     }]
                 },
@@ -690,7 +690,7 @@ orderApp.config([
             .state('order.shippingGroup', {
                 url:'/shippingGroup',
                 resolve: {
-                    loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                    loadShippingGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/shippingGroup/shippingGroup.js');
                     }]
                 },
@@ -710,6 +710,31 @@ orderApp.config([
                 url:'/shippingGroupEdit/:shippingGroupId',
                 templateUrl: 'tpl/order/shippingGroup/edit',
                 controller: 'ShippingGroupEditCtrl'
+            })
+            //供应商
+            .state('order.supplier', {
+                url:'/supplier',
+                resolve: {
+                    loadSupplierDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/supplier/supplier.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.supplier.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/supplier/index',
+                controller: 'SupplierIndexCtrl as supplier'
+            })
+            .state('order.supplier.add', {
+                url:'/SupplierAdd',
+                templateUrl: 'tpl/order/supplier/add',
+                controller: 'SupplierAddCtrl'
+            })
+            .state('order.supplier.edit', {
+                url:'/supplierEdit/:supplierId',
+                templateUrl: 'tpl/order/supplier/edit',
+                controller: 'SupplierEditCtrl'
             })
         ;
     }

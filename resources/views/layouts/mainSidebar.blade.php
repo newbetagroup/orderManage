@@ -128,6 +128,9 @@
                     <li ng-class="{active: $state.includes('order.shippingGroup')}">
                         <a ui-sref="order.shippingGroup.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货分组(发货部)</a>
                     </li>
+                    <li ng-class="{active: $state.includes('order.supplier')}">
+                        <a ui-sref="order.supplier.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>供应商</a>
+                    </li>
                 </ul>
             </li>
         </ul>
