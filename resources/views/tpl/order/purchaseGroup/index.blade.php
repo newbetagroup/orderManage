@@ -24,6 +24,7 @@
                                 <select name="superlier" id="superlier" ng-change="purchaseGroup.fnPurchaseGroupToSupplier(row.id, row.supplier_id)" ng-model="row.supplier_id" ng-options="supperlier.id as supperlier.name for supperlier in purchaseGroup.supperliers"></select>
                             </td>
                             <td data-title="'创建人'">[: row.charger_name :]</td>
+                            <td data-title="'创建时间'">[: row.created_at :]</td>
                             <td data-title="'备注'">[: row.remark :]</td>
                             <td data-title="'操作'">
                                 <div class="operationbox">

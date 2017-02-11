@@ -50,7 +50,10 @@ class DeliveryDepartmentController extends Controller
         $skip = ($currentPage - 1)*$itemsPerPage;
         $take = $request->get('takeCount')? $request->get('takeCount'):$itemsPerPage;
         
-        $orders = OdOrder::with('orderProducts');
+        $orders = OdOrder::with(['orderProducts' => function($query) {
+            $query->select('od_products.id', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
+            ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
+        }]);
 
         if(!empty($filters)) {
             foreach ($filters as $key => $value) {
