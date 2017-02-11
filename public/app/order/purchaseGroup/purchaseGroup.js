@@ -191,6 +191,7 @@
                 //此处获取供应商
                 PurchaseGroupService.fnGetSuppliers().then(function (r) {
                     self.supperliers = r.data;
+                    self.supperliers.unshift({id:0, name:"未分配"});
                 });
 
                 //分配
