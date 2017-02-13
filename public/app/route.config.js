@@ -650,6 +650,9 @@ orderApp.config([
             .state('order.deliveryDepartment', {
                 url:'/deliveryDepartment',
                 resolve: {
+                    loadShippingGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/shippingGroup/shippingGroup.js');
+                    }],
                     loadDeliveryDepartmentDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/order/deliveryDepartment/deliveryDepartment.js');
                     }]

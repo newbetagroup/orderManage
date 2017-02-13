@@ -13,7 +13,7 @@
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
                 me.shippingGroupsInfo = {};
-                me.fnGetShippingGroups = function (filterValue, params, type) {
+                me.fnGetShippingGroups = function (type, filterValue, params) {
                     type = type || 'cache';//cache or remote
 
                     var deffered = $q.defer();
@@ -148,7 +148,7 @@
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return ShippingGroupService.fnGetShippingGroups(self.filterValue, params, getType);
+                            return ShippingGroupService.fnGetShippingGroups(getType, self.filterValue, params);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);

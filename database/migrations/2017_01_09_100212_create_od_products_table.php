@@ -20,10 +20,11 @@ class CreateOdProductsTable extends Migration
             $table->unsignedSmallInteger('quantity')->comment('订单中该商品的数量');
             $table->string('image_url')->nullable()->comment('产品图片地址');
             $table->string('attributes_id')->comment("属性集合, json格式，如{'1':'MENSIZE:XL'},1是产品属性id");
-            $table->unsignedSmallInteger('purchase_group_id')->default(0)->comment('采购分组id');
+            $table->unsignedInteger('purchase_group_id')->default(0)->comment('采购分组id');
             $table->timestamp('purchase_date')->default('0000-00-00 00:00:00')->comment('将产品添加进采购分组的时间');
             $table->decimal('purchase_price', 8, 2)->default(0)->comment('采购价');
-            $table->unsignedSmallInteger('shipping_group_id')->default(0)->comment('发货分组id');
+            //$table->unsignedSmallInteger('express_id')->default(0)->comment('货运方式id');
+            $table->unsignedInteger('shipping_group_id')->default(0)->comment('发货分组id');
             $table->timestamp('shipping_group_date')->default('0000-00-00 00:00:00')->comment('将产品加入发货分组的时间');
             $table->unsignedMediumInteger('order_quantity_status')->default(0)->comment('更改订单状态是否影响库存，0代表可以');
             $table->text('remark')->comment('备注');

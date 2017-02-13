@@ -38,10 +38,6 @@
                 me.fnGetOrders = function (searchRemoteInfo, params) {
                     searchRemoteInfo.orderBy = params.orderBy();
                     searchRemoteInfo.filters = params.filter();
-                    console.log(params);
-                    console.log(params.orderBy());
-                    console.log(params.filter());
-                    console.log(searchRemoteInfo);
                     params.count(searchRemoteInfo.itemsPerPage);
                     
                     var deffered = $q.defer();

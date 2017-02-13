@@ -20,6 +20,8 @@
                         <tr ng-repeat="row in $data">
                             <td data-title="'Id'" sortable="'id'">[: row.id :]</td>
                             <td data-title="'名称'" sortable="'name'">[: row.name :]</td>
+                            <td data-title="'发货负责人'" sortable="'charger_name'">[: row.charger_name :]</td>
+                            <td data-title="'创建时间'" sortable="'created_at'">[: row.created_at :]</td>
                             <td data-title="'备注'">[: row.remark :]</td>
                             <td data-title="'操作'">
                                 <div class="operationbox">

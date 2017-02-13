@@ -109,6 +109,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
         //发货部
     Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
+    Route::post('productsToShippingGroup', ['uses' => 'Order\DeliveryDepartmentController@addProductsToShippingGroup']);
     //Route::post('')
             //发货分组
     Route::resource('shippingGroup', 'Order\ShippingGroupController', ['names' => ['update' => 'shippingGroup.edit', 'store' => 'shippingGroup.create']]);

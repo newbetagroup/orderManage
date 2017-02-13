@@ -7,11 +7,14 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 
 class ShippingGroupController extends Controller
 {
     protected $fields = [
         'name' => '',
+        'user_id' => '',
+        'charger_name' => '',
         'remark' => ''
     ];
     
@@ -50,10 +53,14 @@ class ShippingGroupController extends Controller
         foreach (array_keys($this->fields) as $field) {
             if ($request->has($field)) $shippingGroup->$field = $request->get($field);
         }
-        
+
+        $user = Auth::user();
+
+        $shippingGroup->user_id = $user->id;
+        $shippingGroup->charger_name = $user->name;
         $shippingGroup->save();
         
-        return ['status' => 1, 'msg' => 'add success'];
+        return ['status' => 1, 'id' => $shippingGroup->id];
     }
     
     /**
