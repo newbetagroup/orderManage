@@ -7,7 +7,8 @@
             '$http',
             '$q',
             'OrderCommonService',
-            function ($http, $q, OrderCommonService) {
+            'BrandService',
+            function ($http, $q, OrderCommonService, BrandService) {
                 var me = this;
 
                 //表格顶部筛选
@@ -15,17 +16,26 @@
                 me.arrOrderPayAfterStatuses = [];//[{id:1, title:"已付款"}]
                 me.arrOrderCategories = [];//
                 me.arrExpresses = [];//
+                me.arrBrands = [];//品牌搜索
                 //订单状态
                 OrderCommonService.fnGetOrderStatuses().then(function (r) {
                     me.orderStatuses = r.data;
                     angular.forEach(me.orderStatuses, function(value) {
                         var temp = {};
                         temp.title = value.name;
-                        temp.name = value.name;
                         temp.id = value.id;
                         me.arrOrderStatuses.push(temp);
                     })
-
+                });
+                //品牌
+                BrandService.fnGetBrands().then(function (r) {
+                    var brands = r;
+                    angular.forEach(brands, function(value) {
+                        var temp = {};
+                        temp.title = value.name;
+                        temp.id = value.id;
+                        me.arrBrands.push(temp);
+                    })
                 });
                 //发货等状态
                 OrderCommonService.fnGetOrderPayAfterStatuses().then(function (r) {
@@ -152,7 +162,6 @@
                             data.then(function (r) {
                                 originalData = angular.copy(r);//重新深拷贝一份出来，而不是赋值引用
                             });
-                            console.log(data);
                             return data;
                         }
                     };
@@ -162,13 +171,11 @@
                 /*==================angular-bootstrap-ui 分页==================*/
                 //去到第几页
                 self.fnSetPage = function (pageNo) {
-                    console.log(pageNo);
                     self.searchRemoteInfo.currentPage = pageNo;
                     self.tableParams.reload();
                 };
                 //当前页数已经改变
                 self.fnPageChanged = function() {
-                    console.log('Page changed to: ' + self.searchRemoteInfo.currentPage);
                     self.tableParams.reload();
                 };
                 //每页显示几条
@@ -264,7 +271,7 @@
                 var currentShippingGroup = new Date();
                 self.currentShippingGroup = {
                     id: 0,
-                    name: currentShippingGroup.toString()
+                    name: currentShippingGroup.getFullYear()+''+(currentShippingGroup.getMonth()+1)+''+currentShippingGroup.getDate()
                 };
                 ShippingGroupService.fnGetShippingGroups().then(function (r) {
                     self.shippingGroups = r;
@@ -323,20 +330,6 @@
                     })
                 };
                 /*===================end 发货分组相关操作*/
-
-                /*start =================== 产品分类*/
-                /*self.orderCategories = [];
-                DeliveryDepartmentService.fnGetOrderCategories().then(function (r) {
-                    self.orderCategories = r.data;
-                    self.orderCategories.unshift({id:0, name:'未分配'});
-                });*/
-
-                /*start =================== 货运方式*/
-                /*self.expresses = [];
-                DeliveryDepartmentService.fnGetExpresses().then(function (r) {
-                    self.expresses = r.data;
-                    self.expresses.unshift({id:0, name:'未分配'});
-                });*/
             }
         ]);
     

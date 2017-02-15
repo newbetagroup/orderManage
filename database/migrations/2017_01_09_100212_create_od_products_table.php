@@ -28,7 +28,7 @@ class CreateOdProductsTable extends Migration
             $table->timestamp('shipping_group_date')->default('0000-00-00 00:00:00')->comment('将产品加入发货分组的时间');
             $table->unsignedMediumInteger('order_quantity_status')->default(0)->comment('更改订单状态是否影响库存，0代表可以');
             $table->text('remark')->comment('备注');
-            $table->string('sku', 50)->comment('模型号，一个产品对应一个');
+            $table->string('sku', 50)->comment('模型号，一个产品对应一个,格式:品牌名+...');
             $table->timestamps();
 
             $table->index('od_order_id');

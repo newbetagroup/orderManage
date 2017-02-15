@@ -106,3 +106,20 @@ a {
 table select.form-control {
     padding:0;
 }
+
+/*指令集合
+===================================*/
+.magnify-picture {
+    position: fixed;
+    left:0;
+    bottom:300px;
+    float: left;
+    z-index:8000;
+}
+.magnify-picture img{
+    width: 400px;
+    height:auto;
+}
+
+/*end指令集合
+===================================*/

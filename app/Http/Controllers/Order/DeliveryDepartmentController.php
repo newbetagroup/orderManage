@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\DomainBrand;
+use App\Helpers\Contracts\OrderHelperContract;
 use App\OdOrder;
 use App\OdProduct;
 use Illuminate\Http\Request;
@@ -56,23 +58,35 @@ class DeliveryDepartmentController extends Controller
         $itemsPerPage = $request->get('itemsPerPage')?:15;//每页有几条数据
         $skip = ($currentPage - 1)*$itemsPerPage;
         $take = $request->get('takeCount')? $request->get('takeCount'):$itemsPerPage;
-        
-        $orders = OdOrder::with(['orderProducts' => function($query) {
-            $query->select('od_products.id', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
-            ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
-        }]);
+
+        if(isset($filters['brand_id']) && $filters['brand_id']!='') {
+            $brandId = $filters['brand_id'];
+            $brandObj = DomainBrand::select('id', 'name')->where('id', $brandId)->first();
+            $brand = $brandObj->name;
+            $orders = OdOrder::with(['orderProducts' => function($query) use($brand) {
+                $query->select('od_products.id', 'sku', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
+                    /*->leftJoin('shipping_groups', function ($join) use($brand) {
+                        $join->on('od_products.shipping_group_id', '=', 'shipping_groups.id')
+                            ->where('od_products.sku', 'like', $brand.'%');
+                    });*/
+                    ->where('od_products.sku', 'like', $brand.'%')
+                    ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
+            }]);
+        } else {
+            $orders = OdOrder::with(['orderProducts' => function($query) {
+                $query->select('od_products.id', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
+                    ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
+            }]);
+        }
 
         if(!empty($filters)) {
             foreach ($filters as $key => $value) {
                 if ($value == '') continue;
-                if ($key == 'id') {
-                    $orders = $orders->where('id', $value);
-                    continue;
-                }
+                if(!isset($this->fields[$key])) continue;//已定义字段
                 if(isset($this->fields[$key]) && $this->fields[$key] == 'equals')
                     $orders = $orders->where($key, $value);
                 else
-                    $orders = $orders->where($key, 'like', $value.'%');
+                    $orders = $orders->where($key, 'like', '%'.$value.'%');
             }
         }
 
@@ -108,5 +122,22 @@ class DeliveryDepartmentController extends Controller
         }
 
         return ['status' => 1, 'data' => $orderProduct];
+    }
+    
+    /**
+     * 更新订单信息相关内容
+     * @param Request $request
+     * @param OrderHelperContract $orderHelper
+     * @return array
+     */
+    public function ordersUpdate(Request $request, OrderHelperContract $orderHelper)
+    {
+        //是一个数组，含有一个order或多个order信息
+        $orders = $request->all();
+        
+        $result = $orderHelper->ordersUpdate($orders);
+        
+        if(!$result) return ['status' => 0, 'msg' => '更新失败'];
+        return ['status' => 1, 'msg' => '更新成功'];
     }
 }

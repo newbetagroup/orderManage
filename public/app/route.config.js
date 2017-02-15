@@ -476,7 +476,11 @@ orderApp.config([
                 template:'<div ui-view=""></div>',
                 resolve: {
                     loadOrderCommonService: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/common/commonService.js');
+                        return $ocLazyLoad.load([
+                            '/app/common/directives/zwbMagnifyingGlass.js',
+                            '/app/order/common/commonService.js',
+                            '/app/website/brand/brand.js'
+                        ]);
                     }],
                     loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/css/order.css');

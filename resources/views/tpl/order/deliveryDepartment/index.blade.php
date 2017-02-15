@@ -51,9 +51,9 @@
                                     <input type="text" name="remark" ng-model="row.remark" class="editable-input form-control input-sm" required />
                                 </div>
                             </td>
-                            <td style="min-width: 350px;" data-title="'商品信息|发货分组'">
+                            <td style="min-width: 350px;"  filter="{brand_id: 'select'}" filter-data="deliveryDepartment.DeliverySer.arrBrands" data-title="'商品信息|发货分组(品牌查询)'">
                                 <div class="row" ng-repeat="product in row.order_products">
-                                    <div class="col-md-4"><span>[: product.quantity :] x </span><img class="order-small-image" ng-src="[: product.image_url :]" alt="[: product.product_name :]" title="[: product.product_name :]"></div>
+                                    <div class="col-md-4"><span>[: product.quantity :] x </span><img zwb-magnifying-glass class="order-small-image" ng-src="[: product.image_url :]" alt="[: product.product_name :]" title="[: product.product_name :]"></div>
                                     <div class="col-md-4">[: product.attributes_id :]</div>
                                     <div class="col-md-4 form-inline"><div class="checkbox"><label><input type="checkbox" ng-disabled="!deliveryDepartment.isCheckedAbled && product.shipping_group_id == 0" ng-checked="deliveryDepartment.isShippingGroupChecked(product)" ng-click="deliveryDepartment.addProductsToShippingGroup(product)">[: product.shipping_group_id | zwbIdToName:deliveryDepartment.shippingGroups :]</label></div></div>
                                 </div>
