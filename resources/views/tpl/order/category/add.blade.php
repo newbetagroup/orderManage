@@ -37,6 +37,17 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="is_default" class="control-label col-md-3">设为默认产品分类</label>
+                                <div class="col-md-5">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="is_default" ng-value="1" ng-model="orderCategoryInfo.is_default">是
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="is_default" ng-value="0" ng-model="orderCategoryInfo.is_default"> 否
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="form-group">
                                 <div class="col-md-7 col-md-offset-3">
                                     <button type="submit" class="btn btn-primary btn-md">
                                         <i class="fa fa-plus-circle"></i>

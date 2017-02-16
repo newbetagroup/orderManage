@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use App\DomainWebsite;
+use App\Models\SysConfig;
 use App\OdCustomer;
 use App\OdDeliveryAddress;
 use App\OdOrder;
@@ -143,6 +144,8 @@ class AddOrderController extends Controller
             $orderInfo['od_status_id'] = 1;//已付款
         }
 
+        $configCategoryId = SysConfig::select('name', 'val')->where('name', 'od_category_id')->first()->val;//默认产品分类
+
         $order = OdOrder::updateOrCreate(['website_order_id' => $orderInfo['websiteOrderId'], 'website_name' => $websiteName], [
             'website_id' => $websiteId,
             'website_order_id' => $orderInfo['websiteOrderId'],
@@ -156,6 +159,7 @@ class AddOrderController extends Controller
             'order_currency' => $currency,
             'order_qty' => $orderInfo['orderCount'],
             'od_status_id' => $orderInfo['od_status_id'],
+            'od_category_id' => $configCategoryId,
             //'od_pay_after_status_id' => $orderInfo['od_pay_after_status_id'],
             //'order_pay_after_date' => $timeNow?:'0000-00-00 00:00:00',
         ]);

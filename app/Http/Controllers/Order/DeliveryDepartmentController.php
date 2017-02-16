@@ -151,9 +151,13 @@ class DeliveryDepartmentController extends Controller
     }
 
 
-    public function exportDHL()
+    /**
+     * 导出订单，包裹等信息
+     * @param Request $request
+     */
+    public function exportDHL(Request $request)
     {
-        $cellData = [
+        /*$cellData = [
             ['学号','姓名','成绩'],
             ['10001','AAAAA','99'],
             ['10002','BBBBB','92'],
@@ -164,6 +168,44 @@ class DeliveryDepartmentController extends Controller
         Excel::create('学生成绩',function($excel) use ($cellData){
             $excel->sheet('score', function($sheet) use ($cellData){
                 $sheet->rows($cellData);
+            });
+        })->export('xls');*/
+
+        //filter
+        $filters = $request->get('filters');
+
+        $orders = OdOrder::select('od_orders.id','od_orders.od_delivery_address_id','od_orders.od_customer_id','od_products.id as od_product_id', 'od_products.od_order_id', 'od_products.sku',
+            'od_delivery_addresses.consignee','od_delivery_addresses.country','od_delivery_addresses.state','od_delivery_addresses.city','od_delivery_addresses.street','od_delivery_addresses.postcode','od_delivery_addresses.phone')
+                ->join('od_products','od_orders.id', '=', 'od_products.od_order_id');
+        if(isset($filters['brand_id']) && $filters['brand_id']!='') {
+            //按品牌搜索
+            $brandId = $filters['brand_id'];
+            $brandObj = DomainBrand::select('id', 'name')->where('id', $brandId)->first();
+            $brand = $brandObj->name;//由品牌id get name
+            $orders = $orders->where('od_products.sku', 'like', $brand.'%');
+        }
+
+        if(!empty($filters)) {
+            foreach ($filters as $key => $value) {
+                if ($value == '') continue;
+                if(!isset($this->fields[$key])) continue;//已定义字段
+                if(isset($this->fields[$key]) && $this->fields[$key] == 'equals')
+                    $orders = $orders->where($key, $value);
+                else
+                    $orders = $orders->where($key, 'like', '%'.$value.'%');
+            }
+        }
+
+        $orders = $orders->join('od_delivery_addresses', 'od_delivery_address_id', '=', 'od_delivery_addresses.id');
+
+        $orders = $orders->orderBy('od_orders.id', 'desc')->get();
+
+        $orders = $orders->prepend(['city','consignee','country','id','od_customer_id','od_delivery_address_id','od_order_id','od_product_id','phone','postcode','sku','state','street']);
+        $orders = $orders->toArray();
+
+        Excel::create('DHL',function($excel) use ($orders){
+            $excel->sheet('DHL', function($sheet) use ($orders){
+                $sheet->rows($orders);
             });
         })->export('xls');
     }

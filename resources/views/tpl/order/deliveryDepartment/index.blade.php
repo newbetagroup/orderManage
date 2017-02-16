@@ -1,4 +1,7 @@
 <section class="mt20">
+    <div class="row">
+        <a class="btn btn-info" ng-click="deliveryDepartment.fnExportDHL()">导出DHL</a>
+    </div>
     <div class="row" style="margin:5px;">
         <div class="col-sm-6 text-left">
             <div id="tags-table_filter" class="dataTables_filter search-box">

@@ -123,6 +123,16 @@
                 me.fnAddShippingGroup = function (shippingGroup) {
                     return $http.post('/shippingGroup', shippingGroup);
                 };
+
+
+                //导出DHL
+                me.fnExportDHL = function(filters) {
+                    return $http.post('deliveryDepartment/exportDHL', {filters:filters},{responseType: 'arraybuffer'}).success(function (data) {
+                        var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                        var objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl);
+                    });
+                }
             }
         ])
         
@@ -330,6 +340,12 @@
                     })
                 };
                 /*===================end 发货分组相关操作*/
+
+                /*====================start DHL??????*/
+                self.fnExportDHL = function () {
+                    var filters = self.tableParams.filter();
+                    DeliveryDepartmentService.fnExportDHL(filters);
+                };
             }
         ]);
     
