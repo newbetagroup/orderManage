@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Excel;
 
 class DeliveryDepartmentController extends Controller
 {
@@ -50,6 +51,7 @@ class DeliveryDepartmentController extends Controller
         $orderBy = $orderBy[0];
         $order = strpos($orderBy, '+') === false?'desc':'asc';
         $orderBy = substr($orderBy, 1)?:'od_orders.id';//排序
+        $orderBy = 'od_orders.'.$orderBy;
 
         //filter
         $filters = $request->get('filters');
@@ -60,15 +62,22 @@ class DeliveryDepartmentController extends Controller
         $take = $request->get('takeCount')? $request->get('takeCount'):$itemsPerPage;
 
         if(isset($filters['brand_id']) && $filters['brand_id']!='') {
+            //按品牌搜索
             $brandId = $filters['brand_id'];
             $brandObj = DomainBrand::select('id', 'name')->where('id', $brandId)->first();
-            $brand = $brandObj->name;
-            $orders = OdOrder::with(['orderProducts' => function($query) use($brand) {
+            $brand = $brandObj->name;//由品牌id get name
+            $orders = OdOrder::select('od_orders.*','od_products.id as od_product_id', 'od_products.od_order_id', 'od_products.sku')
+                ->join('od_products', function($join) use($brand) {
+                    $join->on('od_orders.id', '=', 'od_products.od_order_id')
+                        ->where('od_products.sku', 'like', $brand.'%');
+                })
+                ->with(['orderProducts' => function($query) use($brand) {
                 $query->select('od_products.id', 'sku', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
                     /*->leftJoin('shipping_groups', function ($join) use($brand) {
                         $join->on('od_products.shipping_group_id', '=', 'shipping_groups.id')
                             ->where('od_products.sku', 'like', $brand.'%');
                     });*/
+                        //一个订单有多产品，只要该品牌的？
                     ->where('od_products.sku', 'like', $brand.'%')
                     ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
             }]);
@@ -139,5 +148,23 @@ class DeliveryDepartmentController extends Controller
         
         if(!$result) return ['status' => 0, 'msg' => '更新失败'];
         return ['status' => 1, 'msg' => '更新成功'];
+    }
+
+
+    public function exportDHL()
+    {
+        $cellData = [
+            ['学号','姓名','成绩'],
+            ['10001','AAAAA','99'],
+            ['10002','BBBBB','92'],
+            ['10003','CCCCC','95'],
+            ['10004','DDDDD','89'],
+            ['10005','EEEEE','96'],
+        ];
+        Excel::create('学生成绩',function($excel) use ($cellData){
+            $excel->sheet('score', function($sheet) use ($cellData){
+                $sheet->rows($cellData);
+            });
+        })->export('xls');
     }
 }

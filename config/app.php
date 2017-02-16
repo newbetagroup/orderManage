@@ -152,6 +152,8 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         /*laravel debugbar*/
         Barryvdh\Debugbar\ServiceProvider::class,
+        /*excel*/
+        Maatwebsite\Excel\ExcelServiceProvider::class,
     ],
 
     /*
@@ -202,7 +204,8 @@ return [
 
         /*laravel debugbar*/
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-
+        /*excel*/
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
     ],
 
 ];

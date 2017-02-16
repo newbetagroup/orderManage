@@ -18,6 +18,7 @@ class CreateOdCategoriesTable extends Migration
             $table->string('english_name')->comment('自定义分类英文名称');
             $table->decimal('weight')->comment('重量');
             $table->decimal('price')->comment('价格');
+            $table->tinyInteger('is_default')->default(0)->comment('值为1的设为默认分类');
             $table->timestamps();
         });
     }

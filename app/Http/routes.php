@@ -109,6 +109,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
         //发货部
     Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
+    Route::any('deliveryDepartment/exportDHL', ['uses' => 'Order\DeliveryDepartmentController@exportDHL']);
     Route::post('productsToShippingGroup', ['uses' => 'Order\DeliveryDepartmentController@addProductsToShippingGroup']);
     //Route::post('')
             //发货分组
