@@ -11,6 +11,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Excel;
+use DNS1D;
 
 class DeliveryDepartmentController extends Controller
 {
@@ -208,5 +209,15 @@ class DeliveryDepartmentController extends Controller
                 $sheet->rows($orders);
             });
         })->export('xls');
+    }
+
+    /**
+     * 各种码，条形码，二维码
+     * @return string
+     */
+    public function barCode()
+    {
+        $codeBar = '<img src="data:image/png;base64,' . DNS1D::getBarcodePNG("021700594063", "CODABAR") . '" alt="barcode"   />';
+        return $codeBar;
     }
 }
