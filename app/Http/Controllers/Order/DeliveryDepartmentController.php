@@ -158,7 +158,8 @@ class DeliveryDepartmentController extends Controller
      */
     public function exportDHL(Request $request)
     {
-        /*$cellData = [
+        /*用法
+         * $cellData = [
             ['学号','姓名','成绩'],
             ['10001','AAAAA','99'],
             ['10002','BBBBB','92'],
