@@ -1,0 +1,10 @@
+{
+  "name": "ordermanagesystem",
+  "description": "订单管理系统",
+  "authors": "newbeta",
+  "dependencies": {
+    "jquery": "~2.2.x",
+    "bootstrap": "^3.3.6",
+    "font-awesome": "^4.5.0"
+  }
+}

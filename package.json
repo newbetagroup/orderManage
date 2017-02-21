@@ -1,15 +1,24 @@
 {
-  "name": "order manage system",
-  "version": "0.0.0",
-  "author": "newbeta",
+  "name": "ordermanagesystem",
+  "version": "1.0.0",
   "description": "订单管理系统",
+  "main": "gulpfile.js",
+  "directories": {
+    "test": "tests"
+  },
   "private": true,
   "devDependencies": {
-    "gulp": "^3.8.8"
+    "gulp": "^3.9.1"
   },
   "dependencies": {
-    "bootstrap-sass": "~3.0.0",
-    "laravel-elixir": "^4.0.0",
-    "ng-table": "~3.0.1"
-  }
+    "laravel-elixir": "^4.0.0"
+  },
+  "scripts": {
+    "test": "error"
+  },
+  "keywords": [
+    "订单"
+  ],
+  "author": "newbeta",
+  "license": "ISC"
 }

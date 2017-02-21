@@ -1,5 +1,9 @@
 var elixir = require('laravel-elixir');
-
+var bowerDir='resources/assets/bower/';
+var lessPaths = [
+    bowerDir + "bootstrap/less",
+    bowerDir + "font-awesome/less"
+];
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -12,5 +16,11 @@ var elixir = require('laravel-elixir');
  */
 
 elixir(function(mix) {
-    mix.sass('app.scss');
+    //mix.sass('app.scss');
+    mix.less('app.less', 'public/css/app.css', { paths: lessPaths})
+        .scripts([
+            'jquery/dist/jquery.min.js',
+            'bootstrap/dist/js/bootstrap.min.js'
+        ], 'public/js/app.js', bowerDir)
+        .copy([bowerDir + 'font-awesome/fonts', bowerDir+'bootstrap/fonts'], 'public/fonts');
 });

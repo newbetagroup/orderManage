@@ -7,3 +7,4 @@ Homestead.json
 /public/storage
 /storage
 composer.lock
+/resources/assets/bower
