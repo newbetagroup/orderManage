@@ -4,12 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Attribute;
 use App\DomainWebsite;
+use App\Models\Stock;
 use App\Models\SysConfig;
 use App\OdCustomer;
 use App\OdDeliveryAddress;
 use App\OdOrder;
 use App\OdProduct;
-use App\Product;
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -273,6 +274,15 @@ class AddOrderController extends Controller
             //存属性
             $attributesJson = $this->storeAttributes($attributes);
 
+            //库存表
+            $stock = Stock::updateOrCreate(['product_id' => $productId,'attributes' => $attributesJson],
+                [
+                    'product_id' => $productId,
+                    'product_name' => $product['name'],
+                    'attributes' => $attributesJson,
+                    'sku' => $product['sku']
+                ]);
+
             $remark = isset($product['remark'])?$product['remark']:'';
             $objOdProduct = OdProduct::updateOrCreate(
                 [
@@ -328,12 +338,16 @@ class AddOrderController extends Controller
             ]
         );
 
+        if($objProtuct->image == '' && isset($product['img'])) $objProtuct->image = $product['img'];
+
         //判断name是否为(英文和数字)
         if(preg_match("/^[a-zA-Z0-9\s]+$/",$product['name']) && !preg_match("/^[a-zA-Z0-9\s]+$/",$objProtuct->name))
         {
             $objProtuct->name = $product['name'];
-            $objProtuct->save();
         }
+
+        $objProtuct->save();
+        
         return $objProtuct->id;
     }
 

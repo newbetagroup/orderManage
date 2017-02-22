@@ -129,7 +129,10 @@
                         <a ui-sref="order.shippingGroup.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货分组(发货部)</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.supplier')}">
-                        <a ui-sref="order.supplier.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>供应商</a>
+                        <a ui-sref="order.supplier.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-handshake-o"></i>供应商</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.stock')}">
+                        <a ui-sref="order.stock.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>产品库存</a>
                     </li>
                 </ul>
             </li>

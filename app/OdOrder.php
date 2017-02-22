@@ -10,7 +10,7 @@ class OdOrder extends Model
     
     public function products()
     {
-        $this->belongsToMany('App\Product', 'od_products', 'od_order_id', 'product_id')
+        $this->belongsToMany('App\Models\Product', 'od_products', 'od_order_id', 'product_id')
         ->withPivot(['purchase_group_id', 'shipping_group_id']);
     }
 

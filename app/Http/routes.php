@@ -29,7 +29,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 //Route::group(['middleware' => ['auth']], function() {
 //如果没有添加as(别名)，即没有添加权限规则，则默认能访问该路由
     //User 路由
-    Route::get('user/getUserOptional', ['as' => 'user.getUserOptional', 'uses' => 'UserController@getUserOptional']);
+    Route::get('user/getUserOptional', ['uses' => 'UserController@getUserOptional']);//所有用户名字及其部门信息
     Route::get('user/getProfile', ['as' => 'user.getProfile', 'uses' => 'UserController@checkLogin']);
     Route::post('user/profileUpdate', ['as' => 'user.profileUpdate', 'uses' => 'UserController@selfUpdate']);
     //某个用户拥有的的所有权限（部门+个人）
@@ -38,13 +38,13 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
 
     //leave 请假
-    Route::get('leave/monthLeaves/{currentMonth}', ['uses' => 'LeaveController@monthLeaves']);
+    Route::get('leave/monthLeaves/{currentMonth}', ['as' => 'leave.monthLeaves', 'uses' => 'LeaveController@monthLeaves']);
     Route::resource('leave', 'LeaveController');
 
     //group 路由
     Route::get('group/aGroupPermissions/{id}', ['uses' => 'GroupController@oneGroupPermission']);
     Route::get('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
-    Route::get('/group/getUsers/{id}', ['as' => 'group.getUsersByGroup', 'uses' => 'GroupController@getUsersByGroup']);
+    Route::get('/group/getUsers/{id}', ['uses' => 'GroupController@getUsersByGroup']);//部门下的所有员工
     Route::post('group/index', ['as' => 'group.index', 'uses' => 'GroupController@index']);
     Route::resource('group', 'GroupController', ['names' => ['update' => 'group.edit', 'store' => 'group.create']]);
 
@@ -55,7 +55,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::resource('permission', 'PermissionController');
 
     //post
-    Route::get('post/index', ['as' => 'post.index', 'uses' => 'PostController@allPost']);//
+    Route::get('post/index', ['uses' => 'PostController@allPost']);//
     Route::resource('post', 'PostController', ['names' => ['update' => 'post.edit', 'store' => 'post.create']]);
 
     //performance
@@ -63,7 +63,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::put('performance/{id}', ['uses' => 'PerformanceController@update']);
 
     //domain server 服务器管理
-    Route::get('server/parentServers', ['as' => 'server.parentServers', 'uses' => 'DomainServerController@parentServers']);
+    Route::get('server/parentServers', ['uses' => 'DomainServerController@parentServers']);
     Route::resource('server', 'DomainServerController', ['names' => ['update' => 'domainServer.edit', 'store' => 'domainServer.create']]);
 
     //domain country
@@ -82,7 +82,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::resource('host', 'DomainHostController', ['names' => ['update' => 'domainHost.edit', 'store' => 'domainHost.create']]);
 
     //domain website 网站管理
-    Route::post('website/index', ['uses' => 'DomainWebsiteController@index']);
+    Route::post('website/index', ['as'=> 'website.index', 'uses' => 'DomainWebsiteController@index']);
     Route::resource('website', 'DomainWebsiteController', ['names' => ['update' => 'domainWebsite.edit', 'store' => 'domainWebsite.create']]);
 
     //order status
@@ -99,24 +99,24 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
     //order
         //客服部
-    Route::post('customerService/order', ['uses' => 'Order\CustomerServiceDepartmentController@index']);
-    Route::post('customerService/ordersUpdate', ['uses' => 'Order\CustomerServiceDepartmentController@ordersUpdate']);
+    Route::post('customerService/order', ['as' => 'customerService.order', 'uses' => 'Order\CustomerServiceDepartmentController@index']);
+    Route::post('customerService/ordersUpdate', ['as' => 'customerService.update', 'uses' => 'Order\CustomerServiceDepartmentController@ordersUpdate']);
         //订货部
-    Route::any('orderDepartment/order', ['uses' => 'Order\OrderDepartmentController@index']);
-    Route::post('productsToPurchaseGroup', ['uses' => 'Order\OrderDepartmentController@addProductsToPurchaseGroup']);
+    Route::any('orderDepartment/order', ['as' => 'orderDepartment.order', 'uses' => 'Order\OrderDepartmentController@index']);
+    Route::post('productsToPurchaseGroup', ['as' => 'orderDepartment.productsToPurchaseGroup', 'uses' => 'Order\OrderDepartmentController@addProductsToPurchaseGroup']);
             //订货分组
     Route::resource('purchaseGroup', 'Order\PurchaseGroupController', ['names' => ['update' => 'purchaseGroup.edit', 'store' => 'purchaseGroup.create']]);
 
         //发货部
-    Route::any('deliveryDepartment/order', ['uses' => 'Order\DeliveryDepartmentController@index']);
-    Route::any('deliveryDepartment/exportDHL', ['uses' => 'Order\DeliveryDepartmentController@exportDHL']);
-    Route::any('deliveryDepartment/barCode', ['uses' => 'Order\DeliveryDepartmentController@barCode']);
-    Route::post('productsToShippingGroup', ['uses' => 'Order\DeliveryDepartmentController@addProductsToShippingGroup']);
+    Route::any('deliveryDepartment/order', ['as' => 'deliveryDepartment.order', 'uses' => 'Order\DeliveryDepartmentController@index']);
+    Route::any('deliveryDepartment/exportDHL', ['as' => 'deliveryDepartment.exportdhl', 'uses' => 'Order\DeliveryDepartmentController@exportDHL']);
+    Route::any('deliveryDepartment/barCode', ['as' => 'deliveryDepartment.barCode', 'uses' => 'Order\DeliveryDepartmentController@barCode']);
+    Route::post('productsToShippingGroup', ['as' => 'deliveryDepartment.productsToShippingGroup', 'uses' => 'Order\DeliveryDepartmentController@addProductsToShippingGroup']);
     //Route::post('')
             //发货分组
     Route::resource('shippingGroup', 'Order\ShippingGroupController', ['names' => ['update' => 'shippingGroup.edit', 'store' => 'shippingGroup.create']]);
 
-    //发货分组
+    //供应商
     Route::resource('supplier', 'Supplier\SupplierController');
 
     //订单产品分类
@@ -131,6 +131,8 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     //付款方式
     Route::resource('mallPayType', 'Mall\MallPayTypeController', ['names' => ['update' => 'mallPayType.edit', 'store' => 'mallPayType.create']]);
 
+    //产品及库存
+    Route::any('stock/index', ['as' => 'stock.index', 'uses' => 'StockController@index']);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -267,3 +269,5 @@ Route::get('tpl/order/category/edit', function () { return view('tpl.order.categ
 Route::get('tpl/order/supplier/index', function () { return view('tpl.order.supplier.index');});
 Route::get('tpl/order/supplier/add', function () { return view('tpl.order.supplier.add');});
 Route::get('tpl/order/supplier/edit', function () { return view('tpl.order.supplier.edit');});
+//产品及库存
+Route::get('tpl/order/stock/index', function() { return view('tpl.order.stock.index');});

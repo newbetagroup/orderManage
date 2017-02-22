@@ -743,7 +743,21 @@ orderApp.config([
                 templateUrl: 'tpl/order/supplier/edit',
                 controller: 'SupplierEditCtrl'
             })
-        ;
+            //产品及库存
+            .state('order.stock', {
+                url:'/stock',
+                resolve: {
+                    loadSupplierDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/app/order/stock/stock.js');
+                    }]
+                },
+                template: '<div ui-view=""></div>'
+            })
+            .state('order.stock.index', {
+                url: '/index',
+                templateUrl: 'tpl/order/stock/index',
+                controller: 'StockIndexCtrl as stock'
+            })
     }
     ])
     .run(function($rootScope, $state, $stateParams) {

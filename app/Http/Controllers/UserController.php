@@ -34,17 +34,6 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     * create form
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
      * Store a newly created resource in storage.
      * user save
      *
@@ -92,29 +81,6 @@ class UserController extends Controller
         //监听？
         //event();
         return ['status' => '1', 'msg' => '添加成功'];
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-        echo $id;
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     * user/{$id} GET 管理员进行
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
 
     /**
