@@ -154,9 +154,19 @@
                     resetTableStatus();
                     var currentPage = self.tableParams.page();
                     var stocksChanged = compareData(self.tableParams.data, originalData);
-                    $http.post('stock/index', stocksChanged).then(function (r) {
+                    var stocks = [];
+                    //只要修改库存
+                    angular.forEach(stocksChanged, function (value, key) {
+                        angular.forEach(value['stocks'], function (stock) {
+                            stocks.push({id:stock.id, store_count: stock.store_count});
+                        });
+                    });
+                    $http.post('stock/update', stocks).then(function (r) {
                         if (r.data.status == 1) {
                             originalData = angular.copy(self.tableParams.data);
+                        } else {
+                            self.tableParams.data = originalData;
+                            self.tableParams.reload();
                         }
                     })
                 }

@@ -133,6 +133,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
     //产品及库存
     Route::any('stock/index', ['as' => 'stock.index', 'uses' => 'StockController@index']);
+    Route::post('stock/update', ['as' => 'stock.update', 'uses' => 'StockController@updateStocks']);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {

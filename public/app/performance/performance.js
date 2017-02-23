@@ -76,6 +76,7 @@
 
                 var currentTime = new Date();
                 var curMonth = currentTime.getMonth()+1; //getMonth() 0-11 0代表1月
+                curMonth = (Array(2).join('0') + curMonth).slice(-2);
                 $scope.searchKeys = {
                     currentMonth: currentTime.getFullYear()+'-'+curMonth,
                     userId: $scope.gUserInfo.userId,
@@ -113,7 +114,6 @@
 
                 //search
                 $scope.fnReloadPerformances = function () {
-                    console.log($scope.searchKeys.currentMonth);
                     $scope.getperformances($scope.searchKeys.userId, $scope.searchKeys.currentMonth);
                 };
 
@@ -125,7 +125,7 @@
                 $scope.fnSetPerformance = function (performance, column) {
                     PerformanceService.fnSetPerformance(performance, $scope.searchKeys.userId).then(function (r) {
                         if (r) {
-                            //column 不能是基础类型如int string， 根据原型链并不会集成而是赋值，所以不能双向
+                            //column 不能是基础类型如int string， 根据原型链并不会继承而是赋值，所以不能双向
                             column.status = true;
                             $timeout(function () {
                                 column.status = false;

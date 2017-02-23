@@ -44,7 +44,7 @@
                                         <div ng-repeat="permission in allPermissions" class="col-md-4 col-sm-6">
                                             <div class="checkbox icheck">
                                                 <label>
-                                                    <input type="checkbox" ng-checked="isChecked(permission.id)" ng-click="updateSelection($event,permission.id)">&nbsp;[: permission.name :]
+                                                    <input type="checkbox" ng-checked="isChecked(permission.id)" ng-click="updateSelection($event,permission.id)">&nbsp;[: permission.label :]
                                                 </label>
                                             </div>
                                         </div>

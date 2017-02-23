@@ -43,6 +43,7 @@
                                 </div>
                             </td>
                             <td data-title="'下单日期'" filter="{date_purchased: 'text'}">[: row.date_purchased :]</td>
+                            <td data-title="'整单日期'" filter="{order_pay_after_date: 'text'}">[: row.order_pay_after_date :]</td>
                             <td data-title="'网站'" filter="{website_name: 'text'}">[: row.website_name :]</td>
                             <td data-title="'订单号'" filter="{website_order_id: 'text'}">[: row.website_order_id :]</td>
                             <td data-title="'客户名字'" filter="{name: 'text'}">[: row.name :]</td>

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Models\Stock;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -73,6 +74,41 @@ class StockController extends Controller
 
 	    return ['status' => 1, 'data' => $data];
     }
-	
-	
+
+
+	/**
+	 * 批量修改库存
+	 * @param Request $request
+	 * @return array
+	 */
+	public function updateStocks(Request $request)
+	{
+		$stocks = $request->all();//[[$stock1],[$stock2]] or $stock
+		if(is_array($stocks)) {
+			foreach ($stocks as $stock) {
+				$result = $this->update($stock);
+			}
+		} else {
+			$result = $this->update($stocks);
+		}
+
+		if(!$result) return ['status' => 0, 'msg' => 'false'];
+		return ['status' => 1, 'msg' => 'success'];
+	}
+
+	/**
+	 * update stock
+	 * @param $stock is a array: ['id'=>1, 'store_count'=>3]
+	 * @return bool
+	 */
+	public function update($stock)
+	{
+		$stockId = $stock['id'];
+		$stockObj = Stock::find($stockId);
+		$stockObj->store_count = $stock['store_count'];
+
+		if($stockObj->save()) return true;
+
+		return false;
+	}
 }

@@ -75,7 +75,7 @@ class DeliveryDepartmentController extends Controller
                         ->where('od_products.sku', 'like', $brand.'%');
                 })
                 ->with(['orderProducts' => function($query) use($brand) {
-                $query->select('od_products.id', 'sku', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
+                $query->select('od_products.id', 'product_id', 'sku', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
                     /*->leftJoin('shipping_groups', function ($join) use($brand) {
                         $join->on('od_products.shipping_group_id', '=', 'shipping_groups.id')
                             ->where('od_products.sku', 'like', $brand.'%');
@@ -86,7 +86,7 @@ class DeliveryDepartmentController extends Controller
             }]);
         } else {
             $orders = OdOrder::with(['orderProducts' => function($query) {
-                $query->select('od_products.id', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
+                $query->select('od_products.id', 'product_id', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
                     ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
             }]);
         }

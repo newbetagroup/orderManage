@@ -32,10 +32,16 @@
                             <td data-title="'SKU'" filter="{model: 'text'}">[: row.model :]</td>
                             <td data-title="'样图'"><img zwb-magnifying-glass class="order-small-image" ng-src="[: row.image :]" alt="[: row.name :]" title="[: row.name :]" /></td>
                             <td data-title="'price'">[: row.price :]</td>
-                            <td style="min-width: 350px;" sortable="'store_count'" data-title="'库存信息'">
-                                <div class="row" ng-repeat="stock in row.stocks">
-                                   <div class="col-md-6">属性：[: stock.attributes :]</div>
-                                   <div class="col-md-6">库存量：[: stock.store_count :]</div>
+                            <td style="min-width: 350px;" data-title="'库存信息'" sortable="'store_count'" ng-switch="stock.isEditing" ng-class="stocks.$dirty ? 'bg-warning' : ''" ng-form="stocks" demo-tracked-table-cell>
+                                <div ng-switch-default class="row" ng-repeat="siglestock in row.stocks">
+                                    <div class="col-md-6">属性：[: siglestock.attributes :]</div>
+                                    <div class="col-md-6">库存量：<span class="editable-text">[: siglestock.store_count :]</span></div>
+                                </div>
+                                <div class="controls" ng-class="stocks.$invalid && stocks.$dirty ? 'has-error' : ''" ng-switch-when="true">
+                                    <div class="row" ng-repeat="siglestock in row.stocks">
+                                        <div class="col-md-6">属性：[: siglestock.attributes :]</div>
+                                        <div class="col-md-6">库存量：<input type="number" name="store_count" ng-model="siglestock.store_count" class="editable-input form-control input-sm" required /></div>
+                                    </div>
                                 </div>
                             </td>
                         </tr>

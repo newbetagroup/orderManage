@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
          $this->call(UserTableSeeder::class);
          $this->call(OdStatusTableSeeder::class);
          $this->call(OdPayAfterStatusTableSeeder::class);
+         $this->call(PermissionsTableSeeder::class);
 
         Model::reguard();
     }

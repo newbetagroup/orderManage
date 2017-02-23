@@ -3,6 +3,7 @@
 namespace App\Helpers;
 
 use App\Helpers\Contracts\OrderHelperContract;
+use App\Models\Stock;
 use App\OdOrder;
 
 class OrderHelper implements OrderHelperContract
@@ -43,21 +44,41 @@ class OrderHelper implements OrderHelperContract
 		foreach (array_keys($this->fields) as $field) {
 			if (isset($order[$field])) $orderFilter[$field] = $order[$field];
 		}
-		//
+
+		$orderObjOld = OdOrder::select('id', 'od_pay_after_status_id', 'remark')->where('id', $order['id'])->first();
+		if(!$orderObjOld) return false;
+
+		//针对remark的额外处理
 		if(isset($order['remark'])) {
 			if($orderFilter['remark'] == 'nul') {
 				//重写remark
 				$orderFilter['remark'] = '';
 			} else {
 				//remark 不为null字符串，则补充
-				$orderObj1 = OdOrder::select('id', 'remark')->where('id', $order['id'])->get();
-				if($orderObj1 && !empty($orderObj1->remark)) {
+				//$orderObj1 = OdOrder::select('id', 'remark')->where('id', $order['id'])->get();
+				if($orderObjOld && !empty($orderObjOld->remark)) {
 					//整合remark
-					$order['remark'] = $this->integrateRemark($orderObj1->remark, $order['remark']);
+					$order['remark'] = $this->integrateRemark($orderObjOld->remark, $order['remark']);
 				}
 			}
 		}
+
+		//更定订单
 		$oderObj = OdOrder::updateOrCreate(['id' => $order['id']], $orderFilter);
+
+		//更改库存
+		if($orderObjOld->od_pay_after_status_id != $oderObj->od_pay_after_status_id) {
+			if($orderObjOld->od_pay_after_status_id == 1) {
+				//已付款改成**
+				switch ($oderObj->od_pay_after_status_id) {
+					case 2:
+						//已发货
+						$this->reduceStocks($order['order_products']);
+						break;
+				}
+			}
+		}
+
 		return $oderObj->id;
 	}
 
@@ -88,5 +109,35 @@ class OrderHelper implements OrderHelperContract
 		$remark2 = substr($remark2, $position);
 		$remark1 = $remark1.' '.$remark2;
 		return $remark1;
+	}
+
+	/**
+	 * 库存增加
+	 * @param $orderProducts [[$orderProduct1], [$orderProduct2]]
+	 * @return bool
+	 */
+	public function plusStocks($orderProducts)
+	{
+		foreach ($orderProducts as $orderProduct) {
+			Stock::increment('store_count', $orderProduct['quantity'])
+				->where('product_id', $orderProduct['product_id']);
+		}
+
+		return true;
+	}
+
+	/**
+	 * 库存减
+	 * @param $orderProducts
+	 * @return bool
+	 */
+	public function reduceStocks($orderProducts)
+	{
+		foreach ($orderProducts as $orderProduct) {
+			Stock::where('product_id', $orderProduct['product_id'])
+			->decrement('store_count', $orderProduct['quantity']);
+		}
+
+		return true;
 	}
 }
