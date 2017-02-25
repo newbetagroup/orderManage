@@ -7,6 +7,7 @@
     var orderApp = angular.module('zwb', [
         'ui.router',
         'oc.lazyLoad',
+        'orderApp.partials',
         'ui.bootstrap',
         'dialogs.main',
         'ngTable',

@@ -549,17 +549,17 @@ orderApp.config([
             })
             .state('order.express.index', {
                 url:'/express',
-                templateUrl: 'tpl/order/express/index',
+                templateUrl: './views/order/express/index.html',
                 controller: 'ExpressIndexCtrl as express'
             })
             .state('order.express.add', {
                 url:'/expressAdd',
-                templateUrl: 'tpl/order/express/add',
+                templateUrl: './views/order/express/add.html',
                 controller: 'ExpressAddCtrl'
             })
             .state('order.express.edit', {
                 url:'/expressEdit/:expressId',
-                templateUrl: 'tpl/order/express/edit',
+                templateUrl: './views/order/express/edit.html',
                 controller: 'ExpressEditCtrl'
             })
             //快递发货公司

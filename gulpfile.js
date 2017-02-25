@@ -1,4 +1,5 @@
 var elixir = require('laravel-elixir');
+require('./tasks/ngHtml2Js.task.js');
 var bowerDir='resources/assets/bower/';
 var lessPaths = [
     bowerDir + "bootstrap/less",
@@ -22,5 +23,6 @@ elixir(function(mix) {
             'jquery/dist/jquery.min.js',
             'bootstrap/dist/js/bootstrap.min.js'
         ], 'public/js/app.js', bowerDir)
+        .ngHtml2Js('./resources/views/tpl/**/*.html')
         .copy([bowerDir + 'font-awesome/fonts', bowerDir+'bootstrap/fonts'], 'public/fonts');
 });
