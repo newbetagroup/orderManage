@@ -12,38 +12,34 @@ orderApp.config([
         $stateProvider
             .state('home', {
                 url: '/home',
-                templateUrl:'tpl/page/home'
+                templateUrl:'./tpl/page/home.html'
             })
             .state('user', {
                 abstract: true,
                 url: '/user',
-                templateUrl:'tpl/user/base'
+                templateUrl:'./tpl/user/base.html'
             })
             .state('user.info', {
                 url:'/info',
-                templateUrl:'tpl/user/index'
+                templateUrl:'./tpl/user/index.html'
             })
             .state('user.profileUpdate', {
                 url:'/profileUpdate',
-                templateUrl:'tpl/user/profileUpdate'
+                templateUrl:'./tpl/user/profileUpdate.html'
             })
             .state('user.askForLeave', {
                 url:'/askForLeave',
-                templateUrl:'tpl/user/askForLeave'
+                templateUrl:'./tpl/user/askForLeave.html'
             })
             .state('user.allLeaves', {
                 url: '/allLeaves',
-                templateUrl: 'tpl/user/allLeaves',
+                templateUrl: './tpl/user/allLeaves.html',
                 controller:'GetLeavesController',
                 controllerAs:'leave'
             })
-            .state('user.test', {
-                url: '/testng',
-                templateUrl: 'tpl/user/test'
-            })
             .state('manager', {
                 url: '/manager',
-                templateUrl: 'tpl/manager/base',
+                templateUrl: './tpl/manager/base.html',
                 resolve:{
                     loadOut:["$ocLazyLoad", function ($ocLazyLoad) {
                         return $ocLazyLoad.load("managerDashboard");
@@ -56,18 +52,18 @@ orderApp.config([
             })
             .state('manager.staff.index', {
                 url: '/index',
-                templateUrl: 'tpl/manager/staffIndex',
+                templateUrl: './tpl/manager/staff/staffIndex.html',
                 controller: 'StaffInfoCtrl',
                 controllerAs: 'staffs'
             })
             .state('manager.staff.addStaff', {
                 url: '/addStaff',
-                templateUrl: 'tpl/manager/addStaff',
+                templateUrl: './tpl/manager/staff/addStaff.html',
                 controller: 'AddStaffCtrl'
             })
             .state('manager.staff.editStaff', {
                 url: '/editStaff/:staffId',
-                templateUrl: 'tpl/manager/editStaff',
+                templateUrl: './tpl/manager/staff/editStaff.html',
                 controller: 'EditStaffCtrl'
             })
             .state('manager.group', {
@@ -76,17 +72,17 @@ orderApp.config([
             })
             .state('manager.group.index', {
                 url: '/groupIndex',
-                templateUrl: 'tpl/manager/groupIndex',
+                templateUrl: './tpl/manager/group/groupIndex.html',
                 controller: 'GroupInfoCtrl'
             })
             .state('manager.group.addGroup', {
                 url: '/addGroup',
-                templateUrl: 'tpl/manager/addGroup',
+                templateUrl: './tpl/manager/group/addGroup.html',
                 controller: 'AddGroupCtrl'
             })
             .state('manager.group.editGroup', {
                 url: '/editGroup/:groupId',
-                templateUrl: 'tpl/manager/editGroup',
+                templateUrl: './tpl/manager/group/editGroup.html',
                 controller: 'EditGroupCtrl'
             })
             .state('manager.permission', {
@@ -95,24 +91,24 @@ orderApp.config([
             })
             .state('manager.permission.index', {
                 url: '/permissionIndex',
-                templateUrl: 'tpl/manager/permissionIndex',
+                templateUrl: './tpl/manager/permission/permissionIndex.html',
                 controller: 'PermissionInfoCtrl'
             })
             .state('manager.permission.addPermission', {
                 url: '/addPermission',
-                templateUrl: 'tpl/manager/addPermission',
+                templateUrl: './tpl/manager/permission/addPermission.html',
                 controller: 'AddPermissionCtrl'
             })
             .state('manager.permission.editPermission', {
                 url: '/editPermission/:permissionId',
-                templateUrl: 'tpl/manager/editPermission',
+                templateUrl: './tpl/manager/permission/editPermission.html',
                 controller: 'EditPermissionCtrl'
             })
 
         //post
             .state('post', {
                 url:'/post',
-                templateUrl: 'tpl/post/base',
+                templateUrl: './tpl/post/base.html',
                 resolve:{
                     loadDashboard:["$ocLazyLoad", function ($ocLazyLoad) {
                         return $ocLazyLoad.load(["postDashboard"]);
@@ -124,7 +120,7 @@ orderApp.config([
             })
             .state('post.postIndex', {
                 url: '/postIndex',
-                templateUrl: 'tpl/post/postIndex',
+                templateUrl: './tpl/post/postIndex.html',
                 resolve:{
                     loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/css/timeline.css');
@@ -134,7 +130,7 @@ orderApp.config([
             })
             .state('post.postDescription', {
                 url: '/postDescription/:postId',
-                templateUrl: 'tpl/post/postDescription',
+                templateUrl: './tpl/post/postDescription.html',
                 resolve:{
                     loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/css/post.css');
@@ -144,23 +140,23 @@ orderApp.config([
             })
             .state('post.postManageIndex', {
                 url: '/postManageIndex',
-                templateUrl: 'tpl/post/postManageIndex',
+                templateUrl: './tpl/post/postManageIndex.html',
                 controller: 'PostManageIndexCtrl',
                 controllerAs: 'posts'
             })
             .state('post.postManageAdd', {
                 url: '/postManageAdd',
-                templateUrl: 'tpl/post/postManageAdd',
+                templateUrl: './tpl/post/postManageAdd.html',
                 controller: 'PostManageAddCtrl'
             })
             .state('post.postManageEdit', {
                 url: '/postManageEdit/:postId',
-                templateUrl: 'tpl/post/postManageEdit',
+                templateUrl: './tpl/post/postManageEdit.html',
                 controller: 'PostManageEditCtrl'
             })
             .state('post.postManageDestroy', {
                 url: '/postManageDestroy',
-                templateUrl: 'tpl/post/postManageDestroy',
+                templateUrl: './tpl/post/postManageDestroy.html',
                 controller: 'PostManageDestroyCtrl'
             })
 
@@ -175,7 +171,7 @@ orderApp.config([
                 views: {
                     '': {
                         controller: 'PerformanceCtrl',
-                        templateUrl: 'tpl/user/performance'
+                        templateUrl: './tpl/user/performance.html'
                     }
                 }
             })
@@ -183,7 +179,7 @@ orderApp.config([
         //所有员工请假记录
             .state('leaveRecords', {
                 url: '/leaveRecords',
-                templateUrl: 'tpl/leaves/records',
+                templateUrl: './tpl/leaves/records.html',
                 resolve: {
                     loadleaveRecordsDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load('/app/leaves/leaveRecords.js');
@@ -209,17 +205,17 @@ orderApp.config([
             })
             .state('website.server.index', {
                 url:'/serverIndex',
-                templateUrl: 'tpl/website/server/index',
+                templateUrl: './tpl/website/server/index.html',
                 controller: 'ServersIndexCtrl as servers'
             })
             .state('website.server.add', {
                 url:'/serverAdd',
-                templateUrl: 'tpl/website/server/add',
+                templateUrl: './tpl/website/server/add.html',
                 controller: 'ServerAddCtrl'
             })
             .state('website.server.edit', {
                 url:'/serverEdit/:serverId',
-                templateUrl: 'tpl/website/server/edit',
+                templateUrl: './tpl/website/server/edit.html',
                 controller: 'ServerEditCtrl'
             })
             //country
@@ -234,17 +230,17 @@ orderApp.config([
             })
             .state('website.country.index', {
                 url:'/countryIndex',
-                templateUrl: 'tpl/website/country/index',
+                templateUrl: './tpl/website/country/index.html',
                 controller: 'CountryIndexCtrl as countries'
             })
             .state('website.country.add', {
                 url:'/countryAdd',
-                templateUrl: 'tpl/website/country/add',
+                templateUrl: './tpl/website/country/add.html',
                 controller: 'CountryAddCtrl'
             })
             .state('website.country.edit', {
                 url:'/countryEdit/:countryId',
-                templateUrl: 'tpl/website/country/edit',
+                templateUrl: './tpl/website/country/edit.html',
                 controller: 'CountryEditCtrl'
             })
             //brand
@@ -259,17 +255,17 @@ orderApp.config([
             })
             .state('website.brand.index', {
                 url:'/brandIndex',
-                templateUrl: 'tpl/website/brand/index',
+                templateUrl: './tpl/website/brand/index.html',
                 controller: 'BrandIndexCtrl as brands'
             })
             .state('website.brand.add', {
                 url:'/brandAdd',
-                templateUrl: 'tpl/website/brand/add',
+                templateUrl: './tpl/website/brand/add.html',
                 controller: 'BrandAddCtrl'
             })
             .state('website.brand.edit', {
                 url:'/brandEdit/:brandId',
-                templateUrl: 'tpl/website/brand/edit',
+                templateUrl: './tpl/website/brand/edit.html',
                 controller: 'BrandEditCtrl'
             })
             //ad status
@@ -284,17 +280,17 @@ orderApp.config([
             })
             .state('website.adStatus.index', {
                 url:'/adStatusIndex',
-                templateUrl: 'tpl/website/adStatus/index',
+                templateUrl: './tpl/website/adStatus/index.html',
                 controller: 'AdStatusIndexCtrl as adStatuses'
             })
             .state('website.adStatus.add', {
                 url:'/adStatusAdd',
-                templateUrl: 'tpl/website/adStatus/add',
+                templateUrl: './tpl/website/adStatus/add.html',
                 controller: 'AdStatusAddCtrl'
             })
             .state('website.adStatus.edit', {
                 url:'/adStatusEdit/:adStatusId',
-                templateUrl: 'tpl/website/adStatus/edit',
+                templateUrl: './tpl/website/adStatus/edit.html',
                 controller: 'AdStatusEditCtrl'
             })
             //website status
@@ -309,17 +305,17 @@ orderApp.config([
             })
             .state('website.websiteStatus.index', {
                 url:'/websiteStatusIndex',
-                templateUrl: 'tpl/website/websiteStatus/index',
+                templateUrl: './tpl/website/websiteStatus/index.html',
                 controller: 'WebsiteStatusIndexCtrl as websiteStatuses'
             })
             .state('website.websiteStatus.add', {
                 url:'/websiteStatusAdd',
-                templateUrl: 'tpl/website/websiteStatus/add',
+                templateUrl: './tpl/website/websiteStatus/add.html',
                 controller: 'WebsiteStatusAddCtrl'
             })
             .state('website.websiteStatus.edit', {
                 url:'/websiteStatusEdit/:websiteStatusId',
-                templateUrl: 'tpl/website/websiteStatus/edit',
+                templateUrl: './tpl/website/websiteStatus/edit.html',
                 controller: 'WebsiteStatusEditCtrl'
             })
             //host
@@ -334,17 +330,17 @@ orderApp.config([
             })
             .state('website.host.index', {
                 url:'/hostIndex',
-                templateUrl: 'tpl/website/host/index',
+                templateUrl: './tpl/website/host/index.html',
                 controller: 'HostIndexCtrl as hosts'
             })
             .state('website.host.add', {
                 url:'/hostAdd',
-                templateUrl: 'tpl/website/host/add',
+                templateUrl: './tpl/website/host/add.html',
                 controller: 'HostAddCtrl'
             })
             .state('website.host.edit', {
                 url:'/hostEdit/:hostId',
-                templateUrl: 'tpl/website/host/edit',
+                templateUrl: './tpl/website/host/edit.html',
                 controller: 'HostEditCtrl'
             })
             //website 域名管理
@@ -371,17 +367,17 @@ orderApp.config([
             })
             .state('website.website.index', {
                 url:'/websiteIndex',
-                templateUrl: 'tpl/website/website/index',
+                templateUrl: './tpl/website/website/index.html',
                 controller: 'WebsiteIndexCtrl as websites'
             })
             .state('website.website.add', {
                 url:'/websiteAdd',
-                templateUrl: 'tpl/website/website/add',
+                templateUrl: './tpl/website/website/add.html',
                 controller: 'WebsiteAddCtrl'
             })
             .state('website.website.edit', {
                 url:'/websiteEdit/:websiteId',
-                templateUrl: 'tpl/website/website/edit',
+                templateUrl: './tpl/website/website/edit.html',
                 controller: 'WebsiteEditCtrl'
             })
 
@@ -405,17 +401,17 @@ orderApp.config([
             })
             .state('mall.mall.index', {
                 url:'/mallIndex',
-                templateUrl: 'tpl/mall/mall/index',
+                templateUrl: './tpl/mall/mall/index.html',
                 controller: 'MallIndexCtrl as MallIndex'
             })
             .state('mall.mall.add', {
                 url:'/mallAdd',
-                templateUrl: 'tpl/mall/mall/add',
+                templateUrl: './tpl/mall/mall/add.html',
                 controller: 'MallAddCtrl'
             })
             .state('mall.mall.edit', {
                 url:'/mallEdit/:mallId',
-                templateUrl: 'tpl/mall/mall/edit',
+                templateUrl: './tpl/mall/mall/edit.html',
                 controller: 'MallEditCtrl'
             })
 
@@ -431,17 +427,17 @@ orderApp.config([
             })
             .state('mall.mallStatus.index', {
                 url:'/mallStatusIndex',
-                templateUrl: 'tpl/mall/mallStatus/index',
+                templateUrl: './tpl/mall/mallStatus/index.html',
                 controller: 'MallStatusIndexCtrl as mallStatuses'
             })
             .state('mall.mallStatus.add', {
                 url:'/mallStatusAdd',
-                templateUrl: 'tpl/mall/mallStatus/add',
+                templateUrl: './tpl/mall/mallStatus/add.html',
                 controller: 'MallStatusAddCtrl'
             })
             .state('mall.mallStatus.edit', {
                 url:'/mallStatusEdit/:mallStatusId',
-                templateUrl: 'tpl/mall/mallStatus/edit',
+                templateUrl: './tpl/mall/mallStatus/edit.html',
                 controller: 'MallStatusEditCtrl'
             })
 
@@ -457,17 +453,17 @@ orderApp.config([
             })
             .state('mall.mallPayType.index', {
                 url:'/mallPayTypeIndex',
-                templateUrl: 'tpl/mall/mallPayType/index',
+                templateUrl: './tpl/mall/mallPayType/index.html',
                 controller: 'MallPayTypeIndexCtrl as mallPayType'
             })
             .state('mall.mallPayType.add', {
                 url:'/mallPayTypeAdd',
-                templateUrl: 'tpl/mall/mallPayType/add',
+                templateUrl: './tpl/mall/mallPayType/add.html',
                 controller: 'MallPayTypeAddCtrl'
             })
             .state('mall.mallPayType.edit', {
                 url:'/mallPayTypeEdit/:mallPayTypeId',
-                templateUrl: 'tpl/mall/mallPayType/edit',
+                templateUrl: './tpl/mall/mallPayType/edit.html',
                 controller: 'MallPayTypeEditCtrl'
             })
                 
@@ -499,17 +495,17 @@ orderApp.config([
             })
             .state('order.orderStatus.index', {
                 url:'/orderStatusIndex',
-                templateUrl: 'tpl/order/status/index',
+                templateUrl: './tpl/order/status/index.html',
                 controller: 'OrderStatusIndexCtrl as orderStatus'
             })
             .state('order.orderStatus.add', {
                 url:'/orderStatusAdd',
-                templateUrl: 'tpl/order/status/add',
+                templateUrl: './tpl/order/status/add.html',
                 controller: 'OrderStatusAddCtrl'
             })
             .state('order.orderStatus.edit', {
                 url:'/orderStatusEdit/:orderStatusId',
-                templateUrl: 'tpl/order/status/edit',
+                templateUrl: './tpl/order/status/edit.html',
                 controller: 'OrderStatusEditCtrl'
             })
             //order status after pay 付款后订单状态
@@ -524,17 +520,17 @@ orderApp.config([
             })
             .state('order.orderPayAfterStatus.index', {
                 url:'/orderPayAfterStatusIndex',
-                templateUrl: 'tpl/order/payAfterStatus/index',
+                templateUrl: './tpl/order/orderPayAfterStatus/index.html',
                 controller: 'OrderPayAfterStatusIndexCtrl as orderPayAfterStatus'
             })
             .state('order.orderPayAfterStatus.add', {
                 url:'/orderPayAfterStatusAdd',
-                templateUrl: 'tpl/order/payAfterStatus/add',
+                templateUrl: './tpl/order/orderPayAfterStatus/add.html',
                 controller: 'OrderPayAfterStatusAddCtrl'
             })
             .state('order.orderPayAfterStatus.edit', {
                 url:'/orderPayAfterStatusEdit/:orderPayAfterStatusId',
-                templateUrl: 'tpl/order/payAfterStatus/edit',
+                templateUrl: './tpl/order/orderPayAfterStatus/edit.html',
                 controller: 'OrderPayAfterStatusEditCtrl'
             })
             //express 货运方式
@@ -549,17 +545,17 @@ orderApp.config([
             })
             .state('order.express.index', {
                 url:'/express',
-                templateUrl: './views/order/express/index.html',
+                templateUrl: './tpl/order/express/index.html',
                 controller: 'ExpressIndexCtrl as express'
             })
             .state('order.express.add', {
                 url:'/expressAdd',
-                templateUrl: './views/order/express/add.html',
+                templateUrl: './tpl/order/express/add.html',
                 controller: 'ExpressAddCtrl'
             })
             .state('order.express.edit', {
                 url:'/expressEdit/:expressId',
-                templateUrl: './views/order/express/edit.html',
+                templateUrl: './tpl/order/express/edit.html',
                 controller: 'ExpressEditCtrl'
             })
             //快递发货公司
@@ -574,17 +570,17 @@ orderApp.config([
             })
             .state('order.expressCompany.index', {
                 url:'/expressCompanyIndex',
-                templateUrl: 'tpl/order/expressCompany/index',
+                templateUrl: './tpl/order/expressCompany/index.html',
                 controller: 'ExpressCompanyIndexCtrl as expressCompany'
             })
             .state('order.expressCompany.add', {
                 url:'/expressCompanyAdd',
-                templateUrl: 'tpl/order/expressCompany/add',
+                templateUrl: './tpl/order/expressCompany/add.html',
                 controller: 'ExpressCompanyAddCtrl'
             })
             .state('order.expressCompany.edit', {
                 url:'/expressCompanyEdit/:expressCompanyId',
-                templateUrl: 'tpl/order/expressCompany/edit',
+                templateUrl: './tpl/order/expressCompany/edit.html',
                 controller: 'ExpressCompanyEditCtrl'
             })
             //客服部 订单相关
@@ -599,7 +595,7 @@ orderApp.config([
             })
             .state('order.customerServiceDepartment.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/customerServiceDepartment/index',
+                templateUrl: './tpl/order/customerService/index.html',
                 controller: 'ServiceDepartmentIndexCtrl as serviceDepartment'
             })
             //订货部 订单相关
@@ -617,7 +613,7 @@ orderApp.config([
             })
             .state('order.orderDepartment.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/orderDepartment/index',
+                templateUrl: './tpl/order/orderDepartment/index.html',
                 controller: 'OrderDepartmentIndexCtrl as orderDepartment'
             })
             //订货部 订货分组
@@ -632,22 +628,22 @@ orderApp.config([
             })
             .state('order.purchaseGroup.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/purchaseGroup/index',
+                templateUrl: './tpl/order/purchaseGroup/index.html',
                 controller: 'PurchaseGroupIndexCtrl as purchaseGroup'
             })
             .state('order.purchaseGroup.add', {
                 url:'/purchaseGroupAdd',
-                templateUrl: 'tpl/order/purchaseGroup/add',
+                templateUrl: './tpl/order/purchaseGroup/add.html',
                 controller: 'PurchaseGroupAddCtrl'
             })
             .state('order.purchaseGroup.edit', {
                 url:'/purchaseGroupEdit/:purchaseGroupId',
-                templateUrl: 'tpl/order/purchaseGroup/edit',
+                templateUrl: './tpl/order/purchaseGroup/edit.html',
                 controller: 'PurchaseGroupEditCtrl'
             })
             .state('order.purchaseGroup.detail', {
                 url:'/purchaseGroupDetail/:purchaseGroupId',
-                templateUrl: 'tpl/order/purchaseGroup/detail',
+                templateUrl: './tpl/order/purchaseGroup/detail.html',
                 controller: 'PurchaseGroupDetailCtrl'
             })
             //发货部 订单相关
@@ -665,7 +661,7 @@ orderApp.config([
             })
             .state('order.deliveryDepartment.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/deliveryDepartment/index',
+                templateUrl: './tpl/order/deliveryDepartment/index.html',
                 controller: 'DeliveryDepartmentIndexCtrl as deliveryDepartment'
             })
             //发货部 订单产品分类
@@ -680,17 +676,17 @@ orderApp.config([
             })
             .state('order.orderCategory.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/category/index',
+                templateUrl: './tpl/order/category/index.html',
                 controller: 'OrderCategoryIndexCtrl as orderCategory'
             })
             .state('order.orderCategory.add', {
                 url:'/categoryAdd',
-                templateUrl: 'tpl/order/category/add',
+                templateUrl: './tpl/order/category/add.html',
                 controller: 'OrderCategoryAddCtrl'
             })
             .state('order.orderCategory.edit', {
                 url:'/categoryEdit/:orderCategoryId',
-                templateUrl: 'tpl/order/category/edit',
+                templateUrl: './tpl/order/category/edit.html',
                 controller: 'OrderCategoryEditCtrl'
             })
             //发货部 发货分组
@@ -705,17 +701,17 @@ orderApp.config([
             })
             .state('order.shippingGroup.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/shippingGroup/index',
+                templateUrl: './tpl/order/shippingGroup/index.html',
                 controller: 'ShippingGroupIndexCtrl as shippingGroup'
             })
             .state('order.shippingGroup.add', {
                 url:'/shippingGroupAdd',
-                templateUrl: 'tpl/order/shippingGroup/add',
+                templateUrl: './tpl/order/shippingGroup/add.html',
                 controller: 'ShippingGroupAddCtrl'
             })
             .state('order.shippingGroup.edit', {
                 url:'/shippingGroupEdit/:shippingGroupId',
-                templateUrl: 'tpl/order/shippingGroup/edit',
+                templateUrl: './tpl/order/shippingGroup/edit.html',
                 controller: 'ShippingGroupEditCtrl'
             })
             //供应商
@@ -730,17 +726,17 @@ orderApp.config([
             })
             .state('order.supplier.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/supplier/index',
+                templateUrl: './tpl/order/supplier/index.html',
                 controller: 'SupplierIndexCtrl as supplier'
             })
             .state('order.supplier.add', {
                 url:'/SupplierAdd',
-                templateUrl: 'tpl/order/supplier/add',
+                templateUrl: './tpl/order/supplier/add.html',
                 controller: 'SupplierAddCtrl'
             })
             .state('order.supplier.edit', {
                 url:'/supplierEdit/:supplierId',
-                templateUrl: 'tpl/order/supplier/edit',
+                templateUrl: './tpl/order/supplier/edit.html',
                 controller: 'SupplierEditCtrl'
             })
             //产品及库存
@@ -755,7 +751,7 @@ orderApp.config([
             })
             .state('order.stock.index', {
                 url: '/index',
-                templateUrl: 'tpl/order/stock/index',
+                templateUrl: './tpl/order/stock/index.html',
                 controller: 'StockIndexCtrl as stock'
             })
     }

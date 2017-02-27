@@ -18,8 +18,8 @@ function renameFile($viewsPath)
 				if ($file != '.' && $file != '..') {
 					if (is_file($viewsPath . $file)) {
 						$newName = str_replace('.blade.php', '.html',$file);
-						echo "$file to $newName <br/>";
-						//rename($file, $newName);
+						//echo "$file to $newName <br/>";
+						rename($viewsPath . $file, $viewsPath . $newName);
 					} else {
 						//echo $viewsPath . $file . '/<br/>';
 						renameFile($viewsPath.$file.'/');
