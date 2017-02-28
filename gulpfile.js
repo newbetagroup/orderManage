@@ -21,20 +21,20 @@ elixir(function(mix) {
     //mix.sass('app.scss');
     var assets = [
         'public/js/vendor.js',
-        'public/js/particials.js',
+        'public/js/partials.js',
         'public/js/app.js',
         'public/css/vendor.css',
         'public/css/app.css'
     ];
 
     mix.bower()
-        .less('app.less', 'public/css/app.css', { paths: lessPaths})
         .scripts([
             '/app/base.js',
             '/app/ocLazyload.config.js',
-            '/app/route.config.js',
-        ], 'public/js/app.js', bowerDir)
+            '/app/route.config.js'
+        ], 'public/js/app.js','./public/')
         .ngHtml2Js('./resources/views/tpl/**/*.html')
+        .less('./resources/assets/bower/**/*.less', 'public/css')
         .copy([bowerDir + 'font-awesome/fonts', bowerDir+'bootstrap/fonts'], 'public/fonts')
         .version(assets);
 });

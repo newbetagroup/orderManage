@@ -20,15 +20,15 @@
 @section('js')
     <script src="{!! elixir('js/vendor.js') !!}"></script>
     <script src="{!! elixir('js/partials.js') !!}"></script>
-    <script src="{!! elixir('js/app.js') !!}"></script>
     {{--angular--}}
     {{--<script src="/node_modules/angular/angular.min.js"></script>--}}
     {{--<script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>--}}
-
     {{--<script src="/node_modules/oclazyload/dist/ocLazyLoad.min.js"></script>--}}
-    <script src="/app/base.js"></script>
-    <script src="/app/ocLazyload.config.js"></script>
-    <script src="/app/route.config.js"></script>
+
+    <script src="{!! elixir('js/app.js') !!}"></script>
+    {{--<script src="/app/base.js"></script>--}}
+    {{--<script src="/app/ocLazyload.config.js"></script>--}}
+    {{--<script src="/app/route.config.js"></script>--}}
 
     {{--<script src="/plugins/ng-table/ng-table.js"></script>--}}
     <script src="/libs/lodash/lodash.min.js"></script>
