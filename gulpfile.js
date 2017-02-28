@@ -30,8 +30,9 @@ elixir(function(mix) {
     mix.bower()
         .less('app.less', 'public/css/app.css', { paths: lessPaths})
         .scripts([
-            'jquery/dist/jquery.min.js',
-            'bootstrap/dist/js/bootstrap.min.js'
+            '/app/base.js',
+            '/app/ocLazyload.config.js',
+            '/app/route.config.js',
         ], 'public/js/app.js', bowerDir)
         .ngHtml2Js('./resources/views/tpl/**/*.html')
         .copy([bowerDir + 'font-awesome/fonts', bowerDir+'bootstrap/fonts'], 'public/fonts')
