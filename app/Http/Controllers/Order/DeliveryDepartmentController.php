@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\DomainBrand;
+use App\Models\Domain\DomainBrand;
 use App\Helpers\Contracts\OrderHelperContract;
-use App\OdOrder;
-use App\OdProduct;
+use App\Models\Order\OdOrder;
+use App\Models\Order\OdProduct;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

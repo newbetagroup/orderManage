@@ -2,6 +2,8 @@
 
 namespace App;
 
+use App\Models\Manager\Group;
+use App\Models\Manager\Permission;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -53,7 +55,7 @@ class User extends Model implements AuthenticatableContract,
      */
     public function charge()
     {
-        return $this->hasOne('App\Group', 'id', 'supervisor_id');
+        return $this->hasOne(Group::class, 'id', 'supervisor_id');
     }
 
     /**
@@ -62,7 +64,7 @@ class User extends Model implements AuthenticatableContract,
      */
     public function leaves()
     {
-        return $this->belongsTo('App\Leave', 'id', 'user_id');
+        return $this->belongsTo('App\Models\Manager\Leave', 'id', 'user_id');
     }
 
     /**

@@ -148,6 +148,453 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/post/base.html',
+    '<header>\n' +
+    '    <ul class="nav nav-tabs" role="tablist">\n' +
+    '        <li role="presentation" ui-sref-active="active"><a ui-sref="post.postIndex">TimeLine</a></li>\n' +
+    '        <li role="presentation" ui-sref-active="active"><a ui-sref="post.postManageIndex">公告管理</a></li>\n' +
+    '    </ul>\n' +
+    '</header>\n' +
+    '<hr>\n' +
+    '\n' +
+    '<div ui-view=""></div>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/post/postDescription.html',
+    '<section class="content-wrap">\n' +
+    '    <div class="container">\n' +
+    '        <div class="row">\n' +
+    '\n' +
+    '            <!--<main class="col-md-8 main-content">-->\n' +
+    '            <main class="main-content">\n' +
+    '\n' +
+    '\n' +
+    '                <article class="post">\n' +
+    '\n' +
+    '                    <header class="post-head">\n' +
+    '                        <h1 class="post-title" ng-bind="post.title"></h1>\n' +
+    '                        <section class="post-meta">\n' +
+    '                            <span class="author" ng-if="post.author">作者：<a ng-bind="post.author"></a>•</span>\n' +
+    '                            <time class="post-date" title="[: post.created_at :]">[: post.created_at | date:"yyyy年MM月dd日" :]</time>\n' +
+    '                        </section>\n' +
+    '                    </header>\n' +
+    '\n' +
+    '                    <!--<section class="featured-media">\n' +
+    '                        <img src="http://image.golaravel.com/9/a9/c367f99a8366ca86f7b889da25022.png" alt="">\n' +
+    '                    </section>-->\n' +
+    '\n' +
+    '                    <section class="post-content" ng-bind-html="post.description"></section>\n' +
+    '\n' +
+    '                    <footer class="post-footer clearfix">\n' +
+    '                        <div class="prev-next-wrap clearfix row">\n' +
+    '                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" ng-if="prePost.id" ui-sref="post.postDescription({postId:prePost.id})"><i class="fa fa-angle-left fa-fw"></i> [: prePost.title :]</a>\n' +
+    '                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" ng-if="nextPost.id" ui-sref="post.postDescription({postId:nextPost.id})">[: nextPost.title :]<i class="fa fa-angle-right fa-fw"></i></a>\n' +
+    '                        </div>\n' +
+    '                    </footer>\n' +
+    '                    <hr>\n' +
+    '\n' +
+    '                </article>\n' +
+    '\n' +
+    '            </main>\n' +
+    '\n' +
+    '            <!--<aside class="col-md-4 sidebar">\n' +
+    '                <div class="widget">\n' +
+    '                    <h4 class="title">文档</h4>\n' +
+    '                    <a href="http://lumen.golaravel.com/docs/" class="btn btn-default btn-block" target="_blank">Lumen 中文文档</a>\n' +
+    '                    <a href="http://www.golaravel.com/laravel/docs/5.0/" class="btn btn-default btn-block" target="_blank">5.0 中文文档</a>\n' +
+    '                    <a href="http://www.golaravel.com/laravel/docs/4.2/" class="btn btn-default btn-block" target="_blank">4.2 中文文档</a>\n' +
+    '                    <a href="http://www.golaravel.com/laravel/docs/4.1/" class="btn btn-default btn-block" target="_blank">4.1 中文文档</a>\n' +
+    '                    <a href="http://www.golaravel.com/laravel/docs/4.0/" class="btn btn-default btn-block" target="_blank">4.0 中文文档</a>\n' +
+    '                </div>\n' +
+    '            </aside>-->\n' +
+    '\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/post/postIndex.html',
+    '<section>\n' +
+    '    <div class="row page-title-row">\n' +
+    '            <div id="tags-table_filter" class="dataTables_filter">\n' +
+    '                <label class="col-md-5">搜索:<input ng-model="filterValue" type="search" class="form-control input-sm"></label>\n' +
+    '            </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <ul class="timeline">\n' +
+    '        <li ng-repeat="post in posts" ng-class-odd="\'timeline-inverted\'">\n' +
+    '            <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>\n' +
+    '            <div class="timeline-panel">\n' +
+    '                <div class="timeline-heading">\n' +
+    '                    <h4 class="timeline-title">[: post.title :]</h4>\n' +
+    '                    <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> [: post.created_at :]</small></p>\n' +
+    '                </div>\n' +
+    '                <div class="timeline-body">\n' +
+    '                    <p>[: post.abstract :]</p>\n' +
+    '                    <a ui-sref="post.postDescription({postId:post.id})" class="btn btn-info floatRight">详情</a>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </li>\n' +
+    '        <li class="timeline-inverted">\n' +
+    '            <div class="timeline-badge warning"><i class="glyphicon glyphicon-credit-card"></i></div>\n' +
+    '            <div class="timeline-panel">\n' +
+    '                <div class="timeline-heading">\n' +
+    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
+    '                </div>\n' +
+    '                <div class="timeline-body">\n' +
+    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
+    '                    <p>Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere pulvinar pellentesque nibh ullamcorper. Pharetra in mattis molestie, volutpat elementum justo. Aenean ut ante turpis. Pellentesque laoreet mé vel lectus scelerisque interdum cursus velit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac mauris lectus, non scelerisque augue. Aenean justo massa.</p>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </li>\n' +
+    '        <li>\n' +
+    '            <div class="timeline-badge danger"><i class="glyphicon glyphicon-credit-card"></i></div>\n' +
+    '            <div class="timeline-panel">\n' +
+    '                <div class="timeline-heading">\n' +
+    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
+    '                </div>\n' +
+    '                <div class="timeline-body">\n' +
+    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </li>\n' +
+    '        <li class="timeline-inverted">\n' +
+    '            <div class="timeline-panel">\n' +
+    '                <div class="timeline-heading">\n' +
+    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
+    '                </div>\n' +
+    '                <div class="timeline-body">\n' +
+    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </li>\n' +
+    '        <li>\n' +
+    '            <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>\n' +
+    '            <div class="timeline-panel">\n' +
+    '                <div class="timeline-heading">\n' +
+    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
+    '                </div>\n' +
+    '                <div class="timeline-body">\n' +
+    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
+    '                    <hr>\n' +
+    '                    <div class="btn-group">\n' +
+    '                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">\n' +
+    '                            <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>\n' +
+    '                        </button>\n' +
+    '                        <ul class="dropdown-menu" role="menu">\n' +
+    '                            <li><a href="#">Action</a></li>\n' +
+    '                            <li><a href="#">Another action</a></li>\n' +
+    '                            <li><a href="#">Something else here</a></li>\n' +
+    '                            <li class="divider"></li>\n' +
+    '                            <li><a href="#">Separated link</a></li>\n' +
+    '                        </ul>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </li>\n' +
+    '        <li>\n' +
+    '            <div class="timeline-panel">\n' +
+    '                <div class="timeline-heading">\n' +
+    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
+    '                </div>\n' +
+    '                <div class="timeline-body">\n' +
+    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </li>\n' +
+    '        <li class="timeline-inverted">\n' +
+    '            <div class="timeline-badge success"><i class="glyphicon glyphicon-thumbs-up"></i></div>\n' +
+    '            <div class="timeline-panel">\n' +
+    '                <div class="timeline-heading">\n' +
+    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
+    '                </div>\n' +
+    '                <div class="timeline-body">\n' +
+    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </li>\n' +
+    '    </ul>\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/post/postManageAdd.html',
+    '<div class="row">\n' +
+    '    <div class="col-lg-12">\n' +
+    '\n' +
+    '        <div class="panel panel-default">\n' +
+    '\n' +
+    '            <!-- heading -->\n' +
+    '            <div class="panel-heading panel-heading-admin text-center">\n' +
+    '                新增 post\n' +
+    '            </div>\n' +
+    '\n' +
+    '            <div class="panel-body">\n' +
+    '\n' +
+    '                <form class="form" role="form" ng-submit="fnAddPost(postInfo)">\n' +
+    '                    <!-- name -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label for="title">标题</label>\n' +
+    '                        <div class="input-group col-md-5">\n' +
+    '                            <input type="text" id="title" name="title" placeholder="标题" class="form-control" ng-model="postInfo.title"/>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <!-- abstract -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label for="abstract">摘要</label>\n' +
+    '                        <div class="input-group col-md-5">\n' +
+    '                            <textarea name="abstract" ng-model="postInfo.abstract" id="abstract" cols="100%" rows="6"></textarea>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <!-- Description -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label for="description">详细内容</label>\n' +
+    '                        <div class="input-group">\n' +
+    '                            <text-angular name="description" ng-model="postInfo.description">\n' +
+    '                                <p>Any <b>HTML</b> we put in-between the text-angular tags gets automatically put into the editor if there <strong style="font-size: 12pt;"><u><em>is not</em></u></strong> a value assigned to the ngModel.</p>\n' +
+    '                                <p>If there is a value assigned to the ngModel, it replaces any html here. To see this, uncomment the line at the bottom of demo.html</p>\n' +
+    '                            </text-angular>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <!-- Visible -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label class="col-md-2 control-label" for="visible">是否可见</label>\n' +
+    '                        <div class="col-md-3">\n' +
+    '                            <label class="radio-inline">\n' +
+    '                                <input type="radio" name="visible" id="visible" value="1" ng-model="postInfo.visible" checked="checked"> Yes\n' +
+    '                            </label>\n' +
+    '                            <label class="radio-inline">\n' +
+    '                                <input type="radio" name="visible" id="visible" value="0" ng-model="postInfo.visible"> No\n' +
+    '                            </label>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <div class="form-group">\n' +
+    '                        <div class="col-md-7">\n' +
+    '                            <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                <i class="fa fa-plus-circle"></i>\n' +
+    '                                添加\n' +
+    '                            </button>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </form>\n' +
+    '\n' +
+    '                <!-- errors -->\n' +
+    '                <div class="alert alert-danger" role="alert" ng-if="errors">\n' +
+    '                    <ul ng-repeat="error in errors">\n' +
+    '                        <li ng-bind="error"></li>\n' +
+    '                    </ul>\n' +
+    '                </div>\n' +
+    '\n' +
+    '                <div ng-show="postInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                    <strong>正在提交...</strong>\n' +
+    '                </div>\n' +
+    '\n' +
+    '                <div ng-if="postInfo.addStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                    <strong>添加post成功!</strong>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/post/postManageEdit.html',
+    '<div class="row">\n' +
+    '    <div class="col-lg-12">\n' +
+    '\n' +
+    '        <div class="panel panel-default">\n' +
+    '\n' +
+    '            <!-- heading -->\n' +
+    '            <div class="panel-heading panel-heading-admin text-center">\n' +
+    '                修改 post\n' +
+    '            </div>\n' +
+    '\n' +
+    '            <div class="panel-body">\n' +
+    '\n' +
+    '                <form class="form" role="form" ng-submit="fnEditPost(postInfo)">\n' +
+    '                    <!-- name -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label for="title">标题</label>\n' +
+    '                        <div class="input-group col-md-5">\n' +
+    '                            <input type="text" id="title" name="title" placeholder="标题" class="form-control" ng-model="postInfo.title"/>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <!-- abstract -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label for="abstract">摘要</label>\n' +
+    '                        <div class="input-group col-md-5">\n' +
+    '                            <textarea name="abstract" ng-model="postInfo.abstract" id="abstract" cols="100%" rows="6"></textarea>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <!-- Description -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label for="description">详细内容</label>\n' +
+    '                        <div class="input-group">\n' +
+    '                            <text-angular name="description" ng-model="postInfo.description">\n' +
+    '                                <p>Any <b>HTML</b> we put in-between the text-angular tags gets automatically put into the editor if there <strong style="font-size: 12pt;"><u><em>is not</em></u></strong> a value assigned to the ngModel.</p>\n' +
+    '                                <p>If there is a value assigned to the ngModel, it replaces any html here. To see this, uncomment the line at the bottom of demo.html</p>\n' +
+    '                            </text-angular>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <!-- Visible -->\n' +
+    '                    <div class="form-group">\n' +
+    '                        <label class="col-md-2 control-label" for="visible">是否可见</label>\n' +
+    '                        <div class="col-md-3">\n' +
+    '                            <label class="radio-inline">\n' +
+    '                                <input type="radio" name="visible" id="visible" value="1" ng-model="postInfo.visible" checked="checked"> Yes\n' +
+    '                            </label>\n' +
+    '                            <label class="radio-inline">\n' +
+    '                                <input type="radio" name="visible" id="visible" value="0" ng-model="postInfo.visible"> No\n' +
+    '                            </label>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '\n' +
+    '                    <div class="form-group">\n' +
+    '                        <div class="col-md-7">\n' +
+    '                            <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                <i class="fa fa-plus-circle"></i>\n' +
+    '                                保存\n' +
+    '                            </button>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </form>\n' +
+    '\n' +
+    '                <!-- errors -->\n' +
+    '                <div class="alert alert-danger" role="alert" ng-if="errors">\n' +
+    '                    <ul ng-repeat="error in errors">\n' +
+    '                        <li ng-bind="error"></li>\n' +
+    '                    </ul>\n' +
+    '                </div>\n' +
+    '\n' +
+    '                <div ng-show="postInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                    <strong>正在提交...</strong>\n' +
+    '                </div>\n' +
+    '\n' +
+    '                <div ng-if="postInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                    <strong>修改post成功!</strong>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</div>\n' +
+    '');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/post/postManageIndex.html',
+    '<!--post manage index-->\n' +
+    '<section>\n' +
+    '    <div class="row page-title-row" style="margin:5px;">\n' +
+    '        <div class="col-sm-6 text-left">\n' +
+    '            <div id="tags-table_filter" class="dataTables_filter">\n' +
+    '                <label>搜索:<input ng-model="filterValue" type="search" class="form-control input-sm"></label>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '        <div class="col-sm-6 text-right">\n' +
+    '            <a ui-sref="post.postManageAdd" class="btn btn-success btn-md">\n' +
+    '                <i class="fa fa-plus-circle"></i> 添加\n' +
+    '            </a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <div class="row">\n' +
+    '        <div class="col-xs-12">\n' +
+    '            <div class="box">\n' +
+    '                <div class="box-body">\n' +
+    '                    <table  ng-table="posts.tableParams" class="table table-condensed table-bordered table-striped">\n' +
+    '                        <tr ng-repeat="row in $data">\n' +
+    '                            <td data-title="\'标题\'" sortable="\'title\'">[: row.title :]</td>\n' +
+    '                            <td data-title="\'创建时间\'" sortable="\'created_at\'">[: row.created_at :]</td>\n' +
+    '                            <td data-title="\'最后修改时间\'" sortable="\'updated_at\'">[: row.updated_at :]</td>\n' +
+    '                            <td data-title="\'操作\'">\n' +
+    '                                <div class="operationbox">\n' +
+    '                                    <a style="margin:3px;" ui-sref="post.postManageEdit({postId:row.id})" class="X-Small btn-xs text-success ">\n' +
+    '                                        <i class="fa fa-edit"></i> 编辑\n' +
+    '                                    </a>\n' +
+    '                                    <a style="margin:3px;" ng-click="posts.fnConfirmDestory(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
+    '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
+    '                                </div>\n' +
+    '                            </td>\n' +
+    '                        </tr>\n' +
+    '                    </table>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <div class="row">\n' +
+    '        <div ng-show="posts.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '            <strong>正在删除!</strong>\n' +
+    '        </div>\n' +
+    '        <div ng-if="posts.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '            <strong>删除成功!</strong>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('./tpl/user/allLeaves.html',
     '<section id="userAction" class="clearfix">\n' +
     '    <div>\n' +
@@ -568,74 +1015,53 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/post/base.html',
-    '<header>\n' +
-    '    <ul class="nav nav-tabs" role="tablist">\n' +
-    '        <li role="presentation" ui-sref-active="active"><a ui-sref="post.postIndex">TimeLine</a></li>\n' +
-    '        <li role="presentation" ui-sref-active="active"><a ui-sref="post.postManageIndex">公告管理</a></li>\n' +
-    '    </ul>\n' +
-    '</header>\n' +
-    '<hr>\n' +
+  $templateCache.put('./tpl/mall/mallPayType/add.html',
+    '<section class="mt20">\n' +
+    '    <!--新增订单状态-->\n' +
+    '    <div class="main animsition">\n' +
+    '        <div class="container-fluid">\n' +
     '\n' +
-    '<div ui-view=""></div>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/post/postDescription.html',
-    '<section class="content-wrap">\n' +
-    '    <div class="container">\n' +
-    '        <div class="row">\n' +
+    '            <div class="row">\n' +
+    '                <div class="panel panel-default">\n' +
+    '                    <div class="panel-heading">\n' +
+    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
+    '                         <h3 class="panel-title">新增付款方式</h3>\n' +
+    '                    </div>\n' +
+    '                    <div class="panel-body">\n' +
     '\n' +
-    '            <!--<main class="col-md-8 main-content">-->\n' +
-    '            <main class="main-content">\n' +
-    '\n' +
-    '\n' +
-    '                <article class="post">\n' +
-    '\n' +
-    '                    <header class="post-head">\n' +
-    '                        <h1 class="post-title" ng-bind="post.title"></h1>\n' +
-    '                        <section class="post-meta">\n' +
-    '                            <span class="author" ng-if="post.author">作者：<a ng-bind="post.author"></a>•</span>\n' +
-    '                            <time class="post-date" title="[: post.created_at :]">[: post.created_at | date:"yyyy年MM月dd日" :]</time>\n' +
-    '                        </section>\n' +
-    '                    </header>\n' +
-    '\n' +
-    '                    <!--<section class="featured-media">\n' +
-    '                        <img src="http://image.golaravel.com/9/a9/c367f99a8366ca86f7b889da25022.png" alt="">\n' +
-    '                    </section>-->\n' +
-    '\n' +
-    '                    <section class="post-content" ng-bind-html="post.description"></section>\n' +
-    '\n' +
-    '                    <footer class="post-footer clearfix">\n' +
-    '                        <div class="prev-next-wrap clearfix row">\n' +
-    '                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" ng-if="prePost.id" ui-sref="post.postDescription({postId:prePost.id})"><i class="fa fa-angle-left fa-fw"></i> [: prePost.title :]</a>\n' +
-    '                            <a class="col-sm-3 col-sm-offset-2 btn btn-default" ng-if="nextPost.id" ui-sref="post.postDescription({postId:nextPost.id})">[: nextPost.title :]<i class="fa fa-angle-right fa-fw"></i></a>\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnAddMallPayType()">\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="name" class="col-md-3 control-label">付款方式</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="mallPayTypeInfo.name">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="sort" class="col-md-3 control-label">排序</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="sort" id="sort" autofocus ng-model="mallPayTypeInfo.sort">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <div class="col-md-7 col-md-offset-3">\n' +
+    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                        <i class="fa fa-plus-circle"></i>\n' +
+    '                                        添加\n' +
+    '                                    </button>\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                        </form>\n' +
+    '                        <div ng-show="mallPayTypeInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>正在提交...</strong>\n' +
     '                        </div>\n' +
-    '                    </footer>\n' +
-    '                    <hr>\n' +
-    '\n' +
-    '                </article>\n' +
-    '\n' +
-    '            </main>\n' +
-    '\n' +
-    '            <!--<aside class="col-md-4 sidebar">\n' +
-    '                <div class="widget">\n' +
-    '                    <h4 class="title">文档</h4>\n' +
-    '                    <a href="http://lumen.golaravel.com/docs/" class="btn btn-default btn-block" target="_blank">Lumen 中文文档</a>\n' +
-    '                    <a href="http://www.golaravel.com/laravel/docs/5.0/" class="btn btn-default btn-block" target="_blank">5.0 中文文档</a>\n' +
-    '                    <a href="http://www.golaravel.com/laravel/docs/4.2/" class="btn btn-default btn-block" target="_blank">4.2 中文文档</a>\n' +
-    '                    <a href="http://www.golaravel.com/laravel/docs/4.1/" class="btn btn-default btn-block" target="_blank">4.1 中文文档</a>\n' +
-    '                    <a href="http://www.golaravel.com/laravel/docs/4.0/" class="btn btn-default btn-block" target="_blank">4.0 中文文档</a>\n' +
+    '                        <div ng-if="mallPayTypeInfo.addMallPayType" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>新增付款方式成功!</strong>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
     '                </div>\n' +
-    '            </aside>-->\n' +
-    '\n' +
+    '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
     '</section>');
@@ -649,107 +1075,55 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/post/postIndex.html',
-    '<section>\n' +
-    '    <div class="row page-title-row">\n' +
-    '            <div id="tags-table_filter" class="dataTables_filter">\n' +
-    '                <label class="col-md-5">搜索:<input ng-model="filterValue" type="search" class="form-control input-sm"></label>\n' +
-    '            </div>\n' +
-    '    </div>\n' +
+  $templateCache.put('./tpl/mall/mallPayType/edit.html',
+    '<section class="mt20">\n' +
+    '    <!--修改订单状态-->\n' +
+    '    <div class="main animsition">\n' +
+    '        <div class="container-fluid">\n' +
     '\n' +
-    '    <ul class="timeline">\n' +
-    '        <li ng-repeat="post in posts" ng-class-odd="\'timeline-inverted\'">\n' +
-    '            <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>\n' +
-    '            <div class="timeline-panel">\n' +
-    '                <div class="timeline-heading">\n' +
-    '                    <h4 class="timeline-title">[: post.title :]</h4>\n' +
-    '                    <p><small class="text-muted"><i class="glyphicon glyphicon-time"></i> [: post.created_at :]</small></p>\n' +
-    '                </div>\n' +
-    '                <div class="timeline-body">\n' +
-    '                    <p>[: post.abstract :]</p>\n' +
-    '                    <a ui-sref="post.postDescription({postId:post.id})" class="btn btn-info floatRight">详情</a>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </li>\n' +
-    '        <li class="timeline-inverted">\n' +
-    '            <div class="timeline-badge warning"><i class="glyphicon glyphicon-credit-card"></i></div>\n' +
-    '            <div class="timeline-panel">\n' +
-    '                <div class="timeline-heading">\n' +
-    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
-    '                </div>\n' +
-    '                <div class="timeline-body">\n' +
-    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
-    '                    <p>Suco de cevadiss, é um leite divinis, qui tem lupuliz, matis, aguis e fermentis. Interagi no mé, cursus quis, vehicula ac nisi. Aenean vel dui dui. Nullam leo erat, aliquet quis tempus a, posuere ut mi. Ut scelerisque neque et turpis posuere pulvinar pellentesque nibh ullamcorper. Pharetra in mattis molestie, volutpat elementum justo. Aenean ut ante turpis. Pellentesque laoreet mé vel lectus scelerisque interdum cursus velit auctor. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam ac mauris lectus, non scelerisque augue. Aenean justo massa.</p>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </li>\n' +
-    '        <li>\n' +
-    '            <div class="timeline-badge danger"><i class="glyphicon glyphicon-credit-card"></i></div>\n' +
-    '            <div class="timeline-panel">\n' +
-    '                <div class="timeline-heading">\n' +
-    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
-    '                </div>\n' +
-    '                <div class="timeline-body">\n' +
-    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </li>\n' +
-    '        <li class="timeline-inverted">\n' +
-    '            <div class="timeline-panel">\n' +
-    '                <div class="timeline-heading">\n' +
-    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
-    '                </div>\n' +
-    '                <div class="timeline-body">\n' +
-    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </li>\n' +
-    '        <li>\n' +
-    '            <div class="timeline-badge info"><i class="glyphicon glyphicon-floppy-disk"></i></div>\n' +
-    '            <div class="timeline-panel">\n' +
-    '                <div class="timeline-heading">\n' +
-    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
-    '                </div>\n' +
-    '                <div class="timeline-body">\n' +
-    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
-    '                    <hr>\n' +
-    '                    <div class="btn-group">\n' +
-    '                        <button type="button" class="btn btn-primary btn-sm dropdown-toggle" data-toggle="dropdown">\n' +
-    '                            <i class="glyphicon glyphicon-cog"></i> <span class="caret"></span>\n' +
-    '                        </button>\n' +
-    '                        <ul class="dropdown-menu" role="menu">\n' +
-    '                            <li><a href="#">Action</a></li>\n' +
-    '                            <li><a href="#">Another action</a></li>\n' +
-    '                            <li><a href="#">Something else here</a></li>\n' +
-    '                            <li class="divider"></li>\n' +
-    '                            <li><a href="#">Separated link</a></li>\n' +
-    '                        </ul>\n' +
+    '            <div class="row">\n' +
+    '                <div class="panel panel-default">\n' +
+    '                    <div class="panel-heading">\n' +
+    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
+    '                         <h3 class="panel-title">修改订单状态</h3>\n' +
+    '                    </div>\n' +
+    '                    <div class="panel-body">\n' +
+    '\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnEditMallPayType()">\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="orderStatusName" class="col-md-3 control-label">订单状态</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="mallPayTypeInfo.name">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="sort" class="col-md-3 control-label">颜色标识</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="sort" id="sort" autofocus ng-model="mallPayTypeInfo.sort">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <div class="col-md-7 col-md-offset-3">\n' +
+    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                        <i class="fa fa-plus-circle"></i>\n' +
+    '                                        修改\n' +
+    '                                    </button>\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                        </form>\n' +
+    '                        <div ng-show="mallPayTypeInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>正在提交...</strong>\n' +
+    '                        </div>\n' +
+    '                        <div ng-if="mallPayTypeInfo.editMallPayType" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>修改订单状态成功!</strong>\n' +
+    '                        </div>\n' +
     '                    </div>\n' +
     '                </div>\n' +
     '            </div>\n' +
-    '        </li>\n' +
-    '        <li>\n' +
-    '            <div class="timeline-panel">\n' +
-    '                <div class="timeline-heading">\n' +
-    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
-    '                </div>\n' +
-    '                <div class="timeline-body">\n' +
-    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </li>\n' +
-    '        <li class="timeline-inverted">\n' +
-    '            <div class="timeline-badge success"><i class="glyphicon glyphicon-thumbs-up"></i></div>\n' +
-    '            <div class="timeline-panel">\n' +
-    '                <div class="timeline-heading">\n' +
-    '                    <h4 class="timeline-title">Mussum ipsum cacilds</h4>\n' +
-    '                </div>\n' +
-    '                <div class="timeline-body">\n' +
-    '                    <p>Mussum ipsum cacilds, vidis litro abertis. Consetis adipiscings elitis. Pra lá , depois divoltis porris, paradis. Paisis, filhis, espiritis santis. Mé faiz elementum girarzis, nisi eros vermeio, in elementis mé pra quem é amistosis quis leo. Manduma pindureta quium dia nois paga. Sapien in monti palavris qui num significa nadis i pareci latim. Interessantiss quisso pudia ce receita de bolis, mais bolis eu num gostis.</p>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </li>\n' +
-    '    </ul>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
     '</section>');
 }]);
 })();
@@ -761,226 +1135,17 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/post/postManageAdd.html',
-    '<div class="row">\n' +
-    '    <div class="col-lg-12">\n' +
-    '\n' +
-    '        <div class="panel panel-default">\n' +
-    '\n' +
-    '            <!-- heading -->\n' +
-    '            <div class="panel-heading panel-heading-admin text-center">\n' +
-    '                新增 post\n' +
-    '            </div>\n' +
-    '\n' +
-    '            <div class="panel-body">\n' +
-    '\n' +
-    '                <form class="form" role="form" ng-submit="fnAddPost(postInfo)">\n' +
-    '                    <!-- name -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label for="title">标题</label>\n' +
-    '                        <div class="input-group col-md-5">\n' +
-    '                            <input type="text" id="title" name="title" placeholder="标题" class="form-control" ng-model="postInfo.title"/>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <!-- abstract -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label for="abstract">摘要</label>\n' +
-    '                        <div class="input-group col-md-5">\n' +
-    '                            <textarea name="abstract" ng-model="postInfo.abstract" id="abstract" cols="100%" rows="6"></textarea>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <!-- Description -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label for="description">详细内容</label>\n' +
-    '                        <div class="input-group">\n' +
-    '                            <text-angular name="description" ng-model="postInfo.description">\n' +
-    '                                <p>Any <b>HTML</b> we put in-between the text-angular tags gets automatically put into the editor if there <strong style="font-size: 12pt;"><u><em>is not</em></u></strong> a value assigned to the ngModel.</p>\n' +
-    '                                <p>If there is a value assigned to the ngModel, it replaces any html here. To see this, uncomment the line at the bottom of demo.html</p>\n' +
-    '                            </text-angular>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <!-- Visible -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label class="col-md-2 control-label" for="visible">是否可见</label>\n' +
-    '                        <div class="col-md-3">\n' +
-    '                            <label class="radio-inline">\n' +
-    '                                <input type="radio" name="visible" id="visible" value="1" ng-model="postInfo.visible" checked="checked"> Yes\n' +
-    '                            </label>\n' +
-    '                            <label class="radio-inline">\n' +
-    '                                <input type="radio" name="visible" id="visible" value="0" ng-model="postInfo.visible"> No\n' +
-    '                            </label>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <div class="form-group">\n' +
-    '                        <div class="col-md-7">\n' +
-    '                            <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                <i class="fa fa-plus-circle"></i>\n' +
-    '                                添加\n' +
-    '                            </button>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </form>\n' +
-    '\n' +
-    '                <!-- errors -->\n' +
-    '                <div class="alert alert-danger" role="alert" ng-if="errors">\n' +
-    '                    <ul ng-repeat="error in errors">\n' +
-    '                        <li ng-bind="error"></li>\n' +
-    '                    </ul>\n' +
-    '                </div>\n' +
-    '\n' +
-    '                <div ng-show="postInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                    <strong>正在提交...</strong>\n' +
-    '                </div>\n' +
-    '\n' +
-    '                <div ng-if="postInfo.addStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                    <strong>添加post成功!</strong>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/post/postManageDestroy.html',
-    '<?php\n' +
-    '/**\n' +
-    ' * Created by PhpStorm.\n' +
-    ' * User: Geek-zwb\n' +
-    ' * Date: 2016/12/5 0005\n' +
-    ' * Time: 下午 1:51\n' +
-    ' */');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/post/postManageEdit.html',
-    '<div class="row">\n' +
-    '    <div class="col-lg-12">\n' +
-    '\n' +
-    '        <div class="panel panel-default">\n' +
-    '\n' +
-    '            <!-- heading -->\n' +
-    '            <div class="panel-heading panel-heading-admin text-center">\n' +
-    '                修改 post\n' +
-    '            </div>\n' +
-    '\n' +
-    '            <div class="panel-body">\n' +
-    '\n' +
-    '                <form class="form" role="form" ng-submit="fnEditPost(postInfo)">\n' +
-    '                    <!-- name -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label for="title">标题</label>\n' +
-    '                        <div class="input-group col-md-5">\n' +
-    '                            <input type="text" id="title" name="title" placeholder="标题" class="form-control" ng-model="postInfo.title"/>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <!-- abstract -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label for="abstract">摘要</label>\n' +
-    '                        <div class="input-group col-md-5">\n' +
-    '                            <textarea name="abstract" ng-model="postInfo.abstract" id="abstract" cols="100%" rows="6"></textarea>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <!-- Description -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label for="description">详细内容</label>\n' +
-    '                        <div class="input-group">\n' +
-    '                            <text-angular name="description" ng-model="postInfo.description">\n' +
-    '                                <p>Any <b>HTML</b> we put in-between the text-angular tags gets automatically put into the editor if there <strong style="font-size: 12pt;"><u><em>is not</em></u></strong> a value assigned to the ngModel.</p>\n' +
-    '                                <p>If there is a value assigned to the ngModel, it replaces any html here. To see this, uncomment the line at the bottom of demo.html</p>\n' +
-    '                            </text-angular>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <!-- Visible -->\n' +
-    '                    <div class="form-group">\n' +
-    '                        <label class="col-md-2 control-label" for="visible">是否可见</label>\n' +
-    '                        <div class="col-md-3">\n' +
-    '                            <label class="radio-inline">\n' +
-    '                                <input type="radio" name="visible" id="visible" value="1" ng-model="postInfo.visible" checked="checked"> Yes\n' +
-    '                            </label>\n' +
-    '                            <label class="radio-inline">\n' +
-    '                                <input type="radio" name="visible" id="visible" value="0" ng-model="postInfo.visible"> No\n' +
-    '                            </label>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '\n' +
-    '                    <div class="form-group">\n' +
-    '                        <div class="col-md-7">\n' +
-    '                            <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                <i class="fa fa-plus-circle"></i>\n' +
-    '                                保存\n' +
-    '                            </button>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </form>\n' +
-    '\n' +
-    '                <!-- errors -->\n' +
-    '                <div class="alert alert-danger" role="alert" ng-if="errors">\n' +
-    '                    <ul ng-repeat="error in errors">\n' +
-    '                        <li ng-bind="error"></li>\n' +
-    '                    </ul>\n' +
-    '                </div>\n' +
-    '\n' +
-    '                <div ng-show="postInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                    <strong>正在提交...</strong>\n' +
-    '                </div>\n' +
-    '\n' +
-    '                <div ng-if="postInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                    <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                    <strong>修改post成功!</strong>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</div>\n' +
-    '');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/post/postManageIndex.html',
-    '<!--post manage index-->\n' +
-    '<section>\n' +
-    '    <div class="row page-title-row" style="margin:5px;">\n' +
+  $templateCache.put('./tpl/mall/mallPayType/index.html',
+    '<section class="mt20">\n' +
+    '    <div class="row" style="margin:5px;">\n' +
     '        <div class="col-sm-6 text-left">\n' +
-    '            <div id="tags-table_filter" class="dataTables_filter">\n' +
-    '                <label>搜索:<input ng-model="filterValue" type="search" class="form-control input-sm"></label>\n' +
+    '            <div id="tags-table_filter" class="dataTables_filter search-box">\n' +
+    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="mallPayType.filterValue" ng-change="mallPayType.fnSearchChange()"></label>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '        <div class="col-sm-6 text-right">\n' +
-    '            <a ui-sref="post.postManageAdd" class="btn btn-success btn-md">\n' +
-    '                <i class="fa fa-plus-circle"></i> 添加\n' +
+    '            <a ui-sref="mall.mallPayType.add" class="btn btn-success btn-md">\n' +
+    '                <i class="fa fa-plus-circle"></i> 新增\n' +
     '            </a>\n' +
     '        </div>\n' +
     '    </div>\n' +
@@ -988,18 +1153,18 @@ module.run(['$templateCache', function($templateCache) {
     '    <div class="row">\n' +
     '        <div class="col-xs-12">\n' +
     '            <div class="box">\n' +
-    '                <div class="box-body">\n' +
-    '                    <table  ng-table="posts.tableParams" class="table table-condensed table-bordered table-striped">\n' +
+    '                <div class="box-body table-responsive">\n' +
+    '                    <table  ng-table="mallPayType.tableParams" class="table table-condensed table-bordered table-striped">\n' +
     '                        <tr ng-repeat="row in $data">\n' +
-    '                            <td data-title="\'标题\'" sortable="\'title\'">[: row.title :]</td>\n' +
-    '                            <td data-title="\'创建时间\'" sortable="\'created_at\'">[: row.created_at :]</td>\n' +
-    '                            <td data-title="\'最后修改时间\'" sortable="\'updated_at\'">[: row.updated_at :]</td>\n' +
+    '                            <td data-title="\'Id\'" sortable="\'id\'">[: row.id :]</td>\n' +
+    '                            <td data-title="\'订单状态\'" sortable="\'name\'">[: row.name :]</td>\n' +
+    '                            <td data-title="\'排序\'">[: row.sort :]</td>\n' +
     '                            <td data-title="\'操作\'">\n' +
     '                                <div class="operationbox">\n' +
-    '                                    <a style="margin:3px;" ui-sref="post.postManageEdit({postId:row.id})" class="X-Small btn-xs text-success ">\n' +
+    '                                    <a style="margin:3px;" ui-sref="mall.mallPayType.edit({mallPayTypeId:row.id})" class="X-Small btn-xs text-success ">\n' +
     '                                        <i class="fa fa-edit"></i> 编辑\n' +
     '                                    </a>\n' +
-    '                                    <a style="margin:3px;" ng-click="posts.fnConfirmDestory(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
+    '                                    <a style="margin:3px;" ng-click="mallPayType.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
     '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
     '                                </div>\n' +
     '                            </td>\n' +
@@ -1011,16 +1176,15 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '\n' +
     '    <div class="row">\n' +
-    '        <div ng-show="posts.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '        <div ng-show="mallPayType.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '            <strong>正在删除!</strong>\n' +
     '        </div>\n' +
-    '        <div ng-if="posts.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '        <div ng-if="mallPayType.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '            <strong>删除成功!</strong>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '\n' +
     '\n' +
     '</section>');
 }]);
@@ -1261,188 +1425,6 @@ module.run(['$templateCache', function($templateCache) {
     '            </div>\n' +
     '        </div>\n' +
     '    </div>\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/mall/mallPayType/add.html',
-    '<section class="mt20">\n' +
-    '    <!--新增订单状态-->\n' +
-    '    <div class="main animsition">\n' +
-    '        <div class="container-fluid">\n' +
-    '\n' +
-    '            <div class="row">\n' +
-    '                <div class="panel panel-default">\n' +
-    '                    <div class="panel-heading">\n' +
-    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">新增付款方式</h3>\n' +
-    '                    </div>\n' +
-    '                    <div class="panel-body">\n' +
-    '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnAddMallPayType()">\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="name" class="col-md-3 control-label">付款方式</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="mallPayTypeInfo.name">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="sort" class="col-md-3 control-label">排序</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="sort" id="sort" autofocus ng-model="mallPayTypeInfo.sort">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <div class="col-md-7 col-md-offset-3">\n' +
-    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                        <i class="fa fa-plus-circle"></i>\n' +
-    '                                        添加\n' +
-    '                                    </button>\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                        </form>\n' +
-    '                        <div ng-show="mallPayTypeInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>正在提交...</strong>\n' +
-    '                        </div>\n' +
-    '                        <div ng-if="mallPayTypeInfo.addMallPayType" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>新增付款方式成功!</strong>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/mall/mallPayType/edit.html',
-    '<section class="mt20">\n' +
-    '    <!--修改订单状态-->\n' +
-    '    <div class="main animsition">\n' +
-    '        <div class="container-fluid">\n' +
-    '\n' +
-    '            <div class="row">\n' +
-    '                <div class="panel panel-default">\n' +
-    '                    <div class="panel-heading">\n' +
-    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">修改订单状态</h3>\n' +
-    '                    </div>\n' +
-    '                    <div class="panel-body">\n' +
-    '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnEditMallPayType()">\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="orderStatusName" class="col-md-3 control-label">订单状态</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="mallPayTypeInfo.name">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="sort" class="col-md-3 control-label">颜色标识</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="sort" id="sort" autofocus ng-model="mallPayTypeInfo.sort">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <div class="col-md-7 col-md-offset-3">\n' +
-    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                        <i class="fa fa-plus-circle"></i>\n' +
-    '                                        修改\n' +
-    '                                    </button>\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                        </form>\n' +
-    '                        <div ng-show="mallPayTypeInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>正在提交...</strong>\n' +
-    '                        </div>\n' +
-    '                        <div ng-if="mallPayTypeInfo.editMallPayType" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>修改订单状态成功!</strong>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/mall/mallPayType/index.html',
-    '<section class="mt20">\n' +
-    '    <div class="row" style="margin:5px;">\n' +
-    '        <div class="col-sm-6 text-left">\n' +
-    '            <div id="tags-table_filter" class="dataTables_filter search-box">\n' +
-    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="mallPayType.filterValue" ng-change="mallPayType.fnSearchChange()"></label>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '        <div class="col-sm-6 text-right">\n' +
-    '            <a ui-sref="mall.mallPayType.add" class="btn btn-success btn-md">\n' +
-    '                <i class="fa fa-plus-circle"></i> 新增\n' +
-    '            </a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '    <div class="row">\n' +
-    '        <div class="col-xs-12">\n' +
-    '            <div class="box">\n' +
-    '                <div class="box-body table-responsive">\n' +
-    '                    <table  ng-table="mallPayType.tableParams" class="table table-condensed table-bordered table-striped">\n' +
-    '                        <tr ng-repeat="row in $data">\n' +
-    '                            <td data-title="\'Id\'" sortable="\'id\'">[: row.id :]</td>\n' +
-    '                            <td data-title="\'订单状态\'" sortable="\'name\'">[: row.name :]</td>\n' +
-    '                            <td data-title="\'排序\'">[: row.sort :]</td>\n' +
-    '                            <td data-title="\'操作\'">\n' +
-    '                                <div class="operationbox">\n' +
-    '                                    <a style="margin:3px;" ui-sref="mall.mallPayType.edit({mallPayTypeId:row.id})" class="X-Small btn-xs text-success ">\n' +
-    '                                        <i class="fa fa-edit"></i> 编辑\n' +
-    '                                    </a>\n' +
-    '                                    <a style="margin:3px;" ng-click="mallPayType.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
-    '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
-    '                                </div>\n' +
-    '                            </td>\n' +
-    '                        </tr>\n' +
-    '                    </table>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '    <div class="row">\n' +
-    '        <div ng-show="mallPayType.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '            <strong>正在删除!</strong>\n' +
-    '        </div>\n' +
-    '        <div ng-if="mallPayType.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '            <strong>删除成功!</strong>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
     '</section>');
 }]);
 })();
@@ -2989,6 +2971,188 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/order/expressCompany/add.html',
+    '<section class="mt20">\n' +
+    '    <!--新增快递发货公司-->\n' +
+    '    <div class="main animsition">\n' +
+    '        <div class="container-fluid">\n' +
+    '\n' +
+    '            <div class="row">\n' +
+    '                <div class="panel panel-default">\n' +
+    '                    <div class="panel-heading">\n' +
+    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
+    '                         <h3 class="panel-title">新增快递发货公司</h3>\n' +
+    '                    </div>\n' +
+    '                    <div class="panel-body">\n' +
+    '\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnAddExpressCompany()">\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="expressCompanyName" class="col-md-3 control-label">快递发货公司</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="expressCompanyName" id="expressCompanyName" autofocus ng-model="expressCompanyInfo.name">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="expressCompanyAbbreviation" class="col-md-3 control-label">简写</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="expressCompanyAbbreviation" id="expressCompany-abbreviation" autofocus ng-model="expressCompanyInfo.abbreviation">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <div class="col-md-7 col-md-offset-3">\n' +
+    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                        <i class="fa fa-plus-circle"></i>\n' +
+    '                                        添加\n' +
+    '                                    </button>\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                        </form>\n' +
+    '                        <div ng-show="expressCompanyInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>正在提交...</strong>\n' +
+    '                        </div>\n' +
+    '                        <div ng-if="expressCompanyInfo.addStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>新增快递发货公司成功!</strong>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/order/expressCompany/edit.html',
+    '<section class="mt20">\n' +
+    '    <!--修改快递发货公司-->\n' +
+    '    <div class="main animsition">\n' +
+    '        <div class="container-fluid">\n' +
+    '\n' +
+    '            <div class="row">\n' +
+    '                <div class="panel panel-default">\n' +
+    '                    <div class="panel-heading">\n' +
+    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
+    '                         <h3 class="panel-title">修改快递发货公司</h3>\n' +
+    '                    </div>\n' +
+    '                    <div class="panel-body">\n' +
+    '\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnEditExpressCompany()">\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="expressCompanyName" class="col-md-3 control-label">快递发货公司</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="expressCompanyName" id="expressCompanyName" autofocus ng-model="expressCompanyInfo.name">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="expressCompanyAbbreviation" class="col-md-3 control-label">简写</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="expressCompanyAbbreviation" id="order" autofocus ng-model="expressCompanyInfo.abbreviation">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <div class="col-md-7 col-md-offset-3">\n' +
+    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                        <i class="fa fa-plus-circle"></i>\n' +
+    '                                        修改\n' +
+    '                                    </button>\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                        </form>\n' +
+    '                        <div ng-show="expressCompanyInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>正在提交...</strong>\n' +
+    '                        </div>\n' +
+    '                        <div ng-if="expressCompanyInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>修改快递发货公司成功!</strong>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/order/expressCompany/index.html',
+    '<section class="mt20">\n' +
+    '    <div class="row" style="margin:5px;">\n' +
+    '        <div class="col-sm-6 text-left">\n' +
+    '            <div id="tags-table_filter" class="dataTables_filter search-box">\n' +
+    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="expressCompany.filterValue" ng-change="expressCompany.fnSearchChange()"></label>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '        <div class="col-sm-6 text-right">\n' +
+    '            <a ui-sref="order.expressCompany.add" class="btn btn-success btn-md">\n' +
+    '                <i class="fa fa-plus-circle"></i> 新增\n' +
+    '            </a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <div class="row">\n' +
+    '        <div class="col-xs-12">\n' +
+    '            <div class="box">\n' +
+    '                <div class="box-body table-responsive">\n' +
+    '                    <table  ng-table="expressCompany.tableParams" class="table table-condensed table-bordered table-striped">\n' +
+    '                        <tr ng-repeat="row in $data">\n' +
+    '                            <td data-title="\'Id\'" sortable="\'id\'">[: row.id :]</td>\n' +
+    '                            <td data-title="\'快递发货公司\'" sortable="\'name\'">[: row.name :]</td>\n' +
+    '                            <td data-title="\'简写\'">[: row.abbreviation :]</td>\n' +
+    '                            <td data-title="\'操作\'">\n' +
+    '                                <div class="operationbox">\n' +
+    '                                    <a style="margin:3px;" ui-sref="order.expressCompany.edit({expressCompanyId:row.id})" class="X-Small btn-xs text-success ">\n' +
+    '                                        <i class="fa fa-edit"></i> 编辑\n' +
+    '                                    </a>\n' +
+    '                                    <a style="margin:3px;" ng-click="expressCompany.fnDestoryExpress(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
+    '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
+    '                                </div>\n' +
+    '                            </td>\n' +
+    '                        </tr>\n' +
+    '                    </table>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <div class="row">\n' +
+    '        <div ng-show="expressCompany.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '            <strong>正在删除!</strong>\n' +
+    '        </div>\n' +
+    '        <div ng-if="expressCompany.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '            <strong>删除成功!</strong>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('./tpl/order/orderDepartment/index.html',
     '<section class="mt20">\n' +
     '    <div class="row" style="margin:5px;">\n' +
@@ -3270,188 +3434,6 @@ module.run(['$templateCache', function($templateCache) {
     '            <strong>正在删除!</strong>\n' +
     '        </div>\n' +
     '        <div ng-if="orderPayAfterStatus.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '            <strong>删除成功!</strong>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/order/expressCompany/add.html',
-    '<section class="mt20">\n' +
-    '    <!--新增快递发货公司-->\n' +
-    '    <div class="main animsition">\n' +
-    '        <div class="container-fluid">\n' +
-    '\n' +
-    '            <div class="row">\n' +
-    '                <div class="panel panel-default">\n' +
-    '                    <div class="panel-heading">\n' +
-    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">新增快递发货公司</h3>\n' +
-    '                    </div>\n' +
-    '                    <div class="panel-body">\n' +
-    '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnAddExpressCompany()">\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="expressCompanyName" class="col-md-3 control-label">快递发货公司</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="expressCompanyName" id="expressCompanyName" autofocus ng-model="expressCompanyInfo.name">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="expressCompanyAbbreviation" class="col-md-3 control-label">简写</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="expressCompanyAbbreviation" id="expressCompany-abbreviation" autofocus ng-model="expressCompanyInfo.abbreviation">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <div class="col-md-7 col-md-offset-3">\n' +
-    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                        <i class="fa fa-plus-circle"></i>\n' +
-    '                                        添加\n' +
-    '                                    </button>\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                        </form>\n' +
-    '                        <div ng-show="expressCompanyInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>正在提交...</strong>\n' +
-    '                        </div>\n' +
-    '                        <div ng-if="expressCompanyInfo.addStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>新增快递发货公司成功!</strong>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/order/expressCompany/edit.html',
-    '<section class="mt20">\n' +
-    '    <!--修改快递发货公司-->\n' +
-    '    <div class="main animsition">\n' +
-    '        <div class="container-fluid">\n' +
-    '\n' +
-    '            <div class="row">\n' +
-    '                <div class="panel panel-default">\n' +
-    '                    <div class="panel-heading">\n' +
-    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">修改快递发货公司</h3>\n' +
-    '                    </div>\n' +
-    '                    <div class="panel-body">\n' +
-    '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnEditExpressCompany()">\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="expressCompanyName" class="col-md-3 control-label">快递发货公司</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="expressCompanyName" id="expressCompanyName" autofocus ng-model="expressCompanyInfo.name">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="expressCompanyAbbreviation" class="col-md-3 control-label">简写</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="expressCompanyAbbreviation" id="order" autofocus ng-model="expressCompanyInfo.abbreviation">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <div class="col-md-7 col-md-offset-3">\n' +
-    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                        <i class="fa fa-plus-circle"></i>\n' +
-    '                                        修改\n' +
-    '                                    </button>\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                        </form>\n' +
-    '                        <div ng-show="expressCompanyInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>正在提交...</strong>\n' +
-    '                        </div>\n' +
-    '                        <div ng-if="expressCompanyInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>修改快递发货公司成功!</strong>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/order/expressCompany/index.html',
-    '<section class="mt20">\n' +
-    '    <div class="row" style="margin:5px;">\n' +
-    '        <div class="col-sm-6 text-left">\n' +
-    '            <div id="tags-table_filter" class="dataTables_filter search-box">\n' +
-    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="expressCompany.filterValue" ng-change="expressCompany.fnSearchChange()"></label>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '        <div class="col-sm-6 text-right">\n' +
-    '            <a ui-sref="order.expressCompany.add" class="btn btn-success btn-md">\n' +
-    '                <i class="fa fa-plus-circle"></i> 新增\n' +
-    '            </a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '    <div class="row">\n' +
-    '        <div class="col-xs-12">\n' +
-    '            <div class="box">\n' +
-    '                <div class="box-body table-responsive">\n' +
-    '                    <table  ng-table="expressCompany.tableParams" class="table table-condensed table-bordered table-striped">\n' +
-    '                        <tr ng-repeat="row in $data">\n' +
-    '                            <td data-title="\'Id\'" sortable="\'id\'">[: row.id :]</td>\n' +
-    '                            <td data-title="\'快递发货公司\'" sortable="\'name\'">[: row.name :]</td>\n' +
-    '                            <td data-title="\'简写\'">[: row.abbreviation :]</td>\n' +
-    '                            <td data-title="\'操作\'">\n' +
-    '                                <div class="operationbox">\n' +
-    '                                    <a style="margin:3px;" ui-sref="order.expressCompany.edit({expressCompanyId:row.id})" class="X-Small btn-xs text-success ">\n' +
-    '                                        <i class="fa fa-edit"></i> 编辑\n' +
-    '                                    </a>\n' +
-    '                                    <a style="margin:3px;" ng-click="expressCompany.fnDestoryExpress(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
-    '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
-    '                                </div>\n' +
-    '                            </td>\n' +
-    '                        </tr>\n' +
-    '                    </table>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '    <div class="row">\n' +
-    '        <div ng-show="expressCompany.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '            <strong>正在删除!</strong>\n' +
-    '        </div>\n' +
-    '        <div ng-if="expressCompany.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '            <strong>删除成功!</strong>\n' +
     '        </div>\n' +
@@ -3854,6 +3836,188 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/order/status/add.html',
+    '<section class="mt20">\n' +
+    '    <!--新增订单状态-->\n' +
+    '    <div class="main animsition">\n' +
+    '        <div class="container-fluid">\n' +
+    '\n' +
+    '            <div class="row">\n' +
+    '                <div class="panel panel-default">\n' +
+    '                    <div class="panel-heading">\n' +
+    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
+    '                         <h3 class="panel-title">新增订单状态</h3>\n' +
+    '                    </div>\n' +
+    '                    <div class="panel-body">\n' +
+    '\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnAddOrderStatus()">\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="orderStatusName" class="col-md-3 control-label">订单状态</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="orderStatusName" id="orderStatusName" autofocus ng-model="orderStatusInfo.name">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="color" class="col-md-3 control-label">颜色标识(如: #0000FF)</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="color" id="color" autofocus ng-model="orderStatusInfo.color">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <div class="col-md-7 col-md-offset-3">\n' +
+    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                        <i class="fa fa-plus-circle"></i>\n' +
+    '                                        添加\n' +
+    '                                    </button>\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                        </form>\n' +
+    '                        <div ng-show="orderStatusInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>正在提交...</strong>\n' +
+    '                        </div>\n' +
+    '                        <div ng-if="orderStatusInfo.addOrderStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>新增订单状态成功!</strong>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/order/status/edit.html',
+    '<section class="mt20">\n' +
+    '    <!--修改订单状态-->\n' +
+    '    <div class="main animsition">\n' +
+    '        <div class="container-fluid">\n' +
+    '\n' +
+    '            <div class="row">\n' +
+    '                <div class="panel panel-default">\n' +
+    '                    <div class="panel-heading">\n' +
+    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
+    '                         <h3 class="panel-title">修改订单状态</h3>\n' +
+    '                    </div>\n' +
+    '                    <div class="panel-body">\n' +
+    '\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnEditOrderStatus()">\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="orderStatusName" class="col-md-3 control-label">订单状态</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="orderStatusName" id="orderStatusName" autofocus ng-model="orderStatusInfo.name">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <label for="color" class="col-md-3 control-label">颜色标识</label>\n' +
+    '                                <div class="col-md-5">\n' +
+    '                                    <input type="text" class="form-control" name="color" id="order" autofocus ng-model="orderStatusInfo.color">\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                            <div class="form-group">\n' +
+    '                                <div class="col-md-7 col-md-offset-3">\n' +
+    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
+    '                                        <i class="fa fa-plus-circle"></i>\n' +
+    '                                        修改\n' +
+    '                                    </button>\n' +
+    '                                </div>\n' +
+    '                            </div>\n' +
+    '                        </form>\n' +
+    '                        <div ng-show="orderStatusInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>正在提交...</strong>\n' +
+    '                        </div>\n' +
+    '                        <div ng-if="orderStatusInfo.editOrderStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '                            <strong>修改订单状态成功!</strong>\n' +
+    '                        </div>\n' +
+    '                    </div>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
+  $templateCache.put('./tpl/order/status/index.html',
+    '<section class="mt20">\n' +
+    '    <div class="row" style="margin:5px;">\n' +
+    '        <div class="col-sm-6 text-left">\n' +
+    '            <div id="tags-table_filter" class="dataTables_filter search-box">\n' +
+    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="orderStatus.filterValue" ng-change="orderStatus.fnSearchChange()"></label>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '        <div class="col-sm-6 text-right">\n' +
+    '            <a ui-sref="order.orderStatus.add" class="btn btn-success btn-md">\n' +
+    '                <i class="fa fa-plus-circle"></i> 新增\n' +
+    '            </a>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <div class="row">\n' +
+    '        <div class="col-xs-12">\n' +
+    '            <div class="box">\n' +
+    '                <div class="box-body table-responsive">\n' +
+    '                    <table  ng-table="orderStatus.tableParams" class="table table-condensed table-bordered table-striped">\n' +
+    '                        <tr ng-repeat="row in $data">\n' +
+    '                            <td data-title="\'Id\'" sortable="\'id\'">[: row.id :]</td>\n' +
+    '                            <td data-title="\'订单状态\'" sortable="\'name\'">[: row.name :]</td>\n' +
+    '                            <td data-title="\'color\'">[: row.color :]</td>\n' +
+    '                            <td data-title="\'操作\'">\n' +
+    '                                <div class="operationbox">\n' +
+    '                                    <a style="margin:3px;" ui-sref="order.orderStatus.edit({orderStatusId:row.id})" class="X-Small btn-xs text-success ">\n' +
+    '                                        <i class="fa fa-edit"></i> 编辑\n' +
+    '                                    </a>\n' +
+    '                                    <a style="margin:3px;" ng-click="orderStatus.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
+    '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
+    '                                </div>\n' +
+    '                            </td>\n' +
+    '                        </tr>\n' +
+    '                    </table>\n' +
+    '                </div>\n' +
+    '            </div>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '    <div class="row">\n' +
+    '        <div ng-show="orderStatus.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '            <strong>正在删除!</strong>\n' +
+    '        </div>\n' +
+    '        <div ng-if="orderStatus.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
+    '            <strong>删除成功!</strong>\n' +
+    '        </div>\n' +
+    '    </div>\n' +
+    '\n' +
+    '</section>');
+}]);
+})();
+
+(function(module) {
+try {
+  module = angular.module('orderApp.partials');
+} catch (e) {
+  module = angular.module('orderApp.partials', []);
+}
+module.run(['$templateCache', function($templateCache) {
   $templateCache.put('./tpl/order/stock/index.html',
     '<section class="mt20">\n' +
     '    <div class="row" style="margin:5px;">\n' +
@@ -4204,9 +4368,9 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/order/status/add.html',
+  $templateCache.put('./tpl/website/brand/add.html',
     '<section class="mt20">\n' +
-    '    <!--新增订单状态-->\n' +
+    '    <!--新增服务器-->\n' +
     '    <div class="main animsition">\n' +
     '        <div class="container-fluid">\n' +
     '\n' +
@@ -4214,21 +4378,21 @@ module.run(['$templateCache', function($templateCache) {
     '                <div class="panel panel-default">\n' +
     '                    <div class="panel-heading">\n' +
     '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">新增订单状态</h3>\n' +
+    '                         <h3 class="panel-title">新增品牌</h3>\n' +
     '                    </div>\n' +
     '                    <div class="panel-body">\n' +
     '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnAddOrderStatus()">\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnAddBrand()">\n' +
     '                            <div class="form-group">\n' +
-    '                                <label for="orderStatusName" class="col-md-3 control-label">订单状态</label>\n' +
+    '                                <label for="name" class="col-md-3 control-label">品牌</label>\n' +
     '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="orderStatusName" id="orderStatusName" autofocus ng-model="orderStatusInfo.name">\n' +
+    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="brandInfo.name">\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                            <div class="form-group">\n' +
-    '                                <label for="color" class="col-md-3 control-label">颜色标识(如: #0000FF)</label>\n' +
+    '                                <label for="order" class="col-md-3 control-label">排序</label>\n' +
     '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="color" id="color" autofocus ng-model="orderStatusInfo.color">\n' +
+    '                                    <input type="text" class="form-control" name="order" id="order" autofocus ng-model="brandInfo.order">\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                            <div class="form-group">\n' +
@@ -4240,13 +4404,13 @@ module.run(['$templateCache', function($templateCache) {
     '                                </div>\n' +
     '                            </div>\n' +
     '                        </form>\n' +
-    '                        <div ng-show="orderStatusInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                        <div ng-show="brandInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '                            <strong>正在提交...</strong>\n' +
     '                        </div>\n' +
-    '                        <div ng-if="orderStatusInfo.addOrderStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                        <div ng-if="brandInfo.addStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>新增订单状态成功!</strong>\n' +
+    '                            <strong>新增品牌成功!</strong>\n' +
     '                        </div>\n' +
     '                    </div>\n' +
     '                </div>\n' +
@@ -4264,9 +4428,9 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/order/status/edit.html',
+  $templateCache.put('./tpl/website/brand/edit.html',
     '<section class="mt20">\n' +
-    '    <!--修改订单状态-->\n' +
+    '    <!--修改品牌-->\n' +
     '    <div class="main animsition">\n' +
     '        <div class="container-fluid">\n' +
     '\n' +
@@ -4274,21 +4438,21 @@ module.run(['$templateCache', function($templateCache) {
     '                <div class="panel panel-default">\n' +
     '                    <div class="panel-heading">\n' +
     '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">修改订单状态</h3>\n' +
+    '                         <h3 class="panel-title">修改品牌</h3>\n' +
     '                    </div>\n' +
     '                    <div class="panel-body">\n' +
     '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnEditOrderStatus()">\n' +
+    '                        <form class="form-horizontal" role="form" ng-submit="fnEditBrand()">\n' +
     '                            <div class="form-group">\n' +
-    '                                <label for="orderStatusName" class="col-md-3 control-label">订单状态</label>\n' +
+    '                                <label for="name" class="col-md-3 control-label">品牌</label>\n' +
     '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="orderStatusName" id="orderStatusName" autofocus ng-model="orderStatusInfo.name">\n' +
+    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="brandInfo.name">\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                            <div class="form-group">\n' +
-    '                                <label for="color" class="col-md-3 control-label">颜色标识</label>\n' +
+    '                                <label for="order" class="col-md-3 control-label">排序</label>\n' +
     '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="color" id="order" autofocus ng-model="orderStatusInfo.color">\n' +
+    '                                    <input type="text" class="form-control" name="order" id="order" autofocus ng-model="brandInfo.order">\n' +
     '                                </div>\n' +
     '                            </div>\n' +
     '                            <div class="form-group">\n' +
@@ -4300,13 +4464,13 @@ module.run(['$templateCache', function($templateCache) {
     '                                </div>\n' +
     '                            </div>\n' +
     '                        </form>\n' +
-    '                        <div ng-show="orderStatusInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                        <div ng-show="brandInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '                            <strong>正在提交...</strong>\n' +
     '                        </div>\n' +
-    '                        <div ng-if="orderStatusInfo.editOrderStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '                        <div ng-if="brandInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>修改订单状态成功!</strong>\n' +
+    '                            <strong>修改品牌成功!</strong>\n' +
     '                        </div>\n' +
     '                    </div>\n' +
     '                </div>\n' +
@@ -4324,16 +4488,16 @@ try {
   module = angular.module('orderApp.partials', []);
 }
 module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/order/status/index.html',
+  $templateCache.put('./tpl/website/brand/index.html',
     '<section class="mt20">\n' +
     '    <div class="row" style="margin:5px;">\n' +
     '        <div class="col-sm-6 text-left">\n' +
     '            <div id="tags-table_filter" class="dataTables_filter search-box">\n' +
-    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="orderStatus.filterValue" ng-change="orderStatus.fnSearchChange()"></label>\n' +
+    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="brands.filterValue" ng-change="brands.fnSearchChange()"></label>\n' +
     '            </div>\n' +
     '        </div>\n' +
     '        <div class="col-sm-6 text-right">\n' +
-    '            <a ui-sref="order.orderStatus.add" class="btn btn-success btn-md">\n' +
+    '            <a ui-sref="website.brand.add" class="btn btn-success btn-md">\n' +
     '                <i class="fa fa-plus-circle"></i> 新增\n' +
     '            </a>\n' +
     '        </div>\n' +
@@ -4343,17 +4507,17 @@ module.run(['$templateCache', function($templateCache) {
     '        <div class="col-xs-12">\n' +
     '            <div class="box">\n' +
     '                <div class="box-body table-responsive">\n' +
-    '                    <table  ng-table="orderStatus.tableParams" class="table table-condensed table-bordered table-striped">\n' +
+    '                    <table  ng-table="brands.tableParams" class="table table-condensed table-bordered table-striped">\n' +
     '                        <tr ng-repeat="row in $data">\n' +
     '                            <td data-title="\'Id\'" sortable="\'id\'">[: row.id :]</td>\n' +
-    '                            <td data-title="\'订单状态\'" sortable="\'name\'">[: row.name :]</td>\n' +
-    '                            <td data-title="\'color\'">[: row.color :]</td>\n' +
+    '                            <td data-title="\'品牌名称\'" sortable="\'name\'">[: row.name :]</td>\n' +
+    '                            <td data-title="\'排序\'">[: row.order :]</td>\n' +
     '                            <td data-title="\'操作\'">\n' +
     '                                <div class="operationbox">\n' +
-    '                                    <a style="margin:3px;" ui-sref="order.orderStatus.edit({orderStatusId:row.id})" class="X-Small btn-xs text-success ">\n' +
+    '                                    <a style="margin:3px;" ui-sref="website.brand.edit({brandId:row.id})" class="X-Small btn-xs text-success ">\n' +
     '                                        <i class="fa fa-edit"></i> 编辑\n' +
     '                                    </a>\n' +
-    '                                    <a style="margin:3px;" ng-click="orderStatus.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
+    '                                    <a style="margin:3px;" ng-click="brands.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
     '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
     '                                </div>\n' +
     '                            </td>\n' +
@@ -4365,11 +4529,11 @@ module.run(['$templateCache', function($templateCache) {
     '    </div>\n' +
     '\n' +
     '    <div class="row">\n' +
-    '        <div ng-show="orderStatus.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '        <div ng-show="brands.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '            <strong>正在删除!</strong>\n' +
     '        </div>\n' +
-    '        <div ng-if="orderStatus.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
+    '        <div ng-if="brands.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '            <strong>删除成功!</strong>\n' +
     '        </div>\n' +
@@ -4552,188 +4716,6 @@ module.run(['$templateCache', function($templateCache) {
     '            <strong>正在删除!</strong>\n' +
     '        </div>\n' +
     '        <div ng-if="adStatuses.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '            <strong>删除成功!</strong>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/website/brand/add.html',
-    '<section class="mt20">\n' +
-    '    <!--新增服务器-->\n' +
-    '    <div class="main animsition">\n' +
-    '        <div class="container-fluid">\n' +
-    '\n' +
-    '            <div class="row">\n' +
-    '                <div class="panel panel-default">\n' +
-    '                    <div class="panel-heading">\n' +
-    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">新增品牌</h3>\n' +
-    '                    </div>\n' +
-    '                    <div class="panel-body">\n' +
-    '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnAddBrand()">\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="name" class="col-md-3 control-label">品牌</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="brandInfo.name">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="order" class="col-md-3 control-label">排序</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="order" id="order" autofocus ng-model="brandInfo.order">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <div class="col-md-7 col-md-offset-3">\n' +
-    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                        <i class="fa fa-plus-circle"></i>\n' +
-    '                                        添加\n' +
-    '                                    </button>\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                        </form>\n' +
-    '                        <div ng-show="brandInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>正在提交...</strong>\n' +
-    '                        </div>\n' +
-    '                        <div ng-if="brandInfo.addStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>新增品牌成功!</strong>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/website/brand/edit.html',
-    '<section class="mt20">\n' +
-    '    <!--修改品牌-->\n' +
-    '    <div class="main animsition">\n' +
-    '        <div class="container-fluid">\n' +
-    '\n' +
-    '            <div class="row">\n' +
-    '                <div class="panel panel-default">\n' +
-    '                    <div class="panel-heading">\n' +
-    '                         <a onclick="history.back()" class="panel-title floatRight"><i class="fa fa-reply"></i></a>\n' +
-    '                         <h3 class="panel-title">修改品牌</h3>\n' +
-    '                    </div>\n' +
-    '                    <div class="panel-body">\n' +
-    '\n' +
-    '                        <form class="form-horizontal" role="form" ng-submit="fnEditBrand()">\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="name" class="col-md-3 control-label">品牌</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="name" id="name" autofocus ng-model="brandInfo.name">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <label for="order" class="col-md-3 control-label">排序</label>\n' +
-    '                                <div class="col-md-5">\n' +
-    '                                    <input type="text" class="form-control" name="order" id="order" autofocus ng-model="brandInfo.order">\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                            <div class="form-group">\n' +
-    '                                <div class="col-md-7 col-md-offset-3">\n' +
-    '                                    <button type="submit" class="btn btn-primary btn-md">\n' +
-    '                                        <i class="fa fa-plus-circle"></i>\n' +
-    '                                        修改\n' +
-    '                                    </button>\n' +
-    '                                </div>\n' +
-    '                            </div>\n' +
-    '                        </form>\n' +
-    '                        <div ng-show="brandInfo.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>正在提交...</strong>\n' +
-    '                        </div>\n' +
-    '                        <div ng-if="brandInfo.editStatus" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '                            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '                            <strong>修改品牌成功!</strong>\n' +
-    '                        </div>\n' +
-    '                    </div>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '</section>');
-}]);
-})();
-
-(function(module) {
-try {
-  module = angular.module('orderApp.partials');
-} catch (e) {
-  module = angular.module('orderApp.partials', []);
-}
-module.run(['$templateCache', function($templateCache) {
-  $templateCache.put('./tpl/website/brand/index.html',
-    '<section class="mt20">\n' +
-    '    <div class="row" style="margin:5px;">\n' +
-    '        <div class="col-sm-6 text-left">\n' +
-    '            <div id="tags-table_filter" class="dataTables_filter search-box">\n' +
-    '                <label>搜索:<input type="search" class="form-control input-sm" ng-model="brands.filterValue" ng-change="brands.fnSearchChange()"></label>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '        <div class="col-sm-6 text-right">\n' +
-    '            <a ui-sref="website.brand.add" class="btn btn-success btn-md">\n' +
-    '                <i class="fa fa-plus-circle"></i> 新增\n' +
-    '            </a>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '    <div class="row">\n' +
-    '        <div class="col-xs-12">\n' +
-    '            <div class="box">\n' +
-    '                <div class="box-body table-responsive">\n' +
-    '                    <table  ng-table="brands.tableParams" class="table table-condensed table-bordered table-striped">\n' +
-    '                        <tr ng-repeat="row in $data">\n' +
-    '                            <td data-title="\'Id\'" sortable="\'id\'">[: row.id :]</td>\n' +
-    '                            <td data-title="\'品牌名称\'" sortable="\'name\'">[: row.name :]</td>\n' +
-    '                            <td data-title="\'排序\'">[: row.order :]</td>\n' +
-    '                            <td data-title="\'操作\'">\n' +
-    '                                <div class="operationbox">\n' +
-    '                                    <a style="margin:3px;" ui-sref="website.brand.edit({brandId:row.id})" class="X-Small btn-xs text-success ">\n' +
-    '                                        <i class="fa fa-edit"></i> 编辑\n' +
-    '                                    </a>\n' +
-    '                                    <a style="margin:3px;" ng-click="brands.fnDestoryPost(row.id)" class="delBtn X-Small btn-xs text-danger ">\n' +
-    '                                        <i class="fa fa-times-circle-o"></i> 删除</a>\n' +
-    '                                </div>\n' +
-    '                            </td>\n' +
-    '                        </tr>\n' +
-    '                    </table>\n' +
-    '                </div>\n' +
-    '            </div>\n' +
-    '        </div>\n' +
-    '    </div>\n' +
-    '\n' +
-    '    <div class="row">\n' +
-    '        <div ng-show="brands.deleteAction.pending" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
-    '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
-    '            <strong>正在删除!</strong>\n' +
-    '        </div>\n' +
-    '        <div ng-if="brands.deleteAction.status" class="col-sm-offset-2 col-sm-6 alert alert-success alert-dismissible" role="alert">\n' +
     '            <button type="button" class="close" data-dismiss="alert"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>\n' +
     '            <strong>删除成功!</strong>\n' +
     '        </div>\n' +

@@ -12,7 +12,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <meta name="_token" content="{{ csrf_token() }}"/>
     <!-- Bootstrap 3.3.6 -->
-    <link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">
+    {{--<link rel="stylesheet" href="/bootstrap/css/bootstrap.min.css">--}}
     <!-- Font Awesome -->
     <link rel="stylesheet" href="/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- Ionicons -->
@@ -34,27 +34,24 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
     {{--dataTabels--}}
     {{--<link href="/plugins/datatables/jquery.dataTables.min.css" rel="stylesheet">--}}
-    <link href="/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">
+    {{--<link href="/plugins/datatables/dataTables.bootstrap.css" rel="stylesheet">--}}
 
     {{--loding--}}
     <link href="/dist/css/load/load.css" rel="stylesheet">
-
     @yield('css')
-
             <!-- REQUIRED JS SCRIPTS -->
 
     {{-- scripts --}}
-    <script src="/node_modules/jquery/dist/jQuery.min.js"></script>
-    <script src="/bootstrap/js/bootstrap.js"></script>
+    {{--<script src="/node_modules/jquery/dist/jQuery.min.js"></script>--}}
+    {{--<script src="/bootstrap/js/bootstrap.js"></script>--}}
+    @yield('js')
     <!-- AdminLTE App -->
     <script src="/dist/js/app.min.js"></script>
     <!-- dataTables -->
-    <script src="/plugins/datatables/jquery.dataTables.min.js"></script>
-    <script src="/plugins/datatables/dataTables.bootstrap.js"></script>
+    {{--<script src="/plugins/datatables/jquery.dataTables.min.js"></script>--}}
+    {{--<script src="/plugins/datatables/dataTables.bootstrap.js"></script>--}}
 
     <script src="/dist/js/common.js"></script>
-
-    @yield('js')
 </head>
 <!--
 BODY TAG OPTIONS:

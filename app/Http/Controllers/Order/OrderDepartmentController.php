@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers\Order;
 
-use App\OdOrder;
-use App\OdProduct;
+use App\Models\Order\OdOrder;
+use App\Models\Order\OdProduct;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;

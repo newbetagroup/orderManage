@@ -4,7 +4,7 @@ namespace App\Helpers;
 
 use App\Helpers\Contracts\OrderHelperContract;
 use App\Models\Stock;
-use App\OdOrder;
+use App\Models\Order\OdOrder;
 
 class OrderHelper implements OrderHelperContract
 {

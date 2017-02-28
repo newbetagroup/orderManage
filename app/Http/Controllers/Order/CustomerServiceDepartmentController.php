@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Helpers\Contracts\OrderHelperContract;
-use App\OdOrder;
+use App\Models\Order\OdOrder;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
