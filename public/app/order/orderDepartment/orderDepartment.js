@@ -219,10 +219,14 @@
             //================采购分组相关操作
                 self.purchaseGroups = [];
                 self.isCheckedAbled = false; //不可选
-                var currentPurchaseGroup = new Date();
+
+                var currentTime = new Date();
+                var curMonth = (Array(2).join('0') + (currentTime.getMonth()+1)).slice(-2);
+                var curDate = (Array(2).join('0') + currentTime.getDate()).slice(-2);
+
                 self.currentPurchaseGroup = {
                     id: 0,
-                    name: currentPurchaseGroup.toString()
+                    name: currentTime.getFullYear() + '' + curMonth + '' + curDate
                 };
                 PurchaseGroupService.fnGetPurchaseGroups().then(function (r) {
                     self.purchaseGroups = r;

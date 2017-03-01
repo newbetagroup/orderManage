@@ -9,45 +9,36 @@
 ?>
 @extends('layouts.base')
 @section('css')
-    <link rel="stylesheet" href="/css/vendor.css">
-    <link rel="stylesheet" href="/css/user.css">
-    <link rel="stylesheet" href="/plugins/jquerydatetime/jquery.datetimepicker.css">
-    {{--<link rel="stylesheet" href="/plugins/ng-table/ng-table.min.css">--}}
+    {{--bootstrap.css and font-awesome.css--}}
+    <link rel="stylesheet" href="{!! elixir('css/less.css') !!}">
 
-    <link href="/css/base.css" rel="stylesheet">
+    {{--adminLTE require css file--}}
+    <link rel="stylesheet" href="/libs/ionicons/2.0.1/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
+    <link rel="stylesheet" href="/dist/css/skins/skin-blue.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <link rel="stylesheet" href="{!! elixir('css/vendor.css') !!}">
+    <link rel="stylesheet" href="{!! elixir('css/app.css') !!}">
 @endsection
 
 @section('js')
     <script src="{!! elixir('js/vendor.js') !!}"></script>
+
+    <!-- AdminLTE App -->
+    <script src="/dist/js/app.min.js"></script>
+
     <script src="{!! elixir('js/partials.js') !!}"></script>
-    {{--angular--}}
-    {{--<script src="/node_modules/angular/angular.min.js"></script>--}}
-    {{--<script src="/node_modules/angular-ui-router/release/angular-ui-router.min.js"></script>--}}
-    {{--<script src="/node_modules/oclazyload/dist/ocLazyLoad.min.js"></script>--}}
 
+    <script src="{!! elixir('js/appinit.js') !!}"></script>
     <script src="{!! elixir('js/app.js') !!}"></script>
-    {{--<script src="/app/base.js"></script>--}}
-    {{--<script src="/app/ocLazyload.config.js"></script>--}}
-    {{--<script src="/app/route.config.js"></script>--}}
-
-    {{--<script src="/plugins/ng-table/ng-table.js"></script>--}}
-    <script src="/libs/lodash/lodash.min.js"></script>
-    <script src="/app/common/directives/orderTrackedTable.js"></script>
-
-    {{--<script src="//cdnjs.cloudflare.com/ajax/libs/angular-sanitize/1.4.8/angular-sanitize.js"></script>--}}
-    {{--<script src="/node_modules/angular-ui-bootstrap/dist/ui-bootstrap-tpls.js"></script>--}}
-    {{--<script src="/node_modules/angular-ui-bootstrap/dist/dialogs.min.js"></script>--}}{{--依赖于ngSanitize和ui.bootstrap--}}
-
-    <script src="/plugins/jquerydatetime/jquery.datetimepicker.js"></script>
-    <script src="/app/common/directives/angular.datetime.js"></script>
-
-    <script src="/app/common/service/common.js"></script>
-    <script src="/app/user/user.js"></script>
-
-    {{--<link rel='stylesheet' href='/bower_components/textAngular/dist/textAngular.css'>--}}
-    {{--<script src='/bower_components/textAngular/dist/textAngular-rangy.min.js'></script>--}}
-    {{--<script src='/bower_components/textAngular/dist/textAngular-sanitize.min.js'></script>--}}
-    {{--<script src='/bower_components/textAngular/dist/textAngular.min.js'></script>--}}
 @endsection
 
 @section('content')

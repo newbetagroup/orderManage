@@ -14,7 +14,6 @@ var gulp = require('gulp'),
     Elixir = require('laravel-elixir');
 
 elixir.extend('ngHtml2Js', function (src, output, options) {
-   
     var defaultOptions = {
         moduleName: 'orderApp.partials',
         prefix: './tpl/'

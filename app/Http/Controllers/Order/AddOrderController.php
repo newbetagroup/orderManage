@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Order;
 
 use App\Models\Attribute;
 use App\Models\Domain\DomainWebsite;
@@ -97,7 +97,7 @@ class AddOrderController extends Controller
         {
             //回滚
             DB::rollBack();
-            //throw $e;
+            throw $e;
             //获取抛出的异常信息
             $errorMessage = $e->getMessage();
             //返回错误信息

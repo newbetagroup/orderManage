@@ -1,7 +1,7 @@
 /**
  * Created by geekzwb on 2016/12/14.
  */
-;(function (angular) {
+;(function () {
     'use strict';
     
     angular.module('performanceDashboard', []).service('PerformanceService',[
@@ -135,4 +135,4 @@
                 }
             }
         ])
-})(angular);
+})();

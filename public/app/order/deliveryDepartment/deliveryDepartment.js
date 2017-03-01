@@ -278,10 +278,15 @@
                 /*===================start 发货分组相关操作*/
                 self.shippingGroups = [];
                 self.isCheckedAbled = false; //不可选
-                var currentShippingGroup = new Date();
+
+                var currentTime = new Date();
+
+                var curMonth = (Array(2).join('0') + (currentTime.getMonth()+1)).slice(-2);
+                var curDate = (Array(2).join('0') + currentTime.getDate()).slice(-2);
+
                 self.currentShippingGroup = {
                     id: 0,
-                    name: currentShippingGroup.getFullYear()+''+(currentShippingGroup.getMonth()+1)+''+currentShippingGroup.getDate()
+                    name: currentTime.getFullYear() + '' + curMonth + '' + curDate
                 };
                 ShippingGroupService.fnGetShippingGroups().then(function (r) {
                     self.shippingGroups = r;

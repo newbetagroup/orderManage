@@ -111,31 +111,18 @@ orderApp.config([
                 templateUrl: './tpl/post/base.html',
                 resolve:{
                     loadDashboard:["$ocLazyLoad", function ($ocLazyLoad) {
-                        return $ocLazyLoad.load(["postDashboard"]);
+                        return $ocLazyLoad.load("postDashboard");
                     }]
-                },
-                controller: function ($state) {
-                   // $state.go('post.postIndex');
                 }
             })
             .state('post.postIndex', {
                 url: '/postIndex',
                 templateUrl: './tpl/post/postIndex.html',
-                resolve:{
-                    loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/css/timeline.css');
-                    }]
-                },
                 controller: 'PostTimelineCtrl'
             })
             .state('post.postDescription', {
                 url: '/postDescription/:postId',
                 templateUrl: './tpl/post/postDescription.html',
-                resolve:{
-                    loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/css/post.css');
-                    }]
-                },
                 controller: 'PostDescriptionCtrl'
             })
             .state('post.postManageIndex', {
@@ -477,9 +464,6 @@ orderApp.config([
                             '/app/order/common/commonService.js',
                             '/app/website/brand/brand.js'
                         ]);
-                    }],
-                    loadCss:["$ocLazyLoad", function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/css/order.css');
                     }]
                 }
             })
@@ -756,7 +740,11 @@ orderApp.config([
             })
     }
     ])
-    .run(function($rootScope, $state, $stateParams) {
+    .run([
+        '$rootScope',
+        '$state',
+        '$stateParams',
+        function($rootScope, $state, $stateParams) {
         $rootScope.$state = $state;
         $rootScope.$stateParams = $stateParams;
-    });
+    }]);

@@ -1,6 +1,9 @@
 {
-  "css/vendor.css": "css/vendor-6ab3aea1dd.css",
-  "js/app.js": "js/app-e2f07d337e.js",
-  "js/partials.js": "js/partials-471a259438.js",
-  "js/vendor.js": "js/vendor-37901c214c.js"
+  "css/app.css": "css/app-ecef1d2230.css",
+  "css/less.css": "css/less-88b86a91a8.css",
+  "css/vendor.css": "css/vendor-969276c1fa.css",
+  "js/app.js": "js/app-0625ab9dc0.js",
+  "js/appinit.js": "js/appinit-7e989a0364.js",
+  "js/partials.js": "js/partials-4588a9ef4f.js",
+  "js/vendor.js": "js/vendor-a5517f19d4.js"
 }

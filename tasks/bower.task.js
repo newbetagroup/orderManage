@@ -10,14 +10,16 @@ var uglify = require('gulp-uglify');
 var concat_sm = require('gulp-concat-sourcemap');
 var concat = require('gulp-concat');
 var gulpIf = require('gulp-if');
+var less = require('gulp-less');
 
 var Elixir = require('laravel-elixir');
 
 var Task = Elixir.Task;
 
-Elixir.extend('bower', function(jsOutputFile, jsOutputFolder, cssOutputFile, cssOutputFolder) {
+Elixir.extend('bower', function(jsOutputFile, jsOutputFolder, cssOutputFile, cssOutputFolder, lessOutputFile) {
 
 	var cssFile = cssOutputFile || 'vendor.css';
+	var lessFile = lessOutputFile || 'less.css';
 	var jsFile = jsOutputFile || 'vendor.js';
 
 	if (!Elixir.config.production){
@@ -49,6 +51,21 @@ Elixir.extend('bower', function(jsOutputFile, jsOutputFolder, cssOutputFile, css
 			}));
 	}).watch('bower.json');
 
+	new Task('bower-less', function(){
+		return gulp.src(mainBowerFiles())
+				.on('error', onError)
+				.pipe(filter('**/*.less'))
+				.pipe(less())
+				.pipe(concat(lessFile))
+				.pipe(gulpIf(config.production, cssnano({safe: true})))
+				.pipe(gulp.dest(cssOutputFolder || config.css.outputFolder))
+				.pipe(notify({
+					title: 'Laravel Elixir',
+					subtitle: 'Less Bower Files Imported!',
+					icon: __dirname + '/../node_modules/laravel-elixir/icons/laravel.png',
+					message: ' '
+				}));
+	}).watch('bower.json');
 
 	new Task('bower-css', function(){
 		return gulp.src(mainBowerFiles())
