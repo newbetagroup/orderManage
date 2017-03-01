@@ -258,7 +258,7 @@
                     //没有这个status
                     if(angular.equals({}, $scope.statusInfo)) {
                         dialogs.error('Error', '未找到该状态', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('website.status.index');
+                            $scope.$state.go('order.status.index');
                         });
                         return;
                     }

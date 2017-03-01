@@ -117,14 +117,14 @@
             <!-- Menu Toggle Button -->
             <a class="dropdown-toggle" data-toggle="dropdown">
               <!-- The user image in the navbar-->
-              <img src="/123.png" class="user-image" alt="User Image">
+              <img src="/images/123.png" class="user-image" alt="User Image">
              <!-- hidden-xs hides the username on small devices so only the image appears. -->
               <span class="hidden-xs">{{auth()->user()->name}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- The user image in the menu -->
               <li class="user-header">
-                <img src="/123.png" class="img-circle" alt="User Image">
+                <img src="/images/123.png" class="img-circle" alt="User Image">
                 <p>
                   {{auth()->user()->username}} - {{auth()->user()->identity}}
                   <small>最后登录:{{date('Y-m-d H:i',strtotime(auth()->user()->updated_at))}}</small>

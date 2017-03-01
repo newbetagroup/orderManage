@@ -7,6 +7,7 @@
     var orderApp = angular.module('zwb', [
         'ui.router',
         'oc.lazyLoad',
+        'orderApp.partials',
         'ui.bootstrap',
         'dialogs.main',
         'ngTable',
@@ -24,7 +25,11 @@
             $interpolateProvider.startSymbol('[:');
             $interpolateProvider.endSymbol(':]');
         }])
-        .run(function($rootScope,UserService,CommonService) {
+        .run([
+            '$rootScope',
+            'UserService',
+            'CommonService',
+            function($rootScope,UserService,CommonService) {
             var userInfo = null;
             UserService.getProfile().then(function (r) {
                 userInfo = {
@@ -40,8 +45,10 @@
                 })
             });
 
-        })
-        .run(function (ngTableDefaults) {
+        }])
+        .run([
+            'ngTableDefaults',
+            function (ngTableDefaults) {
             ngTableDefaults.$inject = ["ngTableDefaults"];
             ngTableDefaults.params.count = 10;
             ngTableDefaults.settings = {
@@ -49,4 +56,4 @@
                 paginationMaxBlocks: 3,
                 paginationMinBlocks: 1
             }
-        });
+        }]);

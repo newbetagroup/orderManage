@@ -212,7 +212,7 @@
                     //没有这个expressCompany
                     if(angular.equals({}, $scope.expressCompanyInfo)) {
                         dialogs.error('Error', '未找到该状态', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('website.expressCompany.index');
+                            $scope.$state.go('order.expressCompany.index');
                         });
                         return;
                     }

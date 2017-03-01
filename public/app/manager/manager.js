@@ -217,6 +217,23 @@
                             permissionInfo.pending = false;
                         })
                 };
+                //编辑权限
+                me.fnEditPermission = function (permissionInfo) {
+                    permissionInfo.pending = true;
+                    $http.put('/permission/'+ permissionInfo.id, permissionInfo)
+                        .then(function (r) {
+                            if(r.data.status == 1) {
+                                permissionInfo.editStatus = true;
+                            } else {
+                                permissionInfo.editStatus = false;
+                            }
+                        }, function (e) {
+                            permissionInfo.editStatus = false;
+                        })
+                        .finally(function () {
+                            permissionInfo.pending = false;
+                        })
+                };
                 //删除权限
                 me.fnDestroyPermission = function (id) {
                     $http.delete('/permission/'+id).then(function (r) {
@@ -549,9 +566,26 @@
         .controller('EditPermissionCtrl', [
             '$scope',
             'ManagerService',
-            function ($scope, ManagerService) {
-                console.log('stateParams', $scope.$state);
-                $scope.Manager = ManagerService;
+            '$http',
+            'dialogs',
+            function ($scope, ManagerService, $http, dialogs) {
+                $scope.permissionInfo = {};
+                var permissionId = $scope.$stateParams.permissionId;
+
+                $http.get('/permission/'+permissionId+'/edit').then(function (r) {
+                    if (r.data.status == 1) {
+                        $scope.permissionInfo = r.data.data;
+                    } else {
+                        dialogs.error('Error', '未找到该权限', {size:'sm'}).result.then(function (btn) {
+                            $scope.$state.go('manager.permission.index');
+                        });
+                    }
+                });
+
+                //提交修改
+                $scope.fnEditPermission = function () {
+                    ManagerService.fnEditPermission($scope.permissionInfo);
+                }
             }
         ])
 })();

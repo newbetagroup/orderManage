@@ -27,7 +27,9 @@ class CreateOdOrdersTable extends Migration
             $table->unsignedInteger('order_qty')->comment('订单商品总数');
             $table->unsignedInteger('od_status_id')->default(0)->comment('订单付款前状态，如未付款等');
             $table->unsignedInteger('od_pay_after_status_id')->default(0)->comment('订单付款后状态，如已发货等');
-            $table->timestamp('order_pay_after_date')->default('0000-00-00 00:00:00')->comment('订单付款后状态修改时间');
+            $table->unsignedSmallInteger('express_id')->default(0)->comment('货运方式id');
+            $table->unsignedSmallInteger('od_category_id')->default(0)->comment('产品分类，订单分类');
+            $table->timestamp('order_pay_after_date')->default('0000-00-00 00:00:00')->comment('订单付款后状态修改时间,整单时间？');
             $table->string('remark')->nullable()->comment('订单备注');
             $table->timestamps();
 

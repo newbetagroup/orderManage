@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Helpers\Contracts\OrderHelperContract;
-use App\OdOrder;
+use App\Models\Order\OdOrder;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -15,16 +15,18 @@ class CustomerServiceDepartmentController extends Controller
         'id' => 'equals',
         'website_id' => 'equals',
         'website_order_id' => 'equals',
-        'website_name' => 'like',
+        'express_id' => 'equals',
+        'od_category_id' => 'equals',
         'od_customer_id' => 'equals',
         'od_delivery_address_id' => 'equals',
         'website_supervisor_id' => 'equals',
-        'date_purchased' => 'like',
         'order_total' => 'equals',
         'order_currency' => 'equals',
         'order_qty' => 'equals',
         'od_status_id' => 'equals',
         'od_pay_after_status_id' => 'equals',
+        'website_name' => 'like',
+        'date_purchased' => 'like',
         'order_pay_after_date' => 'like',
         'remark' => 'like',
     ];
@@ -48,7 +50,7 @@ class CustomerServiceDepartmentController extends Controller
         $currentPage = $request->get('currentPage')?:1; //当前页码
         $itemsPerPage = $request->get('itemsPerPage')?:15;//每页有几条数据
         $skip = ($currentPage - 1)*$itemsPerPage;
-        $take = $request->get('takeCount')? $request->get('takeCount'):$itemsPerPage;
+        $take = $request->get('takeCount')?:$itemsPerPage;
 
         $orders = OdOrder::select('od_orders.*','od_customers.name','od_customers.email')
             ->join('od_customers', function ($join) {
@@ -65,7 +67,7 @@ class CustomerServiceDepartmentController extends Controller
                 if(isset($this->fields[$key]) && $this->fields[$key] == 'equals')
                     $orders = $orders->where($key, $value);
                 else
-                    $orders = $orders->where($key, 'like', $value.'%');
+                    $orders = $orders->where($key, 'like', '%'.$value.'%');
             }
         }
 

@@ -12,19 +12,19 @@
             '$timeout',
             function ($http, $q, CommonService, $timeout) {
                 var me = this;
-                me.MallStatusesInfo = {};
-                me.fnGetMallStatuses = function (filterValue, params, type) {
+                me.mallStatusesInfo = {};
+                me.fnGetMallStatus = function (filterValue, params, type) {
                     type = type || 'cache';//cache or remote
 
                     var deffered = $q.defer();
-                    if(angular.equals({}, me.MallStatusesInfo) || type == 'remote') {
+                    if(angular.equals({}, me.mallStatusesInfo) || type == 'remote') {
                         $http.get("/mallStatus").then(function (r) {
                             if(r.data.status != 1) {
                                 deffered.reject();
                                 return;
                             }
 
-                            me.MallStatusesInfo = r.data.data;
+                            me.mallStatusesInfo = r.data.data;
 
                             if(angular.isUndefined(params)) {
                                 var filteredData = CommonService.filterData(r.data.data.data,filterValue);
@@ -41,7 +41,7 @@
 
                     } else {
 
-                        var filteredData = CommonService.filterData(me.MallStatusesInfo.data,filterValue);
+                        var filteredData = CommonService.filterData(me.mallStatusesInfo.data,filterValue);
 
                         //!ng-table
                         if(angular.isUndefined(params)) {
@@ -55,58 +55,58 @@
                 };
 
                 //新增
-                me.fnAddWebsiteStatus = function (websiteStatus) {
-                    if(websiteStatus.pending) return;
-                    websiteStatus.pending =true;
-                    $http.post('/websiteStatus', websiteStatus)
+                me.fnAddMallStatus = function (mallStatus) {
+                    if(mallStatus.pending) return;
+                    mallStatus.pending =true;
+                    $http.post('/mallStatus', mallStatus)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                websiteStatus.addStatus = true;
-                                me.websiteStatusesInfo = {};//reload
+                                mallStatus.addStatus = true;
+                                me.mallStatusesInfo = {};//reload
                                 $timeout(function () {
-                                    websiteStatus.addStatus = null;
+                                    mallStatus.addStatus = null;
                                 }, 2000);
                             } else {
-                                websiteStatus.addStatus = false;
+                                mallStatus.addStatus = false;
                             }
                         }, function (e) {
-                            websiteStatus.addStatus = false;
+                            mallStatus.addStatus = false;
                         })
                         .finally(function () {
-                            websiteStatus.pending = false;
+                            mallStatus.pending = false;
                         })
                 };
 
                 //edit 修改
-                me.fnEditWebsiteStatus = function (websiteStatusInfo) {
-                    if(websiteStatusInfo.pending) return;
-                    websiteStatusInfo.pending =true;
-                    $http.put('/websiteStatus/'+websiteStatusInfo.id, websiteStatusInfo)
+                me.fnEditMallStatus = function (mallStatusInfo) {
+                    if(mallStatusInfo.pending) return;
+                    mallStatusInfo.pending =true;
+                    $http.put('/mallStatus/'+mallStatusInfo.id, mallStatusInfo)
                         .then(function (r) {
                             if(r.data.status == 1) {
-                                websiteStatusInfo.editStatus = true;
-                                me.websiteStatusesInfo = {};//reload
+                                mallStatusInfo.editStatus = true;
+                                me.mallStatusesInfo = {};//reload
                                 $timeout(function () {
-                                    websiteStatusInfo.editStatus = null;
+                                    mallStatusInfo.editStatus = null;
                                 }, 2000);
                             } else {
-                                websiteStatusInfo.editStatus = false;
+                                mallStatusInfo.editStatus = false;
                             }
                         }, function (e) {
-                            websiteStatusInfo.editStatus = false;
+                            mallStatusInfo.editStatus = false;
                         })
                         .finally(function () {
-                            websiteStatusInfo.pending = false;
+                            mallStatusInfo.pending = false;
                         });
                 };
 
                 //删除
-                me.fnDestroyWebsiteStatus = function (id, deleteAction) {
+                me.fnDestroyMallStatus = function (id, deleteAction) {
                     if(deleteAction.pending) return; //正在删除
                     deleteAction.pending =true;
-                    $http.delete('/websiteStatus/'+id).then(function (r) {
+                    $http.delete('/mallStatus/'+id).then(function (r) {
                             if(r.data.status == 1) {
-                                me.websiteStatusesInfo = {}; //reload：本地循环还是服务器remote重新拉取？
+                                me.mallStatusesInfo = {}; //reload：本地循环还是服务器remote重新拉取？
                                 deleteAction.status = true; //成功
                                 $timeout(function () {
                                     deleteAction.status = null;
@@ -122,11 +122,11 @@
                 
             }
         ])
-        .controller('WebsiteStatusIndexCtrl', [
-            'WebsiteStatusService',
+        .controller('MallStatusIndexCtrl', [
+            'MallStatusService',
             'NgTableParams',
             'dialogs',
-            function (WebsiteStatusService, NgTableParams, dialogs) {
+            function (MallStatusService, NgTableParams, dialogs) {
 
                 var getType = 'cache';// 每次去拉取posts的方式: cache or remote
 
@@ -148,7 +148,7 @@
                     };
                     var initialSettings = {
                         getData: function(params) {
-                            return WebsiteStatusService.fnGetWebsiteStatuses(self.filterValue, params, getType);
+                            return MallStatusService.fnGetMallStatus(self.filterValue, params, getType);
                         }
                     };
                     return new NgTableParams(initialParams, initialSettings);
@@ -162,64 +162,64 @@
                 //确认删除模态框
                 var dlg = null;
                 self.fnDestoryPost = function (id) {
-                    dlg = dialogs.confirm('Confirm','确定要删除该国家吗?',{size: 'sm'});
+                    dlg = dialogs.confirm('Confirm','确定要删除该状态吗?',{size: 'sm'});
                     dlg.result.then(function(btn){
                         //确认删除
-                        WebsiteStatusService.fnDestroyWebsiteStatus(id, self.deleteAction);
+                        MallStatusService.fnDestroyMallStatus(id, self.deleteAction);
                         getType = 'remote';
                         self.tableParams.reload().finally(function () {
                             getType = 'cache';
                         });//更新表格，重新拉取数据
                     },function(btn){
-                        console.log('取消删除websiteStatus');
+                        console.log('取消删除mallStatus');
                     });
                 }
 
             }])
-        .controller('WebsiteStatusAddCtrl', [
+        .controller('MallStatusAddCtrl', [
             '$scope',
-            'WebsiteStatusService',
-            function ($scope, WebsiteStatusService) {
-                $scope.websiteStatusInfo = {};
+            'MallStatusService',
+            function ($scope, MallStatusService) {
+                $scope.mallStatusInfo = {};
 
-                $scope.fnAddWebsiteStatus = function () {
-                    WebsiteStatusService.fnAddWebsiteStatus($scope.websiteStatusInfo);
+                $scope.fnAddMallStatus = function () {
+                    MallStatusService.fnAddMallStatus($scope.mallStatusInfo);
                 }
             }
         ])
-        .controller('WebsiteStatusEditCtrl', [
+        .controller('MallStatusEditCtrl', [
             '$scope',
-            'WebsiteStatusService',
+            'MallStatusService',
             '$filter',
             'dialogs',
-            function ($scope, WebsiteStatusService, $filter, dialogs) {
+            function ($scope, MallStatusService, $filter, dialogs) {
 
-                $scope.websiteStatusInfo = {};
+                $scope.mallStatusInfo = {};
 
-                var websiteStatusId = $scope.$stateParams.websiteStatusId;
+                var mallStatusId = $scope.$stateParams.mallStatusId;
+                MallStatusService.fnGetMallStatus().then(function (r) {
+                    var mallStatusesInfo = $filter('filter')(r, {id: mallStatusId});
 
-                WebsiteStatusService.fnGetWebsiteStatuses().then(function (r) {
-                    var websiteStatusesInfo = $filter('filter')(r, {id: websiteStatusId});
-                    angular.forEach(websiteStatusesInfo, function (value, key) {
-                        //所有的websiteStatuses中取出id为postId的一条数据
-                        if(value.id == websiteStatusId) {
-                            $scope.websiteStatusInfo = value;
+                    angular.forEach(mallStatusesInfo, function (value, key) {
+                        //所有的mallStatuses中取出id为postId的一条数据
+                        if(value.id == mallStatusId) {
+                            $scope.mallStatusInfo = value;
                             return false;
                         }
                     });
 
-                    //没有这个websiteStatus
-                    if(angular.equals({}, $scope.websiteStatusInfo)) {
+                    //没有这个mallStatus
+                    if(angular.equals({}, $scope.mallStatusInfo)) {
                         dialogs.error('Error', '未找到该网站状态', {size:'sm'}).result.then(function (btn) {
-                            $scope.$state.go('website.websiteStatus.index');
+                            $scope.$state.go('mall.mallStatus.index');
                         });
                         return;
                     }
                 });
 
                 //提交修改
-                $scope.fnEditWebsiteStatus = function () {
-                    WebsiteStatusService.fnEditWebsiteStatus($scope.websiteStatusInfo);
+                $scope.fnEditMallStatus = function () {
+                    MallStatusService.fnEditMallStatus($scope.mallStatusInfo);
                 }
             }
         ]);

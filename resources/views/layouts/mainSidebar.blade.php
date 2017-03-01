@@ -85,10 +85,13 @@
                 <a><i class="fa fa-internet-explorer"></i><span>店铺平台管理</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li ng-class="{active: $state.includes('mall.mall')}">
-                        <a ui-sref="mall.mall.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>域名管理</a>
+                        <a ui-sref="mall.mall.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>店铺管理</a>
                     </li>
                     <li ng-class="{active: $state.includes('mall.mallStatus')}">
                         <a ui-sref="mall.mallStatus.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>店铺状态管理</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('mall.mallPayType')}">
+                        <a ui-sref="mall.mallPayType.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-sitemap"></i>付款方式管理</a>
                     </li>
                 </ul>
             </li>
@@ -113,11 +116,23 @@
                     <li ng-class="{active: $state.includes('order.orderDepartment')}">
                         <a ui-sref="order.orderDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-suitcase"></i>订货部</a>
                     </li>
+                    <li ng-class="{active: $state.includes('order.purchaseGroup')}">
+                        <a ui-sref="order.purchaseGroup.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>订货分组(订货部)</a>
+                    </li>
                     <li ng-class="{active: $state.includes('order.deliveryDepartment')}">
                         <a ui-sref="order.deliveryDepartment.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货部</a>
                     </li>
                     <li ng-class="{active: $state.includes('order.orderCategory')}">
                         <a ui-sref="order.orderCategory.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>产品分类(发货部)</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.shippingGroup')}">
+                        <a ui-sref="order.shippingGroup.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-send-o"></i>发货分组(发货部)</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.supplier')}">
+                        <a ui-sref="order.supplier.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-handshake-o"></i>供应商</a>
+                    </li>
+                    <li ng-class="{active: $state.includes('order.stock')}">
+                        <a ui-sref="order.stock.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>产品库存</a>
                     </li>
                 </ul>
             </li>

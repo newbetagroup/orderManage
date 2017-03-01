@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Order;
 
 use App\Models\Order\OdCategory;
+use App\Models\SysConfig;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
@@ -30,16 +31,6 @@ class OrderCategoryController extends Controller
     }
     
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-    
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
@@ -54,30 +45,14 @@ class OrderCategoryController extends Controller
         }
         
         $domainAdStatus->save();
+
+        if($request->has('is_default') && $request->get('is_default') != 0) {
+            //设置为默认产品分类
+            $categoryConfig = ['name'=>'od_category_id', 'val'=>$domainAdStatus->id, 'desc'=>'订单产品默认分类id'];
+            SysConfig::updateOrCreate(['name'=>'od_category_id'], $categoryConfig);
+        }
         
         return ['status' => 1, 'msg' => 'add success'];
-    }
-    
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-    
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
     }
     
     /**
@@ -99,7 +74,13 @@ class OrderCategoryController extends Controller
         if(!$domainAdStatus->save()) {
             return ['status' => 0, 'msg' => '更新失败'];
         }
-        
+
+        if($request->has('is_default') && $request->get('is_default') != 0) {
+            //设置为默认产品分类
+            $categoryConfig = ['name'=>'od_category_id', 'val'=>$domainAdStatus->id, 'desc'=>'订单产品默认分类id'];
+            SysConfig::updateOrCreate(['name'=>'od_category_id'], $categoryConfig);
+        }
+
         return ['status' => 1, 'msg' => '更新成功'];
     }
     

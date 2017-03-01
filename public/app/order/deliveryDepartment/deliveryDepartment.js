@@ -7,42 +7,89 @@
             '$http',
             '$q',
             'OrderCommonService',
-            function ($http, $q, OrderCommonService) {
+            'BrandService',
+            function ($http, $q, OrderCommonService, BrandService) {
                 var me = this;
 
                 //表格顶部筛选
                 me.arrOrderStatuses = [];//[{id:1, title:"已付款"}]
                 me.arrOrderPayAfterStatuses = [];//[{id:1, title:"已付款"}]
+                me.arrOrderCategories = [];//
+                me.arrExpresses = [];//
+                me.arrBrands = [];//品牌搜索
                 //订单状态
                 OrderCommonService.fnGetOrderStatuses().then(function (r) {
                     me.orderStatuses = r.data;
                     angular.forEach(me.orderStatuses, function(value) {
-                        var status = {};
-                        status.title = value.name;
-                        status.id = value.id;
-                        me.arrOrderStatuses.push(status);
+                        var temp = {};
+                        temp.title = value.name;
+                        temp.id = value.id;
+                        me.arrOrderStatuses.push(temp);
                     })
-
+                });
+                //品牌
+                BrandService.fnGetBrands().then(function (r) {
+                    var brands = r;
+                    angular.forEach(brands, function(value) {
+                        var temp = {};
+                        temp.title = value.name;
+                        temp.id = value.id;
+                        me.arrBrands.push(temp);
+                    })
                 });
                 //发货等状态
                 OrderCommonService.fnGetOrderPayAfterStatuses().then(function (r) {
                     me.payAfterStatuses = r.data;
                     angular.forEach(me.payAfterStatuses, function(value) {
-                        var status = {};
-                        status.title = value.name;
-                        status.id = value.id;
-                        me.arrOrderPayAfterStatuses.push(status);
+                        var temp = {};
+                        temp.title = value.name;
+                        temp.name = value.name;
+                        temp.id = value.id;
+                        me.arrOrderPayAfterStatuses.push(temp);
                     })
                 });
 
+                /*============产品分类*/
+                me.orderCategories = [];
+                me.fnGetOrderCategories = function () {
+                    return OrderCommonService.fnGetOrderCategories().then(function (r) {
+                        me.orderCategories = r.data;
+                        angular.forEach(me.orderCategories, function(value) {
+                            var temp = {};
+                            temp.title = value.name;
+                            temp.name = value.name;
+                            temp.id = value.id;
+                            me.arrOrderCategories.push(temp);
+                        });
+                        me.orderCategories.unshift({id:0, name:'未分配'});
+                        return r;
+                    });
+                };
+                me.fnGetOrderCategories();
+
+                /*============货运方式*/
+                me.expresses = [];
+                me.fnGetExpresses = function () {
+                    return OrderCommonService.fnGetExpresses().then(function (r) {
+                        me.expresses = r.data;
+                        angular.forEach(me.expresses, function(value) {
+                            var temp = {};
+                            temp.title = value.name;
+                            temp.name = value.name;
+                            temp.id = value.id;
+                            me.arrExpresses.push(temp);
+                        });
+                        me.expresses.unshift({id:0, name:'未分配'});
+                        return r;
+                    });
+                };
+                me.fnGetExpresses();
+
+                //===========订单信息
                 me.fnGetOrders = function (searchRemoteInfo, params) {
 
                     searchRemoteInfo.orderBy = params.orderBy();
                     searchRemoteInfo.filters = params.filter();
-                    console.log(params);
-                    console.log(params.orderBy());
-                    console.log(params.filter());
-                    console.log(searchRemoteInfo);
                     params.count(searchRemoteInfo.itemsPerPage);
                     
                     var deffered = $q.defer();
@@ -53,7 +100,7 @@
                     });
 
                     //=========================== search
-                    $http.post("customerService/order", searchRemoteInfo).then(function (r) {
+                    $http.post("deliveryDepartment/order", searchRemoteInfo).then(function (r) {
                         if(r.data.status != 1) {
                             deffered.reject();
                             return;
@@ -63,6 +110,28 @@
                         deffered.resolve(r.data.data.data);
                     });
                     return deffered.promise;
+                };
+
+                /**
+                 * 将订单产品添加到发货分组
+                 * @param product
+                 */
+                me.addProductsToShippingGroup = function (product) {
+                    return $http.post('/productsToShippingGroup', product);
+                };
+
+                me.fnAddShippingGroup = function (shippingGroup) {
+                    return $http.post('/shippingGroup', shippingGroup);
+                };
+
+
+                //导出DHL
+                me.fnExportDHL = function(filters) {
+                    return $http.post('deliveryDepartment/exportDHL', {filters:filters},{responseType: 'arraybuffer'}).success(function (data) {
+                        var blob = new Blob([data], {type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"});
+                        var objectUrl = URL.createObjectURL(blob);
+                        window.open(objectUrl);
+                    });
                 }
             }
         ])
@@ -74,9 +143,10 @@
             'dialogs',
             'DeliveryDepartmentService',
             '$http',
-            function ($scope, NgTableParams, dialogs, DeliveryDepartmentService, $http) {
+            'ShippingGroupService',
+            function ($scope, NgTableParams, dialogs, DeliveryDepartmentService, $http, ShippingGroupService) {
                 var self = this;
-                self.CustomerSer = DeliveryDepartmentService;
+                self.DeliverySer = DeliveryDepartmentService;
 
                 self.searchRemoteInfo = {};
                 self.searchRemoteInfo.totalItems = 100;
@@ -111,13 +181,11 @@
                 /*==================angular-bootstrap-ui 分页==================*/
                 //去到第几页
                 self.fnSetPage = function (pageNo) {
-                    console.log(pageNo);
                     self.searchRemoteInfo.currentPage = pageNo;
                     self.tableParams.reload();
                 };
                 //当前页数已经改变
                 self.fnPageChanged = function() {
-                    console.log('Page changed to: ' + self.searchRemoteInfo.currentPage);
                     self.tableParams.reload();
                 };
                 //每页显示几条
@@ -206,6 +274,83 @@
                     });
                     return diff;
                 }
+
+                /*===================start 发货分组相关操作*/
+                self.shippingGroups = [];
+                self.isCheckedAbled = false; //不可选
+
+                var currentTime = new Date();
+
+                var curMonth = (Array(2).join('0') + (currentTime.getMonth()+1)).slice(-2);
+                var curDate = (Array(2).join('0') + currentTime.getDate()).slice(-2);
+
+                self.currentShippingGroup = {
+                    id: 0,
+                    name: currentTime.getFullYear() + '' + curMonth + '' + curDate
+                };
+                ShippingGroupService.fnGetShippingGroups().then(function (r) {
+                    self.shippingGroups = r;
+                    self.shippingGroups.unshift({id:0, name:'未分配'});
+                });
+
+                //是否已经分配发货分组
+                self.isShippingGroupChecked = function (product) {
+                    if (product.shipping_group_id == 0) return false;
+                    return true;
+                };
+
+                //将商品添加进发货分组
+                self.addProductsToShippingGroup = function (product) {
+                    if (product.shipping_group_id == 0 && self.currentShippingGroup.id == 0) {
+                        dialogs.notify('Local Warn', '当前没有选择分组，请新增或选择！');
+                        return false;
+                    }
+                    if(product.shipping_group_id != 0) product.shipping_group_id = 0;//已经选择则从分组移除
+                    else product.shipping_group_id = self.currentShippingGroup.id; //添加进分组
+                    
+                    DeliveryDepartmentService.addProductsToShippingGroup(product).then(function (r) {
+                        if (r.data.status != 1) {
+                            dialogs.error('Server Error', '添加进分组失败，请重试！');
+                        }
+                    });
+                };
+
+                //选择发货分组
+                self.fnSelectShippingGroup = function () {
+                    self.currentShippingGroup.id = self.shippingGroupSelect.id;
+                    self.currentShippingGroup.name = self.shippingGroupSelect.name;
+                    self.isCheckedAbled = true;//checkbox可选择的
+                };
+
+                //新增发货分组
+                self.fnAddShippingGroup = function () {
+                    var cShippingGroup = {};
+                    cShippingGroup.name = self.currentShippingGroup.name;
+                    DeliveryDepartmentService.fnAddShippingGroup(cShippingGroup).then(function (r) {
+                        if(r.data.status != 1) {
+                            dialogs.error('Server error', "新增发货分组失败，请重试");
+                            return;
+                        }
+                        //返回新增的id赋予给当前的
+                        self.currentShippingGroup.id = r.data.id;
+
+                        self.isCheckedAbled = true;//checkbox可选择的
+
+                        //更新发货分组的缓存
+                        ShippingGroupService.fnGetShippingGroups('remote').then(function (r) {
+                            self.shippingGroups = r;
+                        });
+
+                        dialogs.notify("提示", "新增发货分组成功，现在您可以将产品直接勾选进该分组了", {'size': 'sm'})
+                    })
+                };
+                /*===================end 发货分组相关操作*/
+
+                /*====================start DHL??????*/
+                self.fnExportDHL = function () {
+                    var filters = self.tableParams.filter();
+                    DeliveryDepartmentService.fnExportDHL(filters);
+                };
             }
         ]);
     

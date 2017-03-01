@@ -39,10 +39,6 @@
 
                     searchRemoteInfo.orderBy = params.orderBy();
                     searchRemoteInfo.filters = params.filter();
-                    console.log(params);
-                    console.log(params.orderBy());
-                    console.log(params.filter());
-                    console.log(searchRemoteInfo);
                     params.count(searchRemoteInfo.itemsPerPage);
                     
                     var deffered = $q.defer();
@@ -63,6 +59,18 @@
                         deffered.resolve(r.data.data.data);
                     });
                     return deffered.promise;
+                };
+
+                /**
+                 * 将订单产品添加到订货分组，修改采购价
+                 * @param product
+                 */
+                me.addProductsToPurchaseGroup = function (product) {
+                   return $http.post('productsToPurchaseGroup', product);
+                };
+                
+                me.fnAddPurchaseGroup = function (purchaseGroup) {
+                    return $http.post('/purchaseGroup', purchaseGroup);
                 }
             }
         ])
@@ -74,7 +82,8 @@
             'dialogs',
             'OrderDepartmentService',
             '$http',
-            function ($scope, NgTableParams, dialogs, OrderDepartmentService, $http) {
+            'PurchaseGroupService',
+            function ($scope, NgTableParams, dialogs, OrderDepartmentService, $http, PurchaseGroupService) {
                 var self = this;
                 self.OrderDepartmentSer = OrderDepartmentService;
 
@@ -205,6 +214,74 @@
                         }
                     });
                     return diff;
+                }
+
+            //================采购分组相关操作
+                self.purchaseGroups = [];
+                self.isCheckedAbled = false; //不可选
+
+                var currentTime = new Date();
+                var curMonth = (Array(2).join('0') + (currentTime.getMonth()+1)).slice(-2);
+                var curDate = (Array(2).join('0') + currentTime.getDate()).slice(-2);
+
+                self.currentPurchaseGroup = {
+                    id: 0,
+                    name: currentTime.getFullYear() + '' + curMonth + '' + curDate
+                };
+                PurchaseGroupService.fnGetPurchaseGroups().then(function (r) {
+                    self.purchaseGroups = r;
+                });
+                
+                //
+                self.isPurchaseGroupChecked = function (product) {
+                    if (product.purchase_group_id == 0) return false;
+                    return true;
+                };
+
+                //将商品添加进采购分组，或者修改采购价等
+                self.addProductsToPurchaseGroup = function (product) {
+                    if (product.purchase_group_id == 0 && self.currentPurchaseGroup.id == 0) {
+                        dialogs.notify('Local Warn', '当前没有选择分组，请新增或选择！');
+                        return false;
+                    }
+                    if(product.purchase_group_id != 0) product.purchase_group_id = 0;//已经选择则从分组移除
+                    else product.purchase_group_id = self.currentPurchaseGroup.id; //添加进分组
+
+                    OrderDepartmentService.addProductsToPurchaseGroup(product).then(function (r) {
+                        if (r.data.status != 1) {
+                            dialogs.error('Server Error', '添加进分组失败，请重试！');
+                        }
+                    });
+                };
+
+                //选择采购分组
+                self.fnSelectPurchaseGroup = function () {
+                    self.currentPurchaseGroup.id = self.purchaseGroupSelect.id;
+                    self.currentPurchaseGroup.name = self.purchaseGroupSelect.name;
+                    self.isCheckedAbled = true;//checkbox可选择的
+                };
+
+                //新增采购分组
+                self.fnAddPurchaseGroup = function () {
+                    var cPurchaseGroup = {};
+                    cPurchaseGroup.name = self.currentPurchaseGroup.name;
+                    OrderDepartmentService.fnAddPurchaseGroup(cPurchaseGroup).then(function (r) {
+                        if(r.data.status != 1) {
+                            dialogs.error('Server error', "新增采购分组失败，请重试");
+                            return;
+                        }
+                        //返回新增的id赋予给当前的
+                        self.currentPurchaseGroup.id = r.data.id;
+
+                        self.isCheckedAbled = true;//checkbox可选择的
+
+                        //更新采购分组的缓存
+                        PurchaseGroupService.fnGetPurchaseGroups('remote').then(function (r) {
+                            self.purchaseGroups = r;
+                        });
+
+                        dialogs.notify("提示", "新增采购分组成功，现在您可以将产品直接勾选进该分组了", {'size': 'sm'})
+                    })
                 }
             }
         ]);

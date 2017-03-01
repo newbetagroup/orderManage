@@ -152,6 +152,11 @@ return [
         Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
         /*laravel debugbar*/
         Barryvdh\Debugbar\ServiceProvider::class,
+        /*excel*/
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+
+        /*barcode*/
+        Milon\Barcode\BarcodeServiceProvider::class,
     ],
 
     /*
@@ -202,7 +207,11 @@ return [
 
         /*laravel debugbar*/
         'Debugbar' => Barryvdh\Debugbar\Facade::class,
-
+        /*excel*/
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        /*barcode*/
+        'DNS1D' => Milon\Barcode\Facades\DNS1DFacade::class,
+        'DNS2D' => Milon\Barcode\Facades\DNS2DFacade::class,
     ],
 
 ];
