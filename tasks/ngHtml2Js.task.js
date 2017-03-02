@@ -1,5 +1,5 @@
 /**
- * 将
+ * 将html转成angular的$tempalteCache
  * Created by geekzwb on 2017/2/24.
  */
 var gulp = require('gulp'),

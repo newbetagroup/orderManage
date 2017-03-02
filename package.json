@@ -2,10 +2,6 @@
   "name": "ordermanagesystem",
   "version": "1.0.0",
   "description": "订单管理系统",
-  "main": "gulpfile.js",
-  "directories": {
-    "test": "tests"
-  },
   "private": true,
   "devDependencies": {
     "angular-mocks": "^1.5.2",
