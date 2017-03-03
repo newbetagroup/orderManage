@@ -3,6 +3,8 @@ require('./tasks/bower.task.js');
 require('./tasks/ngHtml2Js.task.js');
 var bowerDir='resources/assets/bower/';
 
+//elixir.config.sourcemaps = false;
+
 /*
  |--------------------------------------------------------------------------
  | Elixir Asset Management
@@ -15,7 +17,6 @@ var bowerDir='resources/assets/bower/';
  */
 
 elixir(function(mix) {
-    //mix.sass('app.scss');
     var assets = [
         'public/js/vendor.js',
         'public/js/partials.js',
@@ -52,5 +53,8 @@ elixir(function(mix) {
         .ngHtml2Js('./resources/views/tpl/**/*.html')
         .copy([bowerDir + 'font-awesome/fonts', bowerDir+'bootstrap/fonts'], 'public/build/fonts')
         .copy(['public/fonts'], 'public/build/fonts')
-        .version(assets);
+        .version(assets)
+        .browserSync({
+            proxy: 'ordermanage.com'
+        });
 });

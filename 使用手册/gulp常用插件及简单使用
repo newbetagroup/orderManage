@@ -1,0 +1,287 @@
+![gulp自动化](http://upload-images.jianshu.io/upload_images/1245223-f1682d270e570f41.jpg?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
+
+## gulp-uglify （JS压缩）
+
+gulp-uglify安装:
+```
+npm install --save-dev gulp-uglify
+```
+gulp-uglify用来压缩js文件，使用的是uglify引擎。
+```
+var gulp = require('gulp');  //加载gulp
+var uglify = require('gulp-uglify');  //加载js压缩
+
+// 定义一个任务 compass
+gulp.task('compass', function () {
+    gulp.src(['js/*.js','!js/*.min.js'])  //获取文件，同时过滤掉.min.js文件
+        .pipe(uglify())
+        .pipe(gulp.dest('javascript/'));  //输出文件
+});
+```
+小技巧，第二个参数`'！js/*.min.js'`是用来过滤掉后缀为`min.js`，`！`感叹号为排除模式。
+
+## gulp-minify-css（CSS压缩）
+
+gulp-minify-css安装：
+```
+npm install --save-dev gulp-minify-css
+```
+可以使用它来压缩CSS文件
+```
+var gulp = require('gulp');
+var minify = require('gulp-minify-css');
+
+gulp.task('cssmini', function () {
+    gulp.src(['css/*.css', '!css/*.min.css'])  //要压缩的css
+        .pipe(minify())
+        .pipe(gulp.dest('buildcss/'));
+});
+```
+
+## gulp-minify-html（html压缩）
+
+gulp-minify-html安装：
+```
+npm install --save-dev gulp-minify-html
+```
+可以使用它来压缩html文件.
+```
+var gulp = require('gulp');
+var htmlmini = require('gulp-minify-html');
+
+gulp.task('htmlmini', function () {
+    gulp.src('*.html')
+        .pipe(htmlmini())
+        .pipe(gulp.dest('minihtml'));
+})
+```
+
+## gulp-jshint（JS代码检查）
+
+gulp-jshint安装：
+```
+npm install --save-dev gulp-jshint
+```
+可以用来检查JS的代码
+```
+var gulp = require('gulp');
+var jshint = require("gulp-jshint");
+
+gulp.task('jsLint', function () {
+    gulp.src('js/*.js')
+    .pipe(jshint())
+    .pipe(jshint.reporter()); // 输出检查结果
+});
+```
+
+## gulp-concat（文件合并）
+
+gulp-concat安装：
+```
+npm install --save-dev gulp-concat
+```
+
+合并CSS与JS文件，减少http请求。
+```
+var gulp = require('gulp');
+var concat = require("gulp-concat");
+
+gulp.task('concat', function () {
+    gulp.src('js/*.js')  //要合并的文件
+    .pipe(concat('all.js'))  // 合并匹配到的js文件并命名为 "all.js"
+    .pipe(gulp.dest('dist/js'));
+});
+```
+
+## gulp-less（编译Less）
+
+gulp-less安装：
+```
+npm install --save-dev gulp-less
+```
+
+把less文件转换为css。
+```
+var gulp = require('gulp'),
+    less = require("gulp-less");
+
+gulp.task('compile-less', function () {
+    gulp.src('less/*.less')
+    .pipe(less())
+    .pipe(gulp.dest('dist/css'));
+});
+```
+
+## gulp-sass（编译Sass）
+
+gulp-sass安装：
+```
+npm install --save-dev gulp-sass
+```
+
+把scss文件转换为sass文件。
+```
+var gulp = require('gulp'),
+    sass = require("gulp-sass");
+
+gulp.task('compile-sass', function () {
+    gulp.src('sass/*.sass')
+    .pipe(sass())
+    .pipe(gulp.dest('dist/css'));
+});
+```
+
+## gulp-imagemin（压缩图片）
+
+gulp-imagemin安装：
+```
+npm install --save-dev gulp-imagemin
+```
+
+可以使用gulp-imagemin的插件来压缩jpg、png、gif等图片。（imagemin也是有插件的，是基于imagemin产生的插件，所以前缀是imagenin开头）
+
+压缩png插件-imagemin-pngquant安装：
+```
+$npminstall--save-devimagemin-pngquant
+```
+
+gulpfile.js:
+```
+var gulp = require('gulp');
+var imagemin = require('gulp-imagemin');
+var pngquant = require('imagemin-pngquant'); //png图片压缩插件
+
+gulp.task('default', function () {
+    return gulp.src('src/images/*')
+        .pipe(imagemin({
+            progressive: true,
+            use: [pngquant()] //使用pngquant来压缩png图片
+        }))
+        .pipe(gulp.dest('dist'));
+});
+```
+
+gulp-imagemin的使用比较复杂一点，它本身也有很多插件（更多imagemin插件），这里只是简单介绍一下，要想压缩不同格式的图片，必须对应安装不同的插件，这里只安装了pngquant插件。按照nodejs的模块化思想，每个require只包含一个功能，这样就可以达到按需加载的目的。
+
+## gulp-livereload（自动刷新）
+
+gulp-livereload安装：
+```
+npm install --save-dev gulp-livereload
+```
+
+当代码变化时，它可以帮助我们自动刷新页面，该插件最好配合谷歌浏览器，且要安装`livereload chrome extension`扩展插件，否则无效。
+
+```
+var gulp = require('gulp'),
+    less = require('gulp-less'),
+    livereload = require('gulp-livereload');
+
+gulp.task('less', function() {
+  gulp.src('less/*.less')
+    .pipe(less())
+    .pipe(gulp.dest('css'))
+    .pipe(livereload());
+});
+
+gulp.task('watch', function() {
+  livereload.listen(); //要在这里调用listen()方法
+  gulp.watch('less/*.less', ['less']);  //监听目录下的文件，若文件发生变化，则调用less任务。
+});
+```
+
+## gulp-csslint
+
+检查css的语法错误。
+安装：
+```
+npm install --save-dev gulp-csslint
+```
+
+配置任务：
+```
+var gulp = require('gulp');
+var csslint = require('gulp-csslint');
+
+gulp.task('css', function() {
+    gulp.src('src/css/*.css')
+    .pipe(csslint())
+    .pipe(csslint.reporter());
+});
+```
+需要配置，配置地址[gulp-csslint/](https://www.npmjs.com/package/gulp-csslint/)
+
+## gulp-csscomb
+
+格式化css代码，美化css代码，更容易阅读。
+安装：
+```
+npm install --save-dev gulp-csscomb
+```
+配置任务：
+```
+var gulp = require('gulp');
+var csscomb = require('gulp-csscomb');
+
+gulp.task('styles', function() {
+    gulp.src('src/css/main.css')
+    .pipe(csscomb())
+    .pipe(gulp.dest('dist/css'));
+});
+```
+
+## gulp-load-plugins
+
+插件按需加载插件，在一个项目中需要使用很多插件的时候，为了避免在`gulpfile.js`文件头引入过多的插件，造成代码的冗余，引用改插件，能够很好的解决这个问题。
+安装：
+```
+npm install --save-dev gulp-load-plugins
+```
+配置需要用到的插件，在package.json中配置
+
+存在devDependencies的话可以不用配置
+```
+"dependencies": {
+    //下边为用到的插件
+    "gulp-jshint": "*",
+    "gulp-concat": "*"
+}
+```
+在任务中使用：
+```
+var gulp = require('gulp');
+var gulpLoadPlugins = require('gulp-load-plugins');
+var plugins = gulpLoadPlugins();
+```
+或者
+```
+var plugins = require('gulp-load-plugins')();
+```
+然后在使用的时候，下边的是相等的，
+```
+plugins.jshint == require('gulp-jshint');
+plugins.concat == require('gulp-concat');
+```
+因此，在使用的时候，我们可以直接通过左边的变量来代替右边的引用，每个插件都是**惰性加载**的，你不会注意到任何差异。
+配置任务：
+```
+var gulp = require('gulp');
+var $ = require('gulp-load-plugins')();
+
+gulp.task('styles', function() {
+    gulp.src('src/styles/bootstrap.less')
+    .pipe($.less({strictMath: true}))
+    .pipe($.autoprefixer([
+    'Android 2.3',
+    'Android >= 4',
+    'Chrome >= 20',
+    'Firefox >= 24', // Firefox 24 is the latest ESR
+    'Explorer >= 8',
+    'iOS >= 6',
+    'Opera >= 12',
+    'Safari >= 6']))
+    .pipe($.csscomb())
+    .pipe(gulp.dest('./build/css'));
+});
+```
+了解更多配置信息https://www.npmjs.com/package/gulp-load-plugins

@@ -4,8 +4,11 @@ Homestead.yaml
 Homestead.json
 .env
 /.idea
-/public/storage
 /storage
 composer.lock
 /resources/assets/bower
 *.zip
+public/storage
+public/js
+public/css
+public/build
