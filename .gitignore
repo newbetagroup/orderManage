@@ -8,7 +8,8 @@ Homestead.json
 composer.lock
 /resources/assets/bower
 *.zip
-public/storage
-public/js
-public/css
-public/build
+/public/storage
+/public/views
+/public/js
+/public/css
+/public/build

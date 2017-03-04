@@ -152,7 +152,7 @@ orderApp.config([
                 url: '/performances',
                 resolve:{
                   loadPerformanceCtrl: ["$ocLazyLoad", function ($ocLazyLoad) {
-                      return $ocLazyLoad.load('/app/performance/performance.js');
+                      return $ocLazyLoad.load('/build/app/performance/performance.js');
                   }]
                 },
                 views: {
@@ -169,7 +169,7 @@ orderApp.config([
                 templateUrl: './tpl/leaves/records.html',
                 resolve: {
                     loadleaveRecordsDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/leaves/leaveRecords.js');
+                        return $ocLazyLoad.load('/build/app/leaves/leaveRecords.js');
                     }]
                 },
                 controller: 'LeaveRecordsController'
@@ -185,7 +185,7 @@ orderApp.config([
                 url:'/server',
                 resolve: {
                     loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/website/server/server.js');
+                        return $ocLazyLoad.load('/build/app/website/server/server.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -210,7 +210,7 @@ orderApp.config([
                 url:'/country',
                 resolve: {
                     loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/website/country/country.js');
+                        return $ocLazyLoad.load('/build/app/website/country/country.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -235,7 +235,7 @@ orderApp.config([
                 url:'/brand',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/website/brand/brand.js');
+                        return $ocLazyLoad.load('/build/app/website/brand/brand.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -260,7 +260,7 @@ orderApp.config([
                 url:'/adStatus',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/website/adStatus/adStatus.js');
+                        return $ocLazyLoad.load('/build/app/website/adStatus/adStatus.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -285,7 +285,7 @@ orderApp.config([
                 url:'/websiteStatus',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/website/websiteStatus/websiteStatus.js');
+                        return $ocLazyLoad.load('/build/app/website/websiteStatus/websiteStatus.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -310,7 +310,7 @@ orderApp.config([
                 url:'/host',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/website/host/host.js');
+                        return $ocLazyLoad.load('/build/app/website/host/host.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -336,18 +336,18 @@ orderApp.config([
                 resolve: {
                     loadOtherDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load([
-                            '/app/website/server/server.js',
-                            '/app/website/host/host.js',
-                            '/app/website/websiteStatus/websiteStatus.js',
-                            '/app/website/adStatus/adStatus.js',
-                            '/app/website/brand/brand.js',
-                            '/app/website/country/country.js'
+                            '/build/app/website/server/server.js',
+                            '/build/app/website/host/host.js',
+                            '/build/app/website/websiteStatus/websiteStatus.js',
+                            '/build/app/website/adStatus/adStatus.js',
+                            '/build/app/website/brand/brand.js',
+                            '/build/app/website/country/country.js'
                         ]).then(function () {
-                            return $ocLazyLoad.load('/app/website/website/website.js');
+                            return $ocLazyLoad.load('/build/app/website/website/website.js');
                         });
                     }],
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/website/website/website.js');
+                        return $ocLazyLoad.load('/build/app/website/website/website.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -378,10 +378,10 @@ orderApp.config([
                 url:'/mall',
                 resolve: {
                     loadStatusDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/mall/mallStatus/mallStatus.js');
+                        return $ocLazyLoad.load('/build/app/mall/mallStatus/mallStatus.js');
                     }],
                     loadMallDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/mall/mall/mall.js');
+                        return $ocLazyLoad.load('/build/app/mall/mall/mall.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -407,7 +407,7 @@ orderApp.config([
                 url:'/mallStatus',
                 resolve: {
                     loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/mall/mallStatus/mallStatus.js');
+                        return $ocLazyLoad.load('/build/app/mall/mallStatus/mallStatus.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -433,7 +433,7 @@ orderApp.config([
                 url:'/mallPayType',
                 resolve: {
                     loadServerDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/mall/mallPayType/mallPayType.js');
+                        return $ocLazyLoad.load('/build/app/mall/mallPayType/mallPayType.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -460,9 +460,9 @@ orderApp.config([
                 resolve: {
                     loadOrderCommonService: ['$ocLazyLoad', function ($ocLazyLoad) {
                         return $ocLazyLoad.load([
-                            '/app/common/directives/zwbMagnifyingGlass.js',
-                            '/app/order/common/commonService.js',
-                            '/app/website/brand/brand.js'
+                            '/build/app/common/directives/zwbMagnifyingGlass.js',
+                            '/build/app/order/common/commonService.js',
+                            '/build/app/website/brand/brand.js'
                         ]);
                     }]
                 }
@@ -472,7 +472,7 @@ orderApp.config([
                 url:'/orderStatus',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/status/status.js');
+                        return $ocLazyLoad.load('/build/app/order/status/status.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -497,7 +497,7 @@ orderApp.config([
                 url:'/orderPayAfterStatus',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/orderPayAfterStatus/orderPayAfterStatus.js');
+                        return $ocLazyLoad.load('/build/app/order/orderPayAfterStatus/orderPayAfterStatus.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -522,7 +522,7 @@ orderApp.config([
                 url:'/express',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/express/express.js');
+                        return $ocLazyLoad.load('/build/app/order/express/express.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -547,7 +547,7 @@ orderApp.config([
                 url:'/expressCompany',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/expressCompany/expressCompany.js');
+                        return $ocLazyLoad.load('/build/app/order/expressCompany/expressCompany.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -572,7 +572,7 @@ orderApp.config([
                 url:'/customerServiceDepartment',
                 resolve: {
                     loadBrandDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/customerServiceDepartment/customerServiceDepartment.js');
+                        return $ocLazyLoad.load('/build/app/order/customerServiceDepartment/customerServiceDepartment.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -587,10 +587,10 @@ orderApp.config([
                 url:'/orderDepartment',
                 resolve: {
                     loadpurchaseGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/purchaseGroup/purchaseGroup.js');
+                        return $ocLazyLoad.load('/build/app/order/purchaseGroup/purchaseGroup.js');
                     }],
                     loadorderDepartmentDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/orderDepartment/orderDepartment.js');
+                        return $ocLazyLoad.load('/build/app/order/orderDepartment/orderDepartment.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -605,7 +605,7 @@ orderApp.config([
                 url:'/purchaseGroup',
                 resolve: {
                     loadpurchaseGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/purchaseGroup/purchaseGroup.js');
+                        return $ocLazyLoad.load('/build/app/order/purchaseGroup/purchaseGroup.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -635,10 +635,10 @@ orderApp.config([
                 url:'/deliveryDepartment',
                 resolve: {
                     loadShippingGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/shippingGroup/shippingGroup.js');
+                        return $ocLazyLoad.load('/build/app/order/shippingGroup/shippingGroup.js');
                     }],
                     loadDeliveryDepartmentDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/deliveryDepartment/deliveryDepartment.js');
+                        return $ocLazyLoad.load('/build/app/order/deliveryDepartment/deliveryDepartment.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -653,7 +653,7 @@ orderApp.config([
                 url:'/category',
                 resolve: {
                     loadOrderCategoryDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/category/orderCategory.js');
+                        return $ocLazyLoad.load('/build/app/order/category/orderCategory.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -678,7 +678,7 @@ orderApp.config([
                 url:'/shippingGroup',
                 resolve: {
                     loadShippingGroupDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/shippingGroup/shippingGroup.js');
+                        return $ocLazyLoad.load('/build/app/order/shippingGroup/shippingGroup.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -703,7 +703,7 @@ orderApp.config([
                 url:'/supplier',
                 resolve: {
                     loadSupplierDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/supplier/supplier.js');
+                        return $ocLazyLoad.load('/build/app/order/supplier/supplier.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'
@@ -728,7 +728,7 @@ orderApp.config([
                 url:'/stock',
                 resolve: {
                     loadSupplierDashboard: ['$ocLazyLoad', function ($ocLazyLoad) {
-                        return $ocLazyLoad.load('/app/order/stock/stock.js');
+                        return $ocLazyLoad.load('/build/app/order/stock/stock.js');
                     }]
                 },
                 template: '<div ui-view=""></div>'

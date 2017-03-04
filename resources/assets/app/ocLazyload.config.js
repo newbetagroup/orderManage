@@ -7,19 +7,19 @@ orderApp.constant("Modules_Config",[
         {
             name:"userDashboard",
             files:[
-                "app/user/user.js"
+                "build/app/user/user.js"
             ]
         },
         {
             name:"managerDashboard",
             files:[
-                "app/manager/manager.js"
+                "build/app/manager/manager.js"
             ]
         },
         {
             name:"postDashboard",
             files:[
-                "app/post/post.js"
+                "build/app/post/post.js"
             ]
         }
     ])
