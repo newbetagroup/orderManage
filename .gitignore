@@ -10,3 +10,6 @@ composer.lock
 *.zip
 /public/storage
 /public/views
+/public/js
+/public/css
+/public/build
