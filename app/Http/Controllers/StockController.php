@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\DB;
 
 class StockController extends Controller
 {
@@ -110,5 +111,70 @@ class StockController extends Controller
 		if($stockObj->save()) return true;
 
 		return false;
+	}
+
+	/**
+	 * 手动添加新产品与库存
+	 * @param Request $request
+	 * @return array
+	 */
+	public function newProduct(Request $request)
+	{
+
+		DB::beginTransaction();
+
+		try{
+			$product = new Product();
+			$product->sku = $request->sku;
+			$product->imgUrl = $request->imgUrl;
+			if($request->has('productName')) $product->productName = $request->productName;
+			$product->save();
+
+			$productId = $product->id;
+
+			if($request->has('attributes')) $attributesJson = $this->storeAttributes($request->attributes);
+
+			//库存表
+			$stock = Stock::updateOrCreate(['product_id' => $productId,'attributes' => $attributesJson],
+					[
+							'product_id' => $productId,
+							'product_name' => $product->productName,
+							'attributes' => $attributesJson,
+							'sku' => $product->sku,
+							'store_count' => $request->has('storeCount')? $request->storeCount : 0
+					]);
+
+			//提交事务
+			DB::commit();
+
+		} catch(\Exception $e) {
+			//回滚
+			DB::rollBack();
+			//throw $e;
+			//获取抛出的异常信息
+			$errorMessage = $e->getMessage();
+			//返回错误信息
+			return ['status' => 0, 'msg' => $errorMessage];
+		}
+
+		return ['status' => 1, 'msg' => 'success'];
+	}
+
+	/**
+	 * 返回$attributes 的json格式，key为数据库id，value为name
+	 * @param $attributes  string
+	 * @return mixed json
+	 */
+	private function storeAttributes($attributes)
+	{
+		//$attributes = explode(';', $attributes);
+
+		$arrAttribute = [];
+		foreach ($attributes as $attribute) {
+			$objAttribute = Attribute::firstOrCreate(['name' => $attribute]);
+			$arrAttribute[$objAttribute->id] = $objAttribute->name;
+		}
+
+		return json_encode($arrAttribute);
 	}
 }

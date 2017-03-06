@@ -134,6 +134,9 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     //产品及库存
     Route::any('stock/index', ['as' => 'stock.index', 'uses' => 'StockController@index']);
     Route::post('stock/update', ['as' => 'stock.update', 'uses' => 'StockController@updateStocks']);
+
+    //订单详情
+    Route::put('orderDetail', ['as' => 'order.detail', 'uses' => 'OrderDetailsController@index']);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {

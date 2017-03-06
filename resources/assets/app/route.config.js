@@ -738,6 +738,17 @@ orderApp.config([
                 templateUrl: './tpl/order/stock/index.html',
                 controller: 'StockIndexCtrl as stock'
             })
+        //订单详情
+            .state('order.detail', {
+                url: 'index',
+                templateUrl: './tpl/order/detail/index.html',
+                resolve: {
+                    loadJs: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load('/build/app/order/detail/detail.js');
+                    }]
+                },
+                controller: 'OrderDetailController as orderDetail'
+            })
     }
     ])
     .run([
