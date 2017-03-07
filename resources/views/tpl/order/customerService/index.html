@@ -27,7 +27,7 @@
                     <table  ng-table="serviceDepartment.tableParams" class="table table-bordered table-hover table-condensed editable-table"
                             ng-form="serviceDepartment.tableForm" disable-filter="serviceDepartment.isAdding" nbg-tracked-table="serviceDepartment.tableTracker">
                         <tr ng-repeat="row in $data" ng-form="rowForm" nbg-tracked-table-row="row">
-                            <td data-title="'Id'" sortable="'id'" filter="{id: 'text'}">[: row.id :]</td>
+                            <td data-title="'Id'" sortable="'id'" filter="{id: 'text'}"><a ui-sref="order.detail({orderId:row.id})">[: row.id :]</a></td>
                             <td title="'状态'" filter="{od_status_id: 'select'}" filter-data="serviceDepartment.CustomerSer.arrOrderStatuses" ng-switch="serviceDepartment.isEditing" ng-class="od_status_id.$dirty ? 'bg-warning' : ''" ng-form="od_status_id" nbg-tracked-table-cell>
                                 <span ng-switch-default class="editable-text">[: row.od_status_id | zwbIdToName:serviceDepartment.CustomerSer.orderStatuses :]</span>
                                 <div class="controls" ng-class="od_status_id.$invalid && od_status_id.$dirty ? 'has-error' : ''" ng-switch-when="true">

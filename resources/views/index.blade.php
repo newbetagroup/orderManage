@@ -18,11 +18,8 @@
     <link rel="stylesheet" href="/dist/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/dist/css/skins/skin-blue.min.css">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <!--[if lte IE 10]>
+    <script type="text/javascript">document.location.href = '/unsupported-browser'</script>
     <![endif]-->
 
     <link rel="stylesheet" href="{!! elixir('css/vendor.css') !!}">
@@ -39,6 +36,13 @@
 
     <script src="{!! elixir('js/appinit.js') !!}"></script>
     <script src="{!! elixir('js/app.js') !!}"></script>
+
+    {{--livereload--}}
+    @if ( env('APP_ENV') === 'local' )
+        <script type="text/javascript">
+            document.write('<script src="'+ location.protocol + '//' + (location.host.split(':')[0] || 'localhost') +':35729/livereload.js?snipver=1" type="text/javascript"><\/script>')
+        </script>
+    @endif
 @endsection
 
 @section('content')

@@ -18,5 +18,14 @@ class OdOrder extends Model
     {
         return $this->hasMany('App\Models\Order\OdProduct', 'od_order_id', 'id');
     }
-    
+
+    public function odCustomer()
+    {
+        return $this->belongsTo(OdCustomer::class, 'od_customer_id', 'id');
+    }
+
+    public function odDeliveryAddress()
+    {
+        return $this->belongsTo(OdDeliveryAddress::class, 'od_delivery_address_id', 'id');
+    }
 }

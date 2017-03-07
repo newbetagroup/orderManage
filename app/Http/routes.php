@@ -136,7 +136,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('stock/update', ['as' => 'stock.update', 'uses' => 'StockController@updateStocks']);
 
     //订单详情
-    Route::put('orderDetail', ['as' => 'order.detail', 'uses' => 'OrderDetailsController@index']);
+    Route::put('orderDetail/{orderId}', ['as' => 'order.detail', 'uses' => 'Order\OrderDetailsController@index']);
 });
 
 Route::get('/', ['middleware' => 'auth', function () {
@@ -144,6 +144,9 @@ Route::get('/', ['middleware' => 'auth', function () {
 }]);
 Route::get('home', function () {
     return view('index');
+});
+Route::get('/unsupported-browser', function () {
+    return view('unsupported_browser');
 });
 
 Route::any('addorder/index', ['uses' => 'Order\AddOrderController@index']);

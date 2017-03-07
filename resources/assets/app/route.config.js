@@ -740,7 +740,7 @@ orderApp.config([
             })
         //订单详情
             .state('order.detail', {
-                url: 'index',
+                url: '/detail/index/:orderId',
                 templateUrl: './tpl/order/detail/index.html',
                 resolve: {
                     loadJs: ['$ocLazyLoad', function ($ocLazyLoad) {
