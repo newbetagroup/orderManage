@@ -17,8 +17,9 @@
             var me = this;
 
             me.fnEditAddress = fnEditAddress;
+            me.fnGetOrderDetail = fnGetOrderDetail;
 
-            //订单状态
+                //订单状态
             OrderCommonService.fnGetOrderStatuses().then(function (r) {
                 me.orderStatuses = r.data;
             });
@@ -27,7 +28,8 @@
                 me.payAfterStatuses = r.data;
             });
 
-            me.fnGetOrderDetail = function(orderId) {
+            // 根据id获取订单详细信息
+            function fnGetOrderDetail(orderId) {
                 return $http.put('orderDetail/' + orderId).then(function(r) {
                     if (r.data.status != 1) {
                         dialogs.error('Server Error', '请求失败', {'size':'sm'});
@@ -38,9 +40,17 @@
                 });
             }
 
+            //修改收件人信息
             function fnEditAddress(address)
             {
+                return $http.put('deliveryAddress' + address.id, address).then(function(r) {
+                    if (r.data.status != 1) {
+                        dialogs.error('Server Error', '修改失败', {'size':'sm'});
+                        return false;
+                    }
 
+                    return true;
+                })
             }
         }
     ])
