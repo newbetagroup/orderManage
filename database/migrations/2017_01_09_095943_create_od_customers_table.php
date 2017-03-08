@@ -17,7 +17,8 @@ class CreateOdCustomersTable extends Migration
             $table->string('email', 50)->comment('邮箱');
             $table->string('name', 50)->comment('姓名');
             $table->char('gender', 5)->comment('性别');
-            $table->unsignedInteger('ip')->default(0)->comment('inet_aton(ip)转int，inet_ntoa(int)转ip');
+            //$table->unsignedInteger('ip')->default(0)->comment('inet_aton(ip)转int，inet_ntoa(int)转ip');
+            $table->string('ip', 18)->comment('ip地址');
             $table->string('phone')->comment('客户手机号');
             $table->timestamps();
 

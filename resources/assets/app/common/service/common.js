@@ -12,6 +12,9 @@
                 function ($http, $rootScope, $q, $filter) {
                     var me = this;
 
+                    me.compareData = compareData;//比较两个对象
+                    me.transformData = transformData;//
+
                     /*======================贯穿的个人权限============================*/
                     me.PermissionsHad = {};
                     me.PermissionsNameHad = {};
@@ -131,9 +134,26 @@
                      * @param params
                      * @returns {Array.<T>|*|Blob|string|ArrayBuffer}
                      */
-                    me.transformData = function(data,filter,params){
+                    function transformData(data,filter,params){
                         return me.sliceOrderData(me.filterData(data,filter), params);
-                    };
+                    }
+
+                    /**
+                     * 返回两个对象不同的值
+                     * @param n new
+                     * @param o old
+                     * @returns {Array}
+                     */
+                    function compareData(n, o) {
+                        var diff = {};
+                        angular.forEach(n, function (value, key) {
+                            if (!angular.equals(value, o[key])) {
+                                diff[key] = value;
+                                //eval("diff."+key+"="+value);
+                            }
+                        });
+                        return diff;
+                    }
                 }
             ])
             //传入id，返回对应的name

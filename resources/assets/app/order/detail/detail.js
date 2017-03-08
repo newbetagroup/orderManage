@@ -43,7 +43,7 @@
             //修改收件人信息
             function fnEditAddress(address)
             {
-                return $http.put('deliveryAddress' + address.id, address).then(function(r) {
+                return $http.put('deliveryAddress/' + address.id, address).then(function(r) {
                     if (r.data.status != 1) {
                         dialogs.error('Server Error', '修改失败', {'size':'sm'});
                         return false;
@@ -58,7 +58,8 @@
         .controller('OrderDetailController', [
             '$scope',
             'OrderDetailService',
-            function($scope, OrderDetailService) {
+            'dialogs',
+            function($scope, OrderDetailService, dialogs) {
                 var self = this;
                 self.orderDetailSer = OrderDetailService;
                 var orderId = $scope.$stateParams.orderId;
@@ -75,13 +76,52 @@
                     })
                 }
 
+                //弹出修改框
                 function launch(deliveryAddress)
                 {
-                    console.log(deliveryAddress);
-                    OrderDetailService.fnEditAddress(deliveryAddress).then(function(r) {
-                        if (r) fnGetOrderDetail();//refresh
-                    })
+                    var address = deliveryAddress;
+                    var dlg = dialogs.create('./tpl/dialogs/orderdetailEditAddress.html', 'addressDialogController', address);
+                    dlg.result.then(function(addr) {
+                        if(!angular.equals(addr, {})) {
+                            OrderDetailService.fnEditAddress(addr).then(function(r) {
+                                if(!r) dialogs.notify('Notification', '修改失败');
+                                else {
+                                    dialogs.notify('Notification', '修改成功');
+                                    fnGetOrderDetail(); // refresh
+                                }
+                            })
+                        }
+                    });
                 }
+            }
+        ])
+
+        .controller('addressDialogController', [
+            '$scope',
+            '$uibModalInstance',
+            'data',
+            'CommonService',
+            function ($scope, $uibModalInstance, data, CommonService) {
+
+                $scope.address = {};
+                $scope.address = angular.copy(data);
+
+                //-- Methods --//
+
+                $scope.cancel = function(){
+                    $uibModalInstance.dismiss('Canceled');
+                }; // end cancel
+
+                $scope.save = function(){
+                    var diff = CommonService.compareData($scope.address, data);
+                    diff.id = data.id;
+                    $uibModalInstance.close(diff);
+                }; // end save
+
+                $scope.hitEnter = function(evt){
+                    if(angular.equals(evt.keyCode,13) && !(angular.equals($scope.address,null) || angular.equals($scope.address,{})))
+                        $scope.save();
+                };
             }
         ])
 })();

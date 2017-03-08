@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Models\Order\OdCustomer;
 use App\Models\Order\OdDeliveryAddress;
 use Illuminate\Http\Request;
 
@@ -91,16 +92,23 @@ class DeliveryAddressController extends Controller
     public function update(Request $request, $id)
     {
         $address = OdDeliveryAddress::find($id);
-        
+
+        //update one delivery address
         foreach (array_keys($this->fields) as $field) {
             if($request->has($field) && $address->$field!=$request->get($field)) $address->$field = $request->get($field);
         }
-        
-        // $performance->update(['']);
-        if(!$address->save()) {
+
+        //if ip or email changed, update the customer
+        if($request->has('ip') || $request->has('email')) {
+            $customer = OdCustomer::find($address->od_customer_id);
+            if($request->has('email')) $customer->email = $request->email;
+            if($request->has('ip')) $customer->ip = $request->ip;
+        }
+
+        // update
+        if(!($address->save() && $customer->save())) {
             return ['status' => 0, 'msg' => '更新失败'];
         }
-        
         return ['status' => 1, 'msg' => '更新成功'];
     }
     

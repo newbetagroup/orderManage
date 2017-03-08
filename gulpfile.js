@@ -58,6 +58,6 @@ elixir(function(mix) {
         .copy(['public/fonts'], 'public/build/fonts')
         .version(assets)
         .browserSync({
-            proxy: 'ordermanage.com'
+            proxy: 'www.ordermanage.com'
         });
 });
