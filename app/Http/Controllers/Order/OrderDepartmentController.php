@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Order;
 
+use App\Helpers\Contracts\OrderHelperContract;
 use App\Models\Order\OdOrder;
 use App\Models\Order\OdProduct;
 use Illuminate\Http\Request;
@@ -113,5 +114,22 @@ class OrderDepartmentController extends Controller
         }
 
         return ['status' => 1, 'data' => $orderProduct];
+    }
+
+    /**
+     * 更新订单信息相关内容
+     * @param Request $request
+     * @param OrderHelperContract $orderHelper
+     * @return array
+     */
+    public function ordersUpdate(Request $request, OrderHelperContract $orderHelper)
+    {
+        //是一个数组，含有一个order或多个order信息
+        $orders = $request->all();
+
+        $result = $orderHelper->ordersUpdate($orders);
+
+        if(!$result) return ['status' => 0, 'msg' => '更新失败'];
+        return ['status' => 1, 'msg' => '更新成功'];
     }
 }

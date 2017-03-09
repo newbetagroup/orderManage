@@ -101,13 +101,15 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
         //客服部
     Route::post('customerService/order', ['as' => 'customerService.order', 'uses' => 'Order\CustomerServiceDepartmentController@index']);
     Route::post('customerService/ordersUpdate', ['as' => 'customerService.update', 'uses' => 'Order\CustomerServiceDepartmentController@ordersUpdate']);
-        //订货部
+    //订货部
     Route::any('orderDepartment/order', ['as' => 'orderDepartment.order', 'uses' => 'Order\OrderDepartmentController@index']);
     Route::post('productsToPurchaseGroup', ['as' => 'orderDepartment.productsToPurchaseGroup', 'uses' => 'Order\OrderDepartmentController@addProductsToPurchaseGroup']);
-            //订货分组
+    Route::post('orderDepartment/ordersUpdate', ['as' => 'orderDepartment.update', 'uses' => 'Order\OrderDepartmentController@ordersUpdate']);
+    //订货分组
     Route::resource('purchaseGroup', 'Order\PurchaseGroupController', ['names' => ['update' => 'purchaseGroup.edit', 'store' => 'purchaseGroup.create']]);
 
-        //发货部
+    //发货部
+    Route::post('deliveryDepartment/ordersUpdate', ['as' => 'deliveryDepartment.update', 'uses' => 'Order\DeliveryDepartmentController@ordersUpdate']);
     Route::any('deliveryDepartment/order', ['as' => 'deliveryDepartment.order', 'uses' => 'Order\DeliveryDepartmentController@index']);
     Route::any('deliveryDepartment/exportDHL', ['as' => 'deliveryDepartment.exportdhl', 'uses' => 'Order\DeliveryDepartmentController@exportDHL']);
     Route::any('deliveryDepartment/barCode', ['as' => 'deliveryDepartment.barCode', 'uses' => 'Order\DeliveryDepartmentController@barCode']);

@@ -63,7 +63,7 @@ class OrderHelper implements OrderHelperContract
 			}
 		}
 
-		//更定订单
+		//更新订单表信息
 		$oderObj = OdOrder::updateOrCreate(['id' => $order['id']], $orderFilter);
 
 		//更改库存
@@ -120,7 +120,8 @@ class OrderHelper implements OrderHelperContract
 	{
 		foreach ($orderProducts as $orderProduct) {
 			Stock::increment('store_count', $orderProduct['quantity'])
-				->where('product_id', $orderProduct['product_id']);
+				->where('product_id', $orderProduct['product_id'])
+				->where('attributes', $orderProduct['attributes_id']);
 		}
 
 		return true;
@@ -135,7 +136,8 @@ class OrderHelper implements OrderHelperContract
 	{
 		foreach ($orderProducts as $orderProduct) {
 			Stock::where('product_id', $orderProduct['product_id'])
-			->decrement('store_count', $orderProduct['quantity']);
+				->where('attributes', $orderProduct['attributes_id'])
+				->decrement('store_count', $orderProduct['quantity']);
 		}
 
 		return true;

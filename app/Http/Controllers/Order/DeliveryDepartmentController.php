@@ -215,6 +215,7 @@ class DeliveryDepartmentController extends Controller
     }
 
     /**
+     * 打印订单地址
      * 各种码，条形码，二维码
      * @return string
      */

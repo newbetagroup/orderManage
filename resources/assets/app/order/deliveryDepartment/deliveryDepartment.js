@@ -252,7 +252,7 @@
                     resetTableStatus();
                     var currentPage = self.tableParams.page();
                     var ordersChanged = compareData(self.tableParams.data, originalData);
-                    $http.post('customerService/ordersUpdate', ordersChanged).then(function (r) {
+                    $http.post('deliveryDepartment/ordersUpdate', ordersChanged).then(function (r) {
                         if (r.data.status == 1) {
                             originalData = angular.copy(self.tableParams.data);
                         }
