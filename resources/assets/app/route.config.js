@@ -648,6 +648,12 @@ orderApp.config([
                 templateUrl: './tpl/order/deliveryDepartment/index.html',
                 controller: 'DeliveryDepartmentIndexCtrl as deliveryDepartment'
             })
+            //打单地址
+            .state('order.deliveryDepartment.barcode', {
+                url: '/print',
+                templateUrl:'./tpl/order/deliveryDepartment/barCode.html',
+                controller: 'PrintCodeController as vm'
+            })
             //发货部 订单产品分类
             .state('order.orderCategory', {
                 url:'/category',

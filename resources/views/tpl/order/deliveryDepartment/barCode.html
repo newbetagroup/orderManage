@@ -2,8 +2,41 @@
     <header>
         <h2 class="text-center">订单</h2>
     </header>
+    <div class="row" ng-repeat="order in vm.orders">
+        <div class="col-md-12 panel panel-default wb-order-box">
+            <div class="text-center">
+                <figure>
+                    <img class="center-block" ng-src="[: order.codeBar :]" alt="code bar">
+                    <figcaption class="text-center">
+                        <span ng-bind="order.website_order_id"></span>
+                    </figcaption>
+                </figure>
+            </div>
+            <div class="row">
+                <div class="col-md-12 col-xs-12">
+                    <table class="table wb-order-table">
+                        <tbody>
+                        <tr ng-repeat="product in order.order_products">
+                            <td>
+                                <ul>
+                                    <li>name: [: product.product_name :] </li>
+                                    <li>quantity: [: product.quantity :]</li>
+                                    <li>
+                                        <zwb-attributes attributes="[: product.attributes_id :]"></zwb-attributes>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td><img class="center-block" ng-src="[: product.image_url :]" alt="product.product_name"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="row">
-        <div class="col-md-12 bar-code-box">
+        <div class="col-md-12 panel panel-default">
             <div class="center-block">
                 <figure>
                     <img src="" alt="条形码图片">

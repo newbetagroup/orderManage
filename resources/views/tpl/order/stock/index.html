@@ -34,7 +34,7 @@
                             <td data-title="'price'">[: row.price :]</td>
                             <td style="min-width: 350px;" data-title="'库存信息'" sortable="'store_count'" ng-switch="stock.isEditing" ng-class="stocks.$dirty ? 'bg-warning' : ''" ng-form="stocks" demo-tracked-table-cell>
                                 <div ng-switch-default class="row" ng-repeat="siglestock in row.stocks">
-                                    <div class="col-md-6">属性：[: siglestock.attributes :]</div>
+                                    <div class="col-md-6"><zwb-attributes attributes="[: siglestock.attributes :]"></zwb-attributes></div>
                                     <div class="col-md-6">库存量：<span class="editable-text">[: siglestock.store_count :]</span></div>
                                 </div>
                                 <div class="controls" ng-class="stocks.$invalid && stocks.$dirty ? 'has-error' : ''" ng-switch-when="true">

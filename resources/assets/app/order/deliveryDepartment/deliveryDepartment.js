@@ -10,6 +10,7 @@
             'BrandService',
             function ($http, $q, OrderCommonService, BrandService) {
                 var me = this;
+                me.fnGetPrints = fnGetPrints;//需要打印的订单
 
                 //表格顶部筛选
                 me.arrOrderStatuses = [];//[{id:1, title:"已付款"}]
@@ -132,6 +133,31 @@
                         var objectUrl = URL.createObjectURL(blob);
                         window.open(objectUrl);
                     });
+                };
+
+                var searchRemoteInfo = {};
+                me.fnSearchRemoteInfo = function(info) {
+                    if(info) {
+                        // set
+                        searchRemoteInfo = info;
+                        return true;
+                    } else {
+                        // get
+                        return searchRemoteInfo;
+                    }
+                };
+
+                /**
+                 * 返回需要打印的订单
+                 * @param searchInfo
+                 * @returns {*}
+                 */
+                function fnGetPrints (searchInfo) {
+                   return $http.post('deliveryDepartment/barCode', searchInfo).then(function (r) {
+                       if (r.data.status != 1) return false;
+
+                        return r.data.data;
+                   });
                 }
             }
         ])
@@ -307,7 +333,7 @@
                     }
                     if(product.shipping_group_id != 0) product.shipping_group_id = 0;//已经选择则从分组移除
                     else product.shipping_group_id = self.currentShippingGroup.id; //添加进分组
-                    
+
                     DeliveryDepartmentService.addProductsToShippingGroup(product).then(function (r) {
                         if (r.data.status != 1) {
                             dialogs.error('Server Error', '添加进分组失败，请重试！');
@@ -351,7 +377,59 @@
                     var filters = self.tableParams.filter();
                     DeliveryDepartmentService.fnExportDHL(filters);
                 };
+
+                //打印订单
+                self.fnPrintCode = printCode;
+
+                /**
+                 * 打印订单
+                 */
+                function printCode() {
+                   DeliveryDepartmentService.fnSearchRemoteInfo(self.searchRemoteInfo);
+                    //$http.post('deliveryDepartment/barCode', self.searchRemoteInfo);
+                    $scope.$state.go('order.deliveryDepartment.barcode');
+                }
+            }
+        ])
+
+        .controller('PrintCodeController', [
+            '$scope',
+            'DeliveryDepartmentService',
+            function($scope, DeliveryDepartmentService) {
+                var self = this;
+                var searchRemoteInfo = getSearchRemoteInfo() || {};
+                getOrders();
+
+
+                /**
+                 * 打单筛选条件
+                 */
+                function getSearchRemoteInfo ()
+                {
+                    var searchInfo = DeliveryDepartmentService.fnSearchRemoteInfo();
+
+                    if(JSON.stringify(searchInfo) == '{}') {
+                        $scope.$state.go('order.deliveryDepartment.index');
+                    } else {
+                        return searchInfo;
+                    }
+                }
+
+                /**
+                 * 获取打印订单
+                 */
+                function getOrders()
+                {
+                    if(angular.equals(searchRemoteInfo, {})) return false;
+                    var searchInfo = {
+                        filters: searchRemoteInfo.filters,
+                        orderBy: searchRemoteInfo.orderBy
+                    };
+                    DeliveryDepartmentService.fnGetPrints(searchInfo).then(function (data) {
+                        if(data) self.orders = data;
+                    });
+                }
             }
         ]);
-    
+
 })(angular);

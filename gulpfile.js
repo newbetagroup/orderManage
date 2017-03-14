@@ -37,9 +37,8 @@ elixir(function(mix) {
         ], 'public/js/appinit.js','./resources/')
         .scripts([
             './public/libs/lodash/lodash.min.js',
-            './resources/assets/app/common/directives/orderTrackedTable.js',
             './public/libs/jquerydatetime/jquery.datetimepicker.js',
-            './resources/assets/app/common/directives/angular.datetime.js',
+            './resources/assets/app/common/directives/**/*.js',
             './resources/assets/app/common/service/common.js',
             './resources/assets/app/user/user.js'
         ], 'public/js/app.js')

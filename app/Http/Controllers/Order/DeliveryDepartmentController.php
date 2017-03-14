@@ -219,9 +219,60 @@ class DeliveryDepartmentController extends Controller
      * 各种码，条形码，二维码
      * @return string
      */
-    public function barCode()
+    public function barCode(Request $request)
     {
-        $codeBar = '<img src="data:image/png;base64,' . DNS1D::getBarcodePNG("021700594063", "CODABAR") . '" alt="barcode"   />';
-        return $codeBar;
+        $filter = $request->input('filters', []);
+        $orderBy = $request->get('orderBy');
+        $orderBy = $orderBy[0];
+        $order = strpos($orderBy, '+') === false?'desc':'asc';
+        $orderBy = substr($orderBy, 1)?:'od_orders.id';//排序
+        $orderBy = 'od_orders.'.$orderBy;
+
+        if(isset($filters['brand_id']) && $filters['brand_id']!='') {
+            //按品牌搜索
+            $brandId = $filters['brand_id'];
+            $brandObj = DomainBrand::select('id', 'name')->where('id', $brandId)->first();
+            $brand = $brandObj->name;//由品牌id get name
+            $orders = OdOrder::select('od_orders.*','od_products.id as od_product_id', 'od_products.od_order_id', 'od_products.sku')
+                ->join('od_products', function($join) use($brand) {
+                    $join->on('od_orders.id', '=', 'od_products.od_order_id')
+                        ->where('od_products.sku', 'like', $brand.'%');
+                })
+                ->with(['orderProducts' => function($query) use($brand) {
+                    $query->select('od_products.id', 'product_id', 'sku', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
+                        /*->leftJoin('shipping_groups', function ($join) use($brand) {
+							$join->on('od_products.shipping_group_id', '=', 'shipping_groups.id')
+								->where('od_products.sku', 'like', $brand.'%');
+						});*/
+                        //一个订单有多产品，只要该品牌的？
+                        ->where('od_products.sku', 'like', $brand.'%')
+                        ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
+                }]);
+        } else {
+            $orders = OdOrder::with(['orderProducts' => function($query) {
+                $query->select('od_products.id', 'product_id', 'od_order_id', 'product_name', 'quantity', 'image_url', 'attributes_id', 'shipping_group_id', 'shipping_groups.name')
+                    ->leftJoin('shipping_groups', 'od_products.shipping_group_id', '=', 'shipping_groups.id');
+            }]);
+        }
+
+        if(!empty($filters)) {
+            foreach ($filters as $key => $value) {
+                if ($value == '') continue;
+                if(!isset($this->fields[$key])) continue;//已定义字段
+                if(isset($this->fields[$key]) && $this->fields[$key] == 'equals')
+                    $orders = $orders->where($key, $value);
+                else
+                    $orders = $orders->where($key, 'like', '%'.$value.'%');
+            }
+        }
+
+        $orders = $orders->orderBy($orderBy, $order)->get();
+
+        //加上条形码信息  id 还是 website_order_id？？？？
+        $orders->each(function ($item, $key) {
+            //$item->codeBar = '<img src="data:image/png;base64,' . DNS1D::getBarcodePNG($item->id, "CODABAR") . '" alt="barcode"   />';
+            $item->codeBar = 'data:image/png;base64,' . DNS1D::getBarcodePNG($item->website_order_id, "CODABAR");
+        });
+        return ['status' => 1, 'data' => $orders];
     }
 }

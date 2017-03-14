@@ -187,8 +187,8 @@
                     type: 'post',
                     dataType: 'json',
                     url: '/addorder/index',
+                    //withCredentials: true,
                     data: {
-                        //withCredentials: true,
                         websiteOrderId: '110001',
                         domain: 'www.geekzwb.com',
                         customerName: 'testname',

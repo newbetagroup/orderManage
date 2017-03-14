@@ -31,5 +31,22 @@ order 模块 start
     overflow: hidden;
 }
 
+
+/*order box 打印订单*/
+.wb-order-box {
+    width: 500px;
+    padding: 10px;
+    margin: 20px auto;
+}
+.wb-order-table td:first-child {
+    width:60%;
+    overflow: hidden;
+}
+.wb-order-table td img{
+    width:100%;
+}
+.wb-order-table li{
+    list-style: none;
+}
 /*end order
 ===================================*/
