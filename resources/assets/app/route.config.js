@@ -7,7 +7,7 @@ orderApp.config([
     "$stateProvider",
     "$urlRouterProvider",
     function ($stateProvider,$urlRouterProvider){
-        $urlRouterProvider.otherwise('/home');
+        $urlRouterProvider.otherwise('/website/websiteIndex');
 
         $stateProvider
             .state('home', {
@@ -754,6 +754,17 @@ orderApp.config([
                     }]
                 },
                 controller: 'OrderDetailController as orderDetail'
+            })
+            //每日订单统计
+            .state('order.daily', {
+                url: '/daily/index',
+                templateUrl: './tpl/order/daily/index.html',
+                resolve: {
+                    loadJs: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load('/build/app/order/daily/daily.js');
+                    }]
+                },
+                controller: 'OrderDialyController as vm'
             })
     }
     ])

@@ -134,6 +134,9 @@
                     <li ng-class="{active: $state.includes('order.stock')}">
                         <a ui-sref="order.stock.index">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>产品库存</a>
                     </li>
+                    <li ng-class="{active: $state.includes('order.daily')}">
+                        <a ui-sref="order.daily">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>每日订单统计</a>
+                    </li>
                 </ul>
             </li>
         </ul>

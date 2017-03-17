@@ -141,7 +141,10 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
 
     //订单详情
     Route::put('orderDetail/{orderId}', ['as' => 'order.detail', 'uses' => 'Order\OrderDetailsController@index']);
+
+    //每日订单统计
 });
+Route::any('order/daily', ['as' => 'order.daily', 'uses' => 'Order\DailyController@index']);
 
 Route::get('/', ['middleware' => 'auth', function () {
     return view('index');

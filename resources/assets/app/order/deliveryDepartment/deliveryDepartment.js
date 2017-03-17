@@ -89,8 +89,8 @@
                 //===========订单信息
                 me.fnGetOrders = function (searchRemoteInfo, params) {
 
-                    searchRemoteInfo.orderBy = params.orderBy();
-                    searchRemoteInfo.filters = params.filter();
+                    searchRemoteInfo.orderBy = params.orderBy() || searchRemoteInfo.orderBy;
+                    searchRemoteInfo.filters = params.filter() || searchRemoteInfo.filters;
                     params.count(searchRemoteInfo.itemsPerPage);
                     
                     var deffered = $q.defer();
