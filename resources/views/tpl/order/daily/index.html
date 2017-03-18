@@ -2,7 +2,7 @@
     <div class="contain">
         <div class="row">
             <div class="col-md12">
-                <form class="form-inline" role="form">
+                <form class="form-inline" role="form" ng-submit="vm.search()">
                     <div class="form-group">
                         <label for="date">下单日期</label>
                         <datetimepicker dateID="begin" format="Y-m" class="form-control" ng-model="vm.searchInfo.order_pay_after_date"></datetimepicker>
@@ -13,16 +13,17 @@
                     </div>
                     <div class="form-group">
                         <label for="website_supervisor_id">负责人</label>
-                        <input id="website_supervisor_id" type="text" class="form-control" ng-model="vm.searchInfo.website_supervisor_id">
+                        <select class="form-control" name="websitename" id="website_supervisor_id" ng-options="supervisor.id as supervisor.name for supervisor in vm.supervisors" ng-model="vm.searchInfo.website_supervisor_id"></select>
                     </div>
                     <div class="form-group">
                         <label for="od_status_id">状态</label>
-                        <input id="od_status_id" type="text" class="form-control" ng-model="vm.searchInfo.od_status_id">
+                        <select class="form-control" name="od_status" id="od_status_id" ng-options="status.id as status.name for status in vm.statuses" ng-model="vm.searchInfo.od_status_id"></select>
                     </div>
                     <div class="form-group">
                         <label for="od_pay_after_status_id">订单状态</label>
-                        <input id="od_pay_after_status_id" type="text" class="form-control" ng-model="vm.searchInfo.od_pay_after_status_id">
+                        <select ng-chage="vm.test(vm.searchInfo)" class="form-control" name="od_pay_after_status" id="od_pay_after_status_id" ng-options="afterStatus.id as afterStatus.name for afterStatus in vm.afterStatuses" ng-model="vm.searchInfo.od_pay_after_status_id"></select>
                     </div>
+                    <button type="submit" class="btn btn-default">search</button>
                 </form>
             </div>
             <div class="col-md-8">

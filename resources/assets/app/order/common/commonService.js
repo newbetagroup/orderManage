@@ -14,9 +14,19 @@
                 var orderStatuses = null;
                 var orderPayAfterStatuses  = null;
                 var suppliers = null;
+                var orderCategories = null;
+                var expresses = null;
+                var supervisors = null;
+                me.fnGetOrderStatuses = fnGetOrderStatuses;//付款前状态
+                me.fnGetOrderPayAfterStatuses = fnGetOrderPayAfterStatuses;//获取付款后状态
+                me.fnGetSuppliers = fnGetSuppliers;//获取供应商
+                me.fnGetOrderCategories = fnGetOrderCategories;//获取产品分类
+                me.fnGetExpresses = fnGetExpresses;//获取货运方式
+                me.fnGetSupervisors = fnGetSupervisors;//获取货运方式
 
-                //付款前状态
-                me.fnGetOrderStatuses = function () {
+
+                    //付款前状态
+                function fnGetOrderStatuses() {
                     var defered = $q.defer();
                     if (angular.equals(null, orderStatuses)) {
                         var pendding = false;
@@ -41,10 +51,10 @@
                         //console.log('orderStatuses', orderStatuses);
                        return $q.when(orderStatuses);
                     }
-                };
+                }
 
                 //获取付款后状态
-                me.fnGetOrderPayAfterStatuses = function () {
+                function fnGetOrderPayAfterStatuses() {
                     if (angular.equals(null, orderPayAfterStatuses)) {
                         var defered = $q.defer();
                         var pendding = false;
@@ -68,10 +78,10 @@
                     } else {
                         return $q.when(orderPayAfterStatuses);
                     }
-                };
+                }
 
                 //获取供应商
-                me.fnGetSuppliers = function () {
+                function fnGetSuppliers() {
                     if (angular.equals(null, suppliers)) {
                         var defered = $q.defer();
                         var pendding = false;
@@ -95,11 +105,10 @@
                     } else {
                         return $q.when(suppliers);
                     }
-                };
+                }
 
                 //获取产品分类
-                var orderCategories = null;
-                me.fnGetOrderCategories = function () {
+                function fnGetOrderCategories() {
                     if (angular.equals(null, orderCategories)) {
                         var defered = $q.defer();
                         var pendding = false;
@@ -123,11 +132,14 @@
                     } else {
                         return $q.when(orderCategories);
                     }
-                };
+                }
 
-                //获取供应商
-                var expresses = null;
-                me.fnGetExpresses = function () {
+
+                /**
+                 * 获取货运方式
+                 * @returns {*}
+                 */
+                function fnGetExpresses() {
                     if (angular.equals(null, expresses)) {
                         var defered = $q.defer();
                         var pendding = false;
@@ -151,7 +163,39 @@
                     } else {
                         return $q.when(expresses);
                     }
-                };
+                }
+
+
+                /**
+                 * 网站负责人
+                 * @returns {*}
+                 */
+                function fnGetSupervisors() {
+                    if(angular.equals(supervisors, null)) {
+                        var deffer = $q.defer();
+                        var pendding = false;
+                        if(!pendding) {
+                            pendding = true;
+                            var groupId = 2;
+                            // 这里需要完善。获取业务部的groupId
+                            $http.get('/group/getUsers/' + groupId).then(function (r) {
+                                if(r.data.status != 1) {
+                                    deffer.reject();
+                                    return false;
+                                }
+
+                                supervisors = r.data.data.data;
+
+                                deffer.resolve(supervisors);
+                            }).finally(function () {
+                                pendding = false;
+                            });
+                        }
+                        return deffer.promise;
+                    } else {
+                        return $q.when(supervisors);
+                    }
+                }
             }
         ])
 })(angular);

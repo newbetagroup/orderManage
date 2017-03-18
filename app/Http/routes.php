@@ -54,6 +54,7 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::post('permission/index', ['as' => 'permission.index', 'uses' => 'Manager\PermissionController@index']); //查询
     Route::resource('permission', 'Manager\PermissionController');
 
+
     //post
     Route::get('post/index', ['uses' => 'Manager\PostController@allPost']);//
     Route::resource('post', 'Manager\PostController', ['names' => ['update' => 'post.edit', 'store' => 'post.create']]);
