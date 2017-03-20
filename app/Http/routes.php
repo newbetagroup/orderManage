@@ -143,9 +143,16 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     //订单详情
     Route::put('orderDetail/{orderId}', ['as' => 'order.detail', 'uses' => 'Order\OrderDetailsController@index']);
 
-    //每日订单统计
+    //每日订发货统计
+    Route::any('order/daily/delivery', ['as' => 'order.daily.delivery', 'uses' => 'Order\DailyController@delivery']);
+
+    //域名整单
+    Route::any('order/daily/domain', ['as' => 'order.daily.domainStatistics', 'uses' => 'Order\DailyController@domainStatistics']);
+
+    //日均付款率
+    Route::any('order/daily/rate', ['as' => 'order.daily.dateStatistics', 'uses' => 'Order\DailyController@rate']);
+
 });
-Route::any('order/daily', ['as' => 'order.daily', 'uses' => 'Order\DailyController@index']);
 
 Route::get('/', ['middleware' => 'auth', function () {
     return view('index');
@@ -157,4 +164,4 @@ Route::get('/unsupported-browser', function () {
     return view('unsupported_browser');
 });
 
-Route::any('addorder/index', ['uses' => 'Order\AddOrderController@index']);
+Route::post('addorder/index', ['uses' => 'Order\AddOrderController@index']);

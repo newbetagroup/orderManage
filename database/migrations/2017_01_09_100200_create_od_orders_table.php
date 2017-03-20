@@ -35,6 +35,7 @@ class CreateOdOrdersTable extends Migration
 
             $table->index('website_order_id');
             $table->index('od_customer_id');
+            $table->index('date_purchased');
         });
     }
 

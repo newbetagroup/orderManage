@@ -5,28 +5,28 @@
 
     'use strict';
 
-    angular.module('DailyDashboard', [])
-        .service('DailyService', DailyService)
-        .controller('OrderDialyController', OrderDialyController);
+    angular.module('StatisticsDashboard')
+        .service('StatisticsDeliveryService', StatisticsDeliveryService)
+        .controller('StatisticsDeliveryController', StatisticsDeliveryController);
 
-    DailyService.$inject = ['$http'];
+    StatisticsDeliveryService.$inject = ['$http'];
 
-    function DailyService($http)
+    function StatisticsDeliveryService($http)
     {
         var me = this;
 
         me.fnGetStatistics = getStatistics;
 
         function getStatistics (searchInfo) {
-            return $http.post('/order/daily', searchInfo).then(function (r) {
+            return $http.post('/order/daily/delivery', searchInfo).then(function (r) {
                 if(r.data.status == 1) return r.data.data;
             })
         }
     }
 
-    OrderDialyController.$inject = ['DailyService', 'OrderCommonService'];
+    StatisticsDeliveryController.$inject = ['StatisticsDeliveryService', 'OrderCommonService'];
 
-    function OrderDialyController (DailyService, OrderCommonService) {
+    function StatisticsDeliveryController (StatisticsDeliveryService, OrderCommonService) {
         var self =this;
         var date = new Date();
         var year = date.getFullYear();
@@ -42,12 +42,18 @@
         getSupervisors();
         getStatistics();
 
+        /**
+         * 统计分析
+         */
         function getStatistics() {
-            DailyService.fnGetStatistics(self.searchInfo).then(function (data) {
+            StatisticsDeliveryService.fnGetStatistics(self.searchInfo).then(function (data) {
                 self.statistics = data;
             });
         }
 
+        /**
+         * 状态
+         */
         function getStatuses() {
             OrderCommonService.fnGetOrderStatuses().then(function (r) {
                 self.statuses = r.data;
@@ -55,13 +61,19 @@
             });
         }
 
+        /**
+         * 负责人
+         */
         function getSupervisors() {
             OrderCommonService.fnGetSupervisors().then(function (r) {
-                self.supervisors = r;
+                self.supervisors = r || {};
                 self.supervisors.unshift({id:'', name:''});
             });
         }
 
+        /**
+         * 付款后订单状态
+         */
         function getAfterStatuses() {
             OrderCommonService.fnGetOrderPayAfterStatuses().then(function (r) {
                 self.afterStatuses = r.data;
@@ -69,6 +81,9 @@
             });
         }
 
+        /**
+         * 搜索
+         */
         function search () {
             getStatistics();
         }

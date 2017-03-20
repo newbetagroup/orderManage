@@ -755,17 +755,52 @@ orderApp.config([
                 },
                 controller: 'OrderDetailController as orderDetail'
             })
-            //每日订单统计
-            .state('order.daily', {
-                url: '/daily/index',
-                templateUrl: './tpl/order/daily/index.html',
+            .state('statistics', {
+                url:'/statistics',
+                template: '<div ui-view></div>',
+                resolve: {
+                    loadCommon: ['$ocLazyLoad', function ($ocLazyLoad) {
+                        return $ocLazyLoad.load([
+                            '/build/app/order/common/commonService.js',
+                            '/build/app/statistics/statistics.module.js'
+                        ]);
+                    }]
+                }
+            })
+            //每日订发货统计
+            .state('statistics.delivery', {
+                url: '/delivery',
+                templateUrl: './tpl/statistics/delivery/index.html',
                 resolve: {
                     loadJs: ['$ocLazyLoad', function($ocLazyLoad) {
-                        return $ocLazyLoad.load('/build/app/order/daily/daily.js');
+                        return $ocLazyLoad.load('/build/app/statistics/delivery/delivery.js');
                     }]
                 },
-                controller: 'OrderDialyController as vm'
+                controller: 'StatisticsDeliveryController as vm'
             })
+            //每日域名统计
+            .state('statistics.domain', {
+                url: '/domain',
+                templateUrl: './tpl/statistics/domain/index.html',
+                resolve: {
+                    loadJs: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load('/build/app/statistics/domain/domain.js');
+                    }]
+                },
+                controller: 'StatisticsDomainController as vm'
+            })
+            //每日付款率统计
+            .state('statistics.rate', {
+                url: '/rate',
+                templateUrl: './tpl/statistics/rate/index.html',
+                resolve: {
+                    loadJs: ['$ocLazyLoad', function($ocLazyLoad) {
+                        return $ocLazyLoad.load('/build/app/statistics/rate/rate.js');
+                    }]
+                },
+                controller: 'StatisticsRateController as vm'
+            })
+        ;
     }
     ])
     .run([

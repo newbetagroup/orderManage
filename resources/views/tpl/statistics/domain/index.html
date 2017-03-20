@@ -1,0 +1,102 @@
+<section>
+    <div class="contain">
+        <div class="row">
+            <div class="col-md12">
+                <form class="form-inline" role="form" ng-submit="vm.search()">
+                    <div class="form-group">
+                        <label for="date">下单日期</label>
+                        <datetimepicker dateID="begin" format="Y-m" class="form-control" ng-model="vm.searchInfo.order_pay_after_date"></datetimepicker>
+                    </div>
+                    <div class="form-group">
+                        <label for="website_name">域名</label>
+                        <input id="website_name" type="text" class="form-control" ng-model="vm.searchInfo.website_name">
+                    </div>
+                    <div class="form-group">
+                        <label for="website_supervisor_id">负责人</label>
+                        <select class="form-control" name="websitename" id="website_supervisor_id" ng-options="supervisor.id as supervisor.name for supervisor in vm.supervisors" ng-model="vm.searchInfo.website_supervisor_id"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="od_status_id">状态</label>
+                        <select class="form-control" name="od_status" id="od_status_id" ng-options="status.id as status.name for status in vm.statuses" ng-model="vm.searchInfo.od_status_id"></select>
+                    </div>
+                    <div class="form-group">
+                        <label for="od_pay_after_status_id">订单状态</label>
+                        <select ng-chage="vm.test(vm.searchInfo)" class="form-control" name="od_pay_after_status" id="od_pay_after_status_id" ng-options="afterStatus.id as afterStatus.name for afterStatus in vm.afterStatuses" ng-model="vm.searchInfo.od_pay_after_status_id"></select>
+                    </div>
+                    <button type="submit" class="btn btn-default">search</button>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <caption class="text-center">每日订单统计(发货统计)</caption>
+                        <thead>
+                        <tr>
+                            <th>日期</th>
+                            <th>已付款</th>
+                            <th>已发货</th>
+                            <th>已订货</th>
+                            <th>已退货</th>
+                            <th>待重发</th>
+                            <th>已缺货</th>
+                            <th>待确认</th>
+                            <th>货不齐</th>
+                            <th>已重发</th>
+                            <th>待退款</th>
+                            <th>已换货</th>
+                            <th>未到货</th>
+                            <th>退款单</th>
+                            <th>总数 (单位：)</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="statistic in vm.statistics">
+                            <td ng-bind="statistic.date"></td>
+                            <td ng-bind="statistic.paid"></td>
+                            <td ng-bind="statistic.delivered"></td>
+                            <td ng-bind="statistic.ordered"></td>
+                            <td ng-bind="statistic.returned"></td>
+                            <td ng-bind="statistic.toresend"></td>
+                            <td ng-bind="statistic.stockout"></td>
+                            <td ng-bind="statistic.toconfirm"></td>
+                            <td ng-bind="statistic.lackgoods"></td>
+                            <td ng-bind="statistic.resent"></td>
+                            <td ng-bind="statistic.torefund"></td>
+                            <td ng-bind="statistic.swapped"></td>
+                            <td ng-bind="statistic.afloat"></td>
+                            <td ng-bind="statistic.refundorder"></td>
+                            <td ng-bind="statistic.totals"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="table-responsive">
+                    <table class="table table-bordered ">
+                        <caption class="text-center">每日订单排行</caption>
+                        <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>订单数</th>
+                            <th>姓名</th>
+                            <th>总额</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td class="text-center" colspan="4">订单数量：<span>684</span> 总额：<span>628576.05</span></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

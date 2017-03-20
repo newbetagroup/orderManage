@@ -138,7 +138,7 @@ class AddOrderController extends Controller
 
         $currency = str_replace($orderTotal, '', $orderInfo['price']);//货币符号
 
-        $orderInfo['od_status_id'] = 0;
+        $orderInfo['od_status_id'] = 2; //未付款， 默认状态？？？
         $orderInfo['od_pay_after_status_id'] = 0;
         $timeNow = 0;
         if($orderInfo['payType'] == 'Myorderapproved') {
