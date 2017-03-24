@@ -1,15 +1,15 @@
 <section>
     <div class="contain">
         <div class="row">
-            <div class="col-md12">
+            <div class="col-md12 mt20">
                 <form class="form-inline" role="form" ng-submit="vm.search()">
                     <div class="form-group">
-                        <label for="date">下单日期</label>
-                        <datetimepicker dateID="begin" format="Y-m" class="form-control" ng-model="vm.searchInfo.order_pay_after_date"></datetimepicker>
+                        <label for="date">整单日期</label>
+                        <datetimepicker dateID="begin" format="Y-m-d" class="form-control" ng-model="vm.searchInfo.order_pay_after_date"></datetimepicker>
                     </div>
                     <div class="form-group">
-                        <label for="website_name">域名</label>
-                        <input id="website_name" type="text" class="form-control" ng-model="vm.searchInfo.website_name">
+                        <label for="date">下单日期</label>
+                        <datetimepicker dateID="begin" format="Y-m" class="form-control" ng-model="vm.searchInfo.date_purchased"></datetimepicker>
                     </div>
                     <div class="form-group">
                         <label for="website_supervisor_id">负责人</label>
@@ -26,72 +26,54 @@
                     <button type="submit" class="btn btn-default">search</button>
                 </form>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-8 mt20">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
-                        <caption class="text-center">每日订单统计(发货统计)</caption>
+                    <table class="table table-bordered blue-table">
                         <thead>
                         <tr>
-                            <th>日期</th>
-                            <th>已付款</th>
-                            <th>已发货</th>
-                            <th>已订货</th>
-                            <th>已退货</th>
-                            <th>待重发</th>
-                            <th>已缺货</th>
-                            <th>待确认</th>
-                            <th>货不齐</th>
-                            <th>已重发</th>
-                            <th>待退款</th>
-                            <th>已换货</th>
-                            <th>未到货</th>
-                            <th>退款单</th>
-                            <th>总数 (单位：)</th>
+                            <th>订单数</th>
+                            <th>总额</th>
+                            <th>域名</th>
+                            <th>广告状态</th>
+                            <th>负责人</th>
+                            <th>Hosting</th>
+                            <th>account</th>
+                            <th>建站日期</th>
                         </tr>
                         </thead>
                         <tbody>
                         <tr ng-repeat="statistic in vm.statistics">
-                            <td ng-bind="statistic.date"></td>
-                            <td ng-bind="statistic.paid"></td>
-                            <td ng-bind="statistic.delivered"></td>
-                            <td ng-bind="statistic.ordered"></td>
-                            <td ng-bind="statistic.returned"></td>
-                            <td ng-bind="statistic.toresend"></td>
-                            <td ng-bind="statistic.stockout"></td>
-                            <td ng-bind="statistic.toconfirm"></td>
-                            <td ng-bind="statistic.lackgoods"></td>
-                            <td ng-bind="statistic.resent"></td>
-                            <td ng-bind="statistic.torefund"></td>
-                            <td ng-bind="statistic.swapped"></td>
-                            <td ng-bind="statistic.afloat"></td>
-                            <td ng-bind="statistic.refundorder"></td>
+                            <td ng-bind="statistic.count"></td>
                             <td ng-bind="statistic.totals"></td>
+                            <td ng-bind="statistic.website"></td>
+                            <td ng-bind="statistic.domain_ad_status_id"></td>
+                            <td ng-bind="statistic.website_supervisor_id"></td>
+                            <td ng-bind="statistic.domain_host_id"></td>
+                            <td ng-bind="statistic.ftp_username"></td>
+                            <td ng-bind="statistic.website_created_at"></td>
                         </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 mt20">
                 <div class="table-responsive">
-                    <table class="table table-bordered ">
-                        <caption class="text-center">每日订单排行</caption>
+                    <table class="table table-bordered blue-table">
                         <thead>
                         <tr>
-                            <th>排名</th>
                             <th>订单数</th>
                             <th>姓名</th>
                             <th>总额</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr ng-repeat="list in vm.ranklist">
+                            <td ng-bind="list.count"></td>
+                            <td ng-bind="list.supervisor_id"></td>
+                            <td ng-bind="list.total"></td>
                         </tr>
                         <tr>
-                            <td class="text-center" colspan="4">订单数量：<span>684</span> 总额：<span>628576.05</span></td>
+                            <td class="text-center" colspan="4">订单数量：<span ng-bind="vm.ordersCount"></span> 总额：<span ng-bind="vm.total"></span></td>
                         </tr>
                         </tbody>
                     </table>

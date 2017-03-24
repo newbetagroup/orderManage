@@ -144,13 +144,15 @@ Route::group(['middleware' => ['auth', 'permission']], function() {
     Route::put('orderDetail/{orderId}', ['as' => 'order.detail', 'uses' => 'Order\OrderDetailsController@index']);
 
     //每日订发货统计
-    Route::any('order/daily/delivery', ['as' => 'order.daily.delivery', 'uses' => 'Order\DailyController@delivery']);
+    Route::post('order/daily/delivery', ['as' => 'order.daily.delivery', 'uses' => 'Order\DailyController@delivery']);
 
     //域名整单
-    Route::any('order/daily/domain', ['as' => 'order.daily.domainStatistics', 'uses' => 'Order\DailyController@domainStatistics']);
+    Route::post('order/daily/domain', ['as' => 'order.daily.domainStatistics', 'uses' => 'Order\DailyController@domain']);
 
     //日均付款率
-    Route::any('order/daily/rate', ['as' => 'order.daily.dateStatistics', 'uses' => 'Order\DailyController@rate']);
+    Route::post('order/daily/rate', ['as' => 'order.daily.dateStatistics', 'uses' => 'Order\DailyController@rate']);
+
+    Route::post('order/daily/ranklist', ['as' => 'order.daily.dateStatistics', 'uses' => 'Order\DailyController@supervisor']);
 
 });
 

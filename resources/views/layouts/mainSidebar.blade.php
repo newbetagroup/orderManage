@@ -140,7 +140,7 @@
                 <a><i class="fa fa-reorder"></i><span>订单分析</span><i class="fa fa-angle-left pull-right"></i></a>
                 <ul class="treeview-menu">
                     <li ng-class="{active: $state.includes('statistics.delivery')}">
-                        <a ui-sref="statistics.delivery">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>每日订单统计</a>
+                        <a ui-sref="statistics.delivery">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>每日订发货统计</a>
                     </li>
                     <li ui-sref-active="active"><a ui-sref="statistics.domain">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>域名整单</a></li>
                     <li ui-sref-active="active"><a ui-sref="statistics.rate">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<i class="fa fa-cube"></i>日均付款率</a></li>

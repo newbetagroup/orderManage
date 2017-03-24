@@ -28,7 +28,7 @@
             </div>
             <div class="col-md-8">
                 <div class="table-responsive">
-                    <table class="table table-bordered">
+                    <table class="table table-bordered blue-table">
                         <caption class="text-center">每日订单统计(发货统计)</caption>
                         <thead>
                         <tr>
@@ -73,25 +73,23 @@
             </div>
             <div class="col-md-4">
                 <div class="table-responsive">
-                    <table class="table table-bordered ">
+                    <table class="table table-bordered blue-table">
                         <caption class="text-center">每日订单排行</caption>
                         <thead>
                         <tr>
-                            <th>排名</th>
                             <th>订单数</th>
                             <th>姓名</th>
                             <th>总额</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                        <tr ng-repeat="list in vm.ranklist">
+                            <td ng-bind="list.count"></td>
+                            <td ng-bind="list.supervisor_id"></td>
+                            <td ng-bind="list.total"></td>
                         </tr>
                         <tr>
-                            <td class="text-center" colspan="4">订单数量：<span>684</span> 总额：<span>628576.05</span></td>
+                            <td class="text-center" colspan="4">订单数量：<span ng-bind="vm.ordersCount"></span> 总额：<span ng-bind="vm.total"></span></td>
                         </tr>
                         </tbody>
                     </table>

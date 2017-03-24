@@ -12,9 +12,21 @@
     function StatisticsRateService($http) {
         var me = this;
         me.fnGetStatistics = getStatistics;
+        me.fnGetRanklist = getRanklist;
 
+        /**
+         *
+         * @param searchInfo
+         * @returns {*}
+         */
         function getStatistics (searchInfo) {
             return $http.post('/order/daily/rate', searchInfo).then(function (r) {
+                if(r.data.status == 1) return r.data.data;
+            })
+        }
+
+        function getRanklist(searchInfo) {
+            return $http.post('order/daily/ranklist', searchInfo).then(function (r) {
                 if(r.data.status == 1) return r.data.data;
             })
         }
@@ -36,6 +48,7 @@
         getAfterStatuses();
         getSupervisors();
         getStatistics();
+        getRanklist();
 
         /**
          * 统计分析
@@ -43,6 +56,17 @@
         function getStatistics() {
             StatisticsRateService.fnGetStatistics(vm.searchInfo).then(function (data) {
                 vm.statistics = data;
+            });
+        }
+
+        /**
+         * 排行榜。  这个应该改造成组件形式。即指令。
+         */
+        function getRanklist () {
+            StatisticsRateService.fnGetRanklist(vm.searchInfo).then(function (data) {
+                vm.ranklist = data.statistics;
+                vm.ordersCount = data.count;
+                vm.total = data.total;
             });
         }
 
@@ -81,6 +105,7 @@
          */
         function search () {
             getStatistics();
+            getRanklist();
         }
     }
 })();

@@ -57,3 +57,9 @@ a {
     margin-top:5px;
 }
 
+.blue-table tr{
+    border:1px solid #A0C5E8;
+}
+.blue-table>thead>tr>th,.blue-table>tbody>tr>th,.blue-table>tfoot>tr>th,.blue-table>thead>tr>td,.blue-table>tbody>tr>td,.blue-table>tfoot>tr>td {
+    border: 1px solid #A0C5E8;
+}
